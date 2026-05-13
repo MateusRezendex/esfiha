@@ -5,24 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Esfiha - Sabor que Vicia</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #4a0000;
-            background-image: linear-gradient(to bottom, rgba(74, 0, 0, 0.75), rgba(74, 0, 0, 0.95)), 
-                              url('./img/fundo.png'); 
+            background-image:
+                linear-gradient(to bottom,
+                    rgba(74, 0, 0, 0.75),
+                    rgba(74, 0, 0, 0.95)),
+                url('./img/fundo.png');
+
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
             background-size: cover;
-            overflow: hidden; 
+            overflow: hidden;
         }
 
-        .gold-border { border-color: #d4a017; }
+        .gold-border {
+            border-color: #d4a017;
+        }
 
         .glass-btn {
             background: rgba(0, 0, 0, 0.5);
@@ -38,40 +46,64 @@
 
 <body class="text-white h-screen w-screen overflow-hidden">
 
-    <main class="h-full w-full max-w-md mx-auto px-6 py-2 flex flex-col items-center justify-center relative z-10">
-        
+    <main
+        class="h-full w-full max-w-md mx-auto px-6 py-2 flex flex-col items-center justify-center relative z-10">
+
+        <!-- LOGO -->
         <div class="flex-none flex flex-col items-center justify-center w-full pt-4 mb-10">
+
             <div class="relative flex flex-col items-center">
+
                 <div class="absolute inset-0 bg-yellow-500 rounded-full blur-3xl opacity-20"></div>
-                
-                <img src="./img/logo.png" alt="Esfiha Logo" 
-                     class="relative max-h-[45vh] w-auto object-contain transition-all duration-500">
+
+                <img src="./img/logo.png"
+                    alt="Esfiha Logo"
+                    class="relative max-h-[45vh] w-auto object-contain transition-all duration-500">
+
             </div>
+
         </div>
 
+        <!-- BOTÕES -->
         <div class="w-full space-y-4 mb-6">
+
+            <!-- CARDÁPIO -->
             <a href="cardapio.html"
                 class="flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
+
                 <div class="bg-[#facc15] p-3 rounded-full mr-4 shadow-lg text-black">
-                    <i data-lucide="pizza" class="w-6 h-6"></i>
+
+                    <!-- ÍCONE CARDÁPIO -->
+                    <i data-lucide="book-open-text" class="w-6 h-6"></i>
+
                 </div>
+
                 <span class="flex-1 text-center font-bold text-sm tracking-wide uppercase">
-                    🍕 Cardápio Digital
+                     Cardápio Digital
                 </span>
+
             </a>
 
-            <a href="https://wa.me/5564992186249?text=Olá! Gostaria de fazer um pedido." 
+            <!-- WHATSAPP -->
+            <a href="https://wa.me/5564992186249?text=Olá! Gostaria de fazer um pedido."
                 target="_blank"
                 class="flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
+
                 <div class="bg-[#16a34a] p-3 rounded-full mr-4 shadow-lg">
+
                     <i data-lucide="message-circle" class="w-6 h-6"></i>
+
                 </div>
+
                 <span class="flex-1 text-center font-bold text-sm tracking-wide uppercase">
-                    Peça pelo whatsapp
+                    Peça pelo WhatsApp
                 </span>
+
             </a>
+
         </div>
 
+        <!-- RODAPÉ -->
         <footer class="text-xs text-white/50 text-center pb-2">
             © <span id="current-year"></span> Esfiha — Sabor que vicia
         </footer>
@@ -80,8 +112,11 @@
 
     <script>
         lucide.createIcons();
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        document.getElementById('current-year').textContent =
+            new Date().getFullYear();
     </script>
+
 </body>
 
 </html>
