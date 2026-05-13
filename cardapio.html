@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio - Esfiha Sabor que Vicia</title>
+    <title>Cardápio Completo - Esfiha Sabor que Vicia</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
         body { 
             font-family: 'Inter', sans-serif; 
@@ -23,297 +23,276 @@
         }
         .bg-img {
             width: 100%; height: 100%;
-            background-image: linear-gradient(to bottom, rgba(74, 0, 0, 0.8), rgba(74, 0, 0, 0.95)), 
-                              url('./fundo.png');
+            background-image: linear-gradient(to bottom, rgba(74, 0, 0, 0.85), rgba(74, 0, 0, 0.98)), 
+                               url('./img/fundo.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        @media (max-width: 762px) {
-            .bg-img { transform: none; background-attachment: scroll; }
-        }
-
-        /* AJUSTE PARA TELAS MUITO PEQUENAS (< 360px) */
-        @media (max-width: 360px) {
-            .item-revisao-container {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 12px !important;
-            }
-            .controles-qtd {
-                width: 100% !important;
-                justify-content: center !important;
-            }
-            .modal-content {
-                padding: 1.5rem !important;
-            }
         }
 
         .gold-text { color: #d4a017; }
         
         .category-card { 
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(212, 160, 23, 0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 160, 23, 0.2);
+            transition: transform 0.2s;
         }
 
-        .item-row::after {
-            content: ""; flex: 1; border-bottom: 1px dotted rgba(255, 255, 255, 0.2);
-            margin: 0 8px; order: 2;
+        .preco-antigo {
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.4);
+            font-size: 1.2rem;
         }
 
-        .btn-add { transition: all 0.2s; }
-        .btn-add:active { transform: scale(0.9); }
-
-        /* POP-UP (TOAST) REPOSICIONADO: Acima do botão Revisar */
         #toast {
             position: fixed;
-            bottom: 115px; /* Distância para não bater no botão Revisar */
+            bottom: 120px;
             left: 50%; transform: translateX(-50%);
-            background: #facc15; color: #000; padding: 10px 20px;
-            border-radius: 50px; font-weight: bold; opacity: 0;
-            transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            background: #facc15; color: #000; padding: 16px 32px;
+            border-radius: 50px; font-weight: 800; opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 1000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            display: flex; align-items: center; gap: 10px;
         }
 
-        #modal-revisao, #modal-alerta {
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 10px; }
+
+        #modal-revisao {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             z-index: 1100;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
+            align-items: center; justify-content: center;
+            padding: 20px;
         }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 10px; }
     </style>
 </head>
 <body class="text-white min-h-screen">
 
     <div class="bg-fixed-container"><div class="bg-img"></div></div>
 
-    <div id="toast"><i data-lucide="check-circle" class="w-5 h-5"></i> Adicionado com sucesso!</div>
+    <div id="toast"><i data-lucide="shopping-bag"></i> ADICIONADO!</div>
 
-    <div id="modal-alerta" class="flex items-center justify-center">
-        <div class="bg-[#2d0000] border border-red-500/50 w-full max-w-sm rounded-3xl p-8 text-center shadow-2xl">
-            <div class="bg-red-500/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i data-lucide="shopping-cart" class="text-red-500 w-10 h-10"></i>
-            </div>
-            <h3 class="text-white font-bold text-2xl mb-3">Carrinho Vazio!</h3>
-            <p class="text-white/70 text-base mb-8">Sua sacola ainda está vazia. Adicione algumas esfihas antes de revisar.</p>
-            <button onclick="fecharAlerta()" class="bg-white/10 hover:bg-white/20 w-full py-4 rounded-2xl font-bold text-lg transition-colors">Entendido</button>
-        </div>
-    </div>
-
+    <!-- Modal Revisão -->
     <div id="modal-revisao">
-        <div class="modal-content bg-[#2d0000] border border-[#d4a017]/30 w-full max-w-md rounded-[2.5rem] p-6 md:p-8 shadow-2xl">
-            <h2 class="text-[#d4a017] font-bold text-2xl mb-6 flex items-center">
-                <i data-lucide="shopping-basket" class="mr-3 w-7 h-7"></i> Revisar Pedido
-            </h2>
-            
-            <div id="lista-revisao" class="space-y-4 max-h-[50vh] overflow-y-auto mb-6 pr-2 custom-scrollbar"></div>
-
-            <div class="border-t border-white/10 pt-6 mb-8">
-                <div class="flex justify-between font-bold text-xl">
-                    <span>Total:</span>
-                    <span id="total-revisao" class="text-[#facc15]">R$ 0,00</span>
-                </div>
+        <div class="bg-[#2d0000] border-2 border-[#d4a017]/40 w-full max-w-lg rounded-[3rem] p-8 shadow-2xl">
+            <h2 class="text-[#d4a017] font-extrabold text-3xl mb-6 text-center">Confira seu Pedido</h2>
+            <div id="lista-revisao" class="space-y-4 max-h-[45vh] overflow-y-auto mb-8 pr-2 custom-scrollbar text-xl"></div>
+            <div class="border-t border-white/10 pt-6 mb-8 flex justify-between items-center">
+                <span class="text-2xl font-bold">Total:</span>
+                <span id="total-revisao" class="text-4xl font-black text-[#facc15]">R$ 0,00</span>
             </div>
-
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="fecharRevisao()" class="bg-white/5 hover:bg-white/10 py-4 rounded-2xl font-semibold text-lg border border-white/10">Voltar</button>
-                <button onclick="confirmarWhatsApp()" class="bg-[#16a34a] hover:bg-[#15803d] py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-transform active:scale-95">Finalizar <i data-lucide="send" class="w-5 h-5"></i></button>
+                <button onclick="document.getElementById('modal-revisao').style.display='none'" class="bg-white/10 py-5 rounded-2xl font-bold text-lg">Voltar</button>
+                <button onclick="confirmarWhatsApp()" class="bg-[#16a34a] py-5 rounded-2xl font-black text-lg shadow-lg">ENVIAR AGORA</button>
             </div>
         </div>
     </div>
 
-    <nav class="p-6 flex items-center justify-between sticky top-0 bg-[#4a0000]/90 backdrop-blur-md z-50 border-b border-white/5">
-        <a href="index.html" class="flex items-center text-sm font-medium hover:text-[#d4a017]">
-            <i data-lucide="chevron-left" class="w-5 h-5 mr-1"></i> Voltar
+    <nav class="p-6 sticky top-0 bg-[#4a0000]/95 backdrop-blur-lg z-50 border-b border-white/10 flex justify-between items-center">
+        <a href="index.html" class="flex items-center text-xl font-bold hover:text-[#d4a017] transition-colors">
+            <i data-lucide="arrow-left" class="mr-2"></i> INÍCIO
         </a>
-        <h1 class="text-lg font-bold gold-text uppercase tracking-widest">Nosso Cardápio</h1>
-        <div class="w-8"></div>
-        
+        <span class="gold-text font-black tracking-widest text-2xl uppercase">Menu VIP</span>
+        <div class="w-10"></div>
     </nav>
 
-    <main class="max-w-md mx-auto px-6 pt-10 pb-32 relative z-10">
-
+    <main class="max-w-4xl mx-auto px-4 pt-12 pb-40 relative z-10">
+        
+        <!-- SEÇÃO DO CHEFINHO (RESTAURADA CONFORME SOLICITADO) -->
         <section class="mb-10 text-center flex flex-col items-center">
-            <img src="./chefinho.png" alt="Chef Sabor que Vicia" class="w-62 h-auto drop-shadow-xl">
-            
+            <img src="./img/chefinho.png" alt="Chef Sabor que Vicia" class="w-62 h-auto drop-shadow-xl">
             <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-6 rounded-[2rem] w-full shadow-lg">
-                <h2 class="text-2xl font-extrabold gold-text mb-2 tracking-tight">E aí, partiu esfiha?</h2>
-                <p class="text-white/70 text-base leading-relaxed">Preparei um cardápio incrível para você. Adicione suas favoritas e clique abaixo para revisar seu pedido!</p>
-            </div>
-        </section>
-        <section class="mb-8">
-            <h2 class="flex items-center text-xl font-bold mb-4 gold-text"><i data-lucide="star" class="w-5 h-5 mr-2 fill-[#d4a017]"></i> Tradicionais</h2>
-            <div class="category-card rounded-3xl p-5 space-y-5">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Frango com Catupiry</span><span class="font-bold text-[#facc15] order-3">6,00</span></div>
-                    <button onclick="add('Frango com Catupiry', 6.00)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Queijo</span><span class="font-bold text-[#facc15] order-3">5,50</span></div>
-                    <button onclick="add('Queijo', 5.50)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Queijo com Presunto</span><span class="font-bold text-[#facc15] order-3">6,00</span></div>
-                    <button onclick="add('Queijo com Presunto', 6.00)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
+                <h2 class="text-2xl font-extrabold gold-text mb-2 tracking-tight">Que bom te ver por aqui! 🧡</h2>
+                <p class="text-white/70 text-base leading-relaxed">Escolha suas favoritas abaixo e monte seu pedido!</p>
             </div>
         </section>
 
-        <section class="mb-8">
-            <h2 class="flex items-center text-xl font-bold mb-4 gold-text"><i data-lucide="crown" class="w-5 h-5 mr-2 fill-[#d4a017]"></i> Premium</h2>
-            <div class="category-card rounded-3xl p-5 space-y-5">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Lombinho Canadense</span><span class="font-bold text-[#facc15] order-3">10,50</span></div>
-                    <button onclick="add('Lombinho Canadense', 10.50)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Carne Seca</span><span class="font-bold text-[#facc15] order-3">11,00</span></div>
-                    <button onclick="add('Carne Seca', 11.00)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
+        <!-- SEÇÃO: TRADICIONAIS (Todos os 6 itens) -->
+        <section class="mb-20">
+            <h2 class="text-4xl font-black mb-10 gold-text flex items-center gap-4">
+                <i data-lucide="flame" class="w-10 h-10 fill-[#d4a017]"></i> TRADICIONAIS
+            </h2>
+            <div class="grid gap-8">
+                <script>
+                    const tradicionais = [
+                        { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango" },
+                        { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
+                        { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
+                        { n: "Calabresa com Cebola", d: "Calabresa moída, cebola roxa e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
+                        { n: "Bacon", d: "Bacon crocante em cubos com generosa camada de mussarela.", p: 6.99, a: 8.00, i: "bacon" },
+                        { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 8.00, i: "frango_bacon" }
+                    ];
+
+                    tradicionais.forEach(item => {
+                        document.write(`
+                        <div class="category-card rounded-[3rem] p-6 flex flex-col md:flex-row items-center gap-8">
+                            <img src="./img/esfihas/${item.i}.png" class="w-60 h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0" alt="${item.n}">
+                            <div class="flex-1 w-full text-center md:text-left">
+                                <h3 class="text-3xl font-extrabold text-white mb-3">${item.n}</h3>
+                                <p class="text-white/70 text-xl leading-relaxed mb-6 font-medium">${item.d}</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex flex-col text-left">
+                                        <span class="preco-antigo">R$ ${item.a.toFixed(2)}</span>
+                                        <span class="text-4xl font-black text-[#facc15]">R$ ${item.p.toFixed(2)}</span>
+                                    </div>
+                                    <button onclick="add('${item.n}', ${item.p})" class="bg-[#16a34a] hover:bg-[#15803d] p-6 rounded-3xl shadow-xl transition-all active:scale-90">
+                                        <i data-lucide="plus" class="w-10 h-10"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                    });
+                </script>
             </div>
         </section>
 
-        <section class="mb-8">
-            <h2 class="flex items-center text-xl font-bold mb-4 gold-text"><i data-lucide="heart" class="w-5 h-5 mr-2 fill-[#d4a017]"></i> Doces</h2>
-            <div class="category-card rounded-3xl p-5 space-y-5">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Chocolate com Morango</span><span class="font-bold text-[#facc15] order-3">12,00</span></div>
-                    <button onclick="add('Chocolate com Morango', 12.00)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center flex-1 item-row"><span class="font-medium order-1">Banana Nevada</span><span class="font-bold text-[#facc15] order-3">11,00</span></div>
-                    <button onclick="add('Banana Nevada', 11.00)" class="btn-add ml-2 bg-[#16a34a] p-1.5 rounded-lg"><i data-lucide="plus" class="w-4 h-4 text-white"></i></button>
-                </div>
+        <!-- SEÇÃO: PREMIUM (Todos os 5 itens) -->
+        <section class="mb-20">
+            <h2 class="text-4xl font-black mb-10 gold-text flex items-center gap-4">
+                <i data-lucide="crown" class="w-10 h-10 fill-[#d4a017]"></i> PREMIUM
+            </h2>
+            <div class="grid gap-8">
+                <script>
+                    const premium = [
+                        { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos" },
+                        { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.90, a: 9.00, i: "carne" },
+                        { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
+                        { n: "Lombinho Canadense", d: "Lombo canadense fatiado com cobertura de mussarela.", p: 7.90, a: 9.00, i: "lombo" },
+                        { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
+                    ];
+
+                    premium.forEach(item => {
+                        document.write(`
+                        <div class="category-card rounded-[3rem] p-6 flex flex-col md:flex-row items-center gap-8 border-[#facc15]/30">
+                            <img src="./img/esfihas/${item.i}.png" class="w-60 h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0" alt="${item.n}">
+                            <div class="flex-1 w-full text-center md:text-left">
+                                <h3 class="text-3xl font-extrabold text-white mb-3">${item.n}</h3>
+                                <p class="text-white/70 text-xl leading-relaxed mb-6 font-medium">${item.d}</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex flex-col text-left">
+                                        <span class="preco-antigo">R$ ${item.a.toFixed(2)}</span>
+                                        <span class="text-4xl font-black text-[#facc15]">R$ ${item.p.toFixed(2)}</span>
+                                    </div>
+                                    <button onclick="add('${item.n}', ${item.p})" class="bg-[#16a34a] p-6 rounded-3xl active:scale-90 transition-all">
+                                        <i data-lucide="plus" class="w-10 h-10"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                    });
+                </script>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: DOCES (Todos os 5 itens) -->
+        <section class="mb-10">
+            <h2 class="text-4xl font-black mb-10 gold-text flex items-center gap-4">
+                <i data-lucide="heart" class="w-10 h-10 fill-[#d4a017]"></i> DOCES IRRESISTÍVEIS
+            </h2>
+            <div class="grid gap-8">
+                <script>
+                    const doces = [
+                        { n: "Chocolate c/ Morango", d: "Ganache de chocolate meio amargo com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
+                        { n: "Chocolate com MM", d: "Muito chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
+                        { n: "Banana Nevada", d: "Banana fatiada, chocolate branco, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada" },
+                        { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco derretido.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
+                        { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada cascão.", p: 7.99, a: 9.00, i: "romeu_julieta" }
+                    ];
+
+                    doces.forEach(item => {
+                        document.write(`
+                        <div class="category-card rounded-[3rem] p-6 flex flex-col md:flex-row items-center gap-8 border-pink-500/20">
+                            <img src="./img/esfihas/${item.i}.png" class="w-60 h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0" alt="${item.n}">
+                            <div class="flex-1 w-full text-center md:text-left">
+                                <h3 class="text-3xl font-extrabold text-white mb-3">${item.n}</h3>
+                                <p class="text-white/70 text-xl leading-relaxed mb-6 font-medium">${item.d}</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex flex-col text-left">
+                                        <span class="preco-antigo">R$ ${item.a.toFixed(2)}</span>
+                                        <span class="text-4xl font-black text-[#facc15]">R$ ${item.p.toFixed(2)}</span>
+                                    </div>
+                                    <button onclick="add('${item.n}', ${item.p})" class="bg-[#16a34a] p-6 rounded-3xl active:scale-90 transition-all">
+                                        <i data-lucide="plus" class="w-10 h-10"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                    });
+                </script>
             </div>
         </section>
 
     </main>
 
-    <div class="fixed bottom-0 left-0 w-full p-4 z-50">
-        <button onclick="revisarPedido()" class="flex items-center justify-between w-full max-w-md mx-auto bg-[#16a34a] hover:bg-[#15803d] text-white font-bold py-5 px-8 rounded-3xl shadow-2xl border-2 border-white/10 transition-all active:scale-95">
-            <div class="flex items-center gap-3 text-lg"><i data-lucide="clipboard-check" class="w-7 h-7"></i><span>REVISAR PEDIDO</span></div>
-            <span id="total-badge" class="bg-black/20 px-4 py-2 rounded-xl text-base tracking-wide">R$ 0,00</span>
+    <!-- Barra de Finalização -->
+    <div class="fixed bottom-0 left-0 w-full p-6 z-50 bg-gradient-to-t from-[#2d0000] to-transparent">
+        <button onclick="abrirRevisao()" class="flex items-center justify-between w-full max-w-xl mx-auto bg-[#16a34a] text-white py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-t border-white/20">
+            <div class="flex items-center gap-4">
+                <i data-lucide="shopping-cart" class="w-8 h-8"></i>
+                <span class="text-2xl font-black uppercase tracking-tighter">Ver Sacola</span>
+            </div>
+            <span id="total-badge" class="bg-black/30 px-6 py-2 rounded-xl text-2xl font-bold">R$ 0,00</span>
         </button>
     </div>
 
     <script>
         lucide.createIcons();
-
         let carrinho = JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
         let total = 0;
-        let toastTimeout;
         atualizarTotal();
 
-        function salvarLocal() { localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho)); }
-
         function add(nome, preco) {
-            if (!carrinho[nome]) { carrinho[nome] = { qtd: 0, preco: preco }; }
+            if (!carrinho[nome]) carrinho[nome] = { qtd: 0, preco: preco };
             carrinho[nome].qtd++;
-            salvarLocal();
+            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
             atualizarTotal();
-            
-            const toast = document.getElementById('toast');
-            clearTimeout(toastTimeout);
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(-10px)';
-            
-            toastTimeout = setTimeout(() => { 
-                toast.style.opacity = '0'; 
-                toast.style.transform = 'translateX(-50%) translateY(0)';
-            }, 1500);
-        }
-
-        function alterarQtd(nome, valor) {
-            if (carrinho[nome]) {
-                carrinho[nome].qtd += valor;
-                if (carrinho[nome].qtd <= 0) delete carrinho[nome];
-            }
-            salvarLocal();
-            atualizarTotal();
-            revisarPedido(); 
-        }
-
-        function removerTudoItem(nome) {
-            if(confirm(`Remover "${nome}" do pedido?`)) {
-                delete carrinho[nome];
-                salvarLocal();
-                atualizarTotal();
-                revisarPedido();
-            }
+            const t = document.getElementById('toast');
+            t.style.opacity = '1';
+            setTimeout(() => t.style.opacity = '0', 1000);
         }
 
         function atualizarTotal() {
             total = 0;
-            for (let item in carrinho) { total += carrinho[item].qtd * carrinho[item].preco; }
+            for (let i in carrinho) { total += carrinho[i].qtd * carrinho[i].preco; }
             document.getElementById('total-badge').innerText = `R$ ${total.toFixed(2)}`;
-            if(document.getElementById('total-revisao')) {
+            if(document.getElementById('total-revisao')) 
                 document.getElementById('total-revisao').innerText = `R$ ${total.toFixed(2)}`;
-            }
         }
 
-        function fecharAlerta() { document.getElementById('modal-alerta').style.display = 'none'; }
-
-        function revisarPedido() {
+        function abrirRevisao() {
             if (Object.keys(carrinho).length === 0) {
-                fecharRevisao();
-                document.getElementById('modal-alerta').style.display = 'flex';
+                alert("Sua sacola está vazia! Escolha uma delícia primeiro. 😋");
                 return;
             }
-
-            const listaRevisao = document.getElementById('lista-revisao');
-            listaRevisao.innerHTML = '';
-
+            const lista = document.getElementById('lista-revisao');
+            lista.innerHTML = '';
             for (const item in carrinho) {
-                const div = document.createElement('div');
-                div.className = 'item-revisao-container flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5';
-                div.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <button onclick="removerTudoItem('${item}')" class="text-red-500/60 hover:text-red-500 mr-1">
-                            <i data-lucide="trash-2" class="w-5 h-5"></i>
-                        </button>
-                        <div class="flex flex-col">
-                            <span class="text-base font-semibold text-white leading-tight">${item}</span>
-                            <span class="text-sm text-[#facc15] font-medium">R$ ${(carrinho[item].qtd * carrinho[item].preco).toFixed(2)}</span>
-                        </div>
+                lista.innerHTML += `
+                <div class="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/10">
+                    <div>
+                        <p class="font-bold text-2xl">${carrinho[item].qtd}x ${item}</p>
+                        <p class="text-white/50 text-base">Unitário: R$ ${carrinho[item].preco.toFixed(2)}</p>
                     </div>
-                    <div class="controles-qtd flex items-center gap-4 bg-black/30 rounded-xl p-2 border border-white/5">
-                        <button onclick="alterarQtd('${item}', -1)" class="p-1 hover:bg-white/10 rounded-lg"><i data-lucide="minus" class="w-5 h-5 text-red-400"></i></button>
-                        <span class="font-bold text-lg min-w-[20px] text-center">${carrinho[item].qtd}</span>
-                        <button onclick="alterarQtd('${item}', 1)" class="p-1 hover:bg-white/10 rounded-lg"><i data-lucide="plus" class="w-5 h-5 text-green-400"></i></button>
-                    </div>
-                `;
-                listaRevisao.appendChild(div);
+                    <span class="font-black text-[#facc15] text-2xl">R$ ${(carrinho[item].qtd * carrinho[item].preco).toFixed(2)}</span>
+                </div>`;
             }
             document.getElementById('modal-revisao').style.display = 'flex';
-            lucide.createIcons();
         }
 
-        function fecharRevisao() { document.getElementById('modal-revisao').style.display = 'none'; }
-
         function confirmarWhatsApp() {
-            let msg = "*NOVO PEDIDO - ESFIHA SABOR QUE VICIA*\n\n";
-            for (const item in carrinho) { msg += `✅ *${carrinho[item].qtd}x* ${item}\n`; }
-            msg += `\n💰 *TOTAL: R$ ${total.toFixed(2)}*`;
+            let msg = "Olá! 🧡 Quero saborear o seguinte pedido:\n\n";
+            for (const item in carrinho) { 
+                msg += `🔸 *${carrinho[item].qtd}x* ${item} - R$ ${(carrinho[item].qtd * carrinho[item].preco).toFixed(2)}\n`; 
+            }
+            msg += `\n💵 *TOTAL: R$ ${total.toFixed(2)}*`;
             window.open(`https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`, '_blank');
-            carrinho = {};
-            localStorage.removeItem('carrinho_esfiha');
-            atualizarTotal();
-            fecharRevisao();
         }
     </script>
 </body>
