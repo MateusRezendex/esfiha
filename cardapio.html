@@ -1,37 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Cardápio Completo - Esfiha Sabor que Vicia</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #4a0000; 
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #4a0000;
             margin: 0;
             overflow-x: hidden;
         }
 
         .bg-fixed-container {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
         }
+
         .bg-img {
-            width: 100%; height: 100%;
-            background-image: linear-gradient(to bottom, rgba(74, 0, 0, 0.85), rgba(74, 0, 0, 0.98)), 
-                               url('./img/fundo.png');
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(to bottom,
+                    rgba(74, 0, 0, 0.85),
+                    rgba(74, 0, 0, 0.98)),
+                url('./img/fundo.png');
+
             background-size: cover;
             background-position: center;
         }
 
-        .gold-text { color: #d4a017; }
-        
-        .category-card { 
+        .gold-text {
+            color: #d4a017;
+        }
+
+        .category-card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(212, 160, 23, 0.2);
@@ -40,260 +55,481 @@
 
         .preco-antigo {
             text-decoration: line-through;
-            color: rgba(255,255,255,0.4);
-            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
         }
 
         #toast {
             position: fixed;
             bottom: 120px;
-            left: 50%; transform: translateX(-50%);
-            background: #facc15; color: #000; padding: 16px 32px;
-            border-radius: 50px; font-weight: 800; opacity: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #facc15;
+            color: #000;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            opacity: 0;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 1000;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4a017;
+            border-radius: 10px;
+        }
 
         #modal-revisao {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1100;
-            align-items: center; justify-content: center;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
         }
     </style>
 </head>
+
 <body class="text-white min-h-screen">
 
-    <div class="bg-fixed-container"><div class="bg-img"></div></div>
+    <div class="bg-fixed-container">
+        <div class="bg-img"></div>
+    </div>
 
-    <div id="toast"><i data-lucide="shopping-bag"></i> ADICIONADO!</div>
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true">
+        <i data-lucide="shopping-bag"></i>
+        ADICIONADO!
+    </div>
 
-    <!-- Modal Revisão -->
-    <div id="modal-revisao">
+    <!-- MODAL -->
+    <div id="modal-revisao" role="dialog" aria-modal="true" aria-labelledby="titulo-revisao">
+
         <div class="bg-[#2d0000] border-2 border-[#d4a017]/40 w-full max-w-lg rounded-[3rem] p-8 shadow-2xl">
-            <h2 class="text-[#d4a017] font-extrabold text-3xl mb-6 text-center">Confira seu Pedido</h2>
-            <div id="lista-revisao" class="space-y-4 max-h-[45vh] overflow-y-auto mb-8 pr-2 custom-scrollbar text-xl"></div>
-            <div class="border-t border-white/10 pt-6 mb-8 flex justify-between items-center">
-                <span class="text-2xl font-bold">Total:</span>
-                <span id="total-revisao" class="text-4xl font-black text-[#facc15]">R$ 0,00</span>
+
+            <h2 id="titulo-revisao" class="text-[#d4a017] font-extrabold text-3xl mb-6 text-center">
+                Confira seu Pedido
+            </h2>
+
+            <div id="lista-revisao"
+                class="space-y-4 max-h-[45vh] overflow-y-auto mb-8 pr-2 custom-scrollbar text-xl">
             </div>
+
+            <button type="button" onclick="limparSacola()"
+                class="w-full mb-8 bg-white/10 hover:bg-white/15 py-4 rounded-2xl font-bold text-base border border-white/10">
+                Limpar sacola
+            </button>
+
+            <div class="border-t border-white/10 pt-6 mb-8 flex justify-between items-center">
+
+                <span class="text-2xl font-bold">
+                    Total:
+                </span>
+
+                <span id="total-revisao"
+                    class="text-4xl font-black text-[#facc15]">
+                    R$ 0,00
+                </span>
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="document.getElementById('modal-revisao').style.display='none'" class="bg-white/10 py-5 rounded-2xl font-bold text-lg">Voltar</button>
-                <button onclick="confirmarWhatsApp()" class="bg-[#16a34a] py-5 rounded-2xl font-black text-lg shadow-lg">ENVIAR AGORA</button>
+
+                <button id="btn-voltar" type="button" onclick="fecharRevisao()"
+                    class="bg-white/10 py-5 rounded-2xl font-bold text-lg">
+
+                    Voltar
+                </button>
+
+                <button id="btn-enviar" type="button" onclick="confirmarWhatsApp()"
+                    class="bg-[#16a34a] py-5 rounded-2xl font-black text-lg shadow-lg">
+
+                    ENVIAR AGORA
+                </button>
             </div>
         </div>
     </div>
 
-    <nav class="p-6 sticky top-0 bg-[#4a0000]/95 backdrop-blur-lg z-50 border-b border-white/10 flex justify-between items-center">
-        <a href="index.html" class="flex items-center text-xl font-bold hover:text-[#d4a017] transition-colors">
-            <i data-lucide="arrow-left" class="mr-2"></i> INÍCIO
+    <!-- NAV -->
+    <nav
+        class="p-5 sticky top-0 bg-[#4a0000]/95 backdrop-blur-lg z-50 border-b border-white/10 flex justify-between items-center">
+
+        <a href="index.html"
+            class="flex items-center text-lg md:text-xl font-bold hover:text-[#d4a017] transition-colors">
+
+            <i data-lucide="arrow-left" class="mr-2"></i>
+            INÍCIO
         </a>
-        <span class="gold-text font-black tracking-widest text-2xl uppercase">Menu VIP</span>
+
+        <span class="gold-text font-black tracking-widest text-lg md:text-2xl uppercase">
+            Menu
+        </span>
+
         <div class="w-10"></div>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-4 pt-12 pb-40 relative z-10">
-        
-        <!-- SEÇÃO DO CHEFINHO (RESTAURADA CONFORME SOLICITADO) -->
-        <section class="mb-10 text-center flex flex-col items-center">
-            <img src="./img/chefinho.png" alt="Chef Sabor que Vicia" class="w-62 h-auto drop-shadow-xl">
-            <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-6 rounded-[2rem] w-full shadow-lg">
-                <h2 class="text-2xl font-extrabold gold-text mb-2 tracking-tight">Que bom te ver por aqui! 🧡</h2>
-                <p class="text-white/70 text-base leading-relaxed">Escolha suas favoritas abaixo e monte seu pedido!</p>
+    <!-- MAIN -->
+    <main class="max-w-4xl mx-auto px-4 pt-10 pb-36 relative z-10">
+
+        <!-- CHEFINHO -->
+        <section class="mb-8 text-center flex flex-col items-center">
+
+            <img src="./img/chefinho.png"
+                alt="Chef Sabor que Vicia"
+                decoding="async"
+                class="w-56 md:w-62 h-auto drop-shadow-xl">
+
+            <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
+
+                <h2 class="text-xl md:text-2xl font-extrabold gold-text mb-2 tracking-tight">
+                    Que bom te ver por aqui! 🧡
+                </h2>
+
+                <p class="text-white/70 text-sm md:text-base leading-relaxed">
+                    Escolha suas favoritas abaixo e monte seu pedido!
+                </p>
             </div>
         </section>
 
-        <!-- SEÇÃO: TRADICIONAIS (Todos os 6 itens) -->
-        <section class="mb-20">
-            <h2 class="text-4xl font-black mb-10 gold-text flex items-center gap-4">
-                <i data-lucide="flame" class="w-10 h-10 fill-[#d4a017]"></i> TRADICIONAIS
+        <!-- TRADICIONAIS -->
+        <section class="mb-16">
+
+            <h2 class="text-3xl md:text-4xl font-black mb-8 gold-text flex items-center gap-3">
+
+                <i data-lucide="flame"
+                    class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+
+                TRADICIONAIS
             </h2>
-            <div class="grid gap-8">
-                <script>
-                    const tradicionais = [
-                        { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango" },
-                        { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
-                        { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
-                        { n: "Calabresa com Cebola", d: "Calabresa moída, cebola roxa e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
-                        { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 8.00, i: "bacon" },
-                        { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 8.00, i: "frango_bacon" }
-                    ];
 
-                    tradicionais.forEach(item => {
-                        document.write(`
-                        <div class="category-card rounded-[3rem] p-6 flex flex-col md:flex-row items-center gap-8">
-                            <img src="./img/esfihas/${item.i}.png" class="w-60 h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0" alt="${item.n}">
-                            <div class="flex-1 w-full text-center md:text-left">
-                                <h3 class="text-3xl font-extrabold text-white mb-3">${item.n}</h3>
-                                <p class="text-white/70 text-xl leading-relaxed mb-6 font-medium">${item.d}</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex flex-col text-left">
-                                        <span class="preco-antigo">R$ ${item.a.toFixed(2)}</span>
-                                        <span class="text-4xl font-black text-[#facc15]">R$ ${item.p.toFixed(2)}</span>
-                                    </div>
-                                    <button onclick="add('${item.n}', ${item.p})" class="bg-[#16a34a] hover:bg-[#15803d] p-6 rounded-3xl shadow-xl transition-all active:scale-90">
-                                        <i data-lucide="plus" class="w-10 h-10"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        `);
-                    });
-                </script>
+            <div class="grid gap-6">
+                <div id="lista-tradicionais" class="grid gap-6"></div>
             </div>
         </section>
 
-        <!-- SEÇÃO: PREMIUM (Todos os 5 itens) -->
-        <section class="mb-20">
-            <h2 class="text-4xl font-black mb-10 gold-text flex items-center gap-4">
-                <i data-lucide="crown" class="w-10 h-10 fill-[#d4a017]"></i> PREMIUM
+        <!-- PREMIUM -->
+        <section class="mb-16">
+
+            <h2 class="text-3xl md:text-4xl font-black mb-8 gold-text flex items-center gap-3">
+
+                <i data-lucide="crown"
+                    class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+
+                PREMIUM
             </h2>
-            <div class="grid gap-8">
-                <script>
-                    const premium = [
-                        { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos" },
-                        { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.90, a: 9.00, i: "carne" },
-                        { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
-                        { n: "Lombinho Canadense", d: "Lombo canadense fatiado com cobertura de mussarela.", p: 7.90, a: 9.00, i: "lombo" },
-                        { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
-                    ];
 
-                    premium.forEach(item => {
-                        document.write(`
-                        <div class="category-card rounded-[3rem] p-6 flex flex-col md:flex-row items-center gap-8 border-[#facc15]/30">
-                            <img src="./img/esfihas/${item.i}.png" class="w-60 h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0" alt="${item.n}">
-                            <div class="flex-1 w-full text-center md:text-left">
-                                <h3 class="text-3xl font-extrabold text-white mb-3">${item.n}</h3>
-                                <p class="text-white/70 text-xl leading-relaxed mb-6 font-medium">${item.d}</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex flex-col text-left">
-                                        <span class="preco-antigo">R$ ${item.a.toFixed(2)}</span>
-                                        <span class="text-4xl font-black text-[#facc15]">R$ ${item.p.toFixed(2)}</span>
-                                    </div>
-                                    <button onclick="add('${item.n}', ${item.p})" class="bg-[#16a34a] p-6 rounded-3xl active:scale-90 transition-all">
-                                        <i data-lucide="plus" class="w-10 h-10"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        `);
-                    });
-                </script>
+            <div class="grid gap-6">
+                <div id="lista-premium" class="grid gap-6"></div>
             </div>
         </section>
 
-        <!-- SEÇÃO: DOCES (Todos os 5 itens) -->
+        <!-- DOCES -->
         <section class="mb-10">
-            <h2 class="text-4xl font-black mb-10 gold-text flex items-center gap-4">
-                <i data-lucide="heart" class="w-10 h-10 fill-[#d4a017]"></i> DOCES IRRESISTÍVEIS
-            </h2>
-            <div class="grid gap-8">
-                <script>
-                    const doces = [
-                        { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
-                        { n: "Chocolate com MM", d: "Muito chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
-                        { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada" },
-                        { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
-                        { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada cascão.", p: 7.99, a: 9.00, i: "romeu_julieta" }
-                    ];
 
-                    doces.forEach(item => {
-                        document.write(`
-                        <div class="category-card rounded-[3rem] p-6 flex flex-col md:flex-row items-center gap-8 border-pink-500/20">
-                            <img src="./img/esfihas/${item.i}.png" class="w-60 h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0" alt="${item.n}">
-                            <div class="flex-1 w-full text-center md:text-left">
-                                <h3 class="text-3xl font-extrabold text-white mb-3">${item.n}</h3>
-                                <p class="text-white/70 text-xl leading-relaxed mb-6 font-medium">${item.d}</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex flex-col text-left">
-                                        <span class="preco-antigo">R$ ${item.a.toFixed(2)}</span>
-                                        <span class="text-4xl font-black text-[#facc15]">R$ ${item.p.toFixed(2)}</span>
-                                    </div>
-                                    <button onclick="add('${item.n}', ${item.p})" class="bg-[#16a34a] p-6 rounded-3xl active:scale-90 transition-all">
-                                        <i data-lucide="plus" class="w-10 h-10"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        `);
-                    });
-                </script>
+            <h2 class="text-3xl md:text-4xl font-black mb-8 gold-text flex items-center gap-3">
+
+                <i data-lucide="heart"
+                    class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+
+                DOCES IRRESISTÍVEIS
+            </h2>
+
+            <div class="grid gap-6">
+                <div id="lista-doces" class="grid gap-6"></div>
             </div>
         </section>
 
     </main>
 
-    <!-- Barra de Finalização -->
-    <div class="fixed bottom-0 left-0 w-full p-6 z-50 bg-gradient-to-t from-[#2d0000] to-transparent">
-        <button onclick="abrirRevisao()" class="flex items-center justify-between w-full max-w-xl mx-auto bg-[#16a34a] text-white py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-t border-white/20">
-            <div class="flex items-center gap-4">
-                <i data-lucide="shopping-cart" class="w-8 h-8"></i>
-                <span class="text-2xl font-black uppercase tracking-tighter">Ver Sacola</span>
+    <!-- SACOLA -->
+    <div
+        class="fixed bottom-0 left-0 w-full p-4 md:p-6 z-50 bg-gradient-to-t from-[#2d0000] to-transparent">
+
+        <button onclick="abrirRevisao()"
+            id="btn-abrir-revisao"
+            class="flex items-center justify-between w-full max-w-lg mx-auto bg-[#16a34a] text-white py-4 md:py-6 px-6 md:px-10 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-t border-white/20">
+
+            <div class="flex items-center gap-3 md:gap-4">
+
+                <i data-lucide="shopping-cart"
+                    class="w-6 h-6 md:w-8 md:h-8"></i>
+
+                <span class="text-lg hidden sm:flex md:text-2xl font-black uppercase tracking-tighter">
+                    Ver Sacola
+                </span>
             </div>
-            <span id="total-badge" class="bg-black/30 px-6 py-2 rounded-xl text-2xl font-bold">R$ 0,00</span>
+
+            <span id="total-badge"
+                class="bg-black/30 px-4 md:px-6 py-2 rounded-xl text-lg md:text-2xl font-bold">
+
+                R$ 0,00
+            </span>
         </button>
     </div>
 
     <script>
+        const brl = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+
+        function renderItens(containerId, itens, extraCardClasses = '') {
+            const container = document.getElementById(containerId);
+
+            if (!container) return;
+
+            const html = itens.map(item => `
+                <div class="category-card rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 ${extraCardClasses}">
+
+                    <img
+                        src="./img/esfihas/${item.i}.png"
+                        class="w-44 h-44 sm:w-60 sm:h-60 object-cover rounded-[2.5rem] shadow-xl flex-shrink-0"
+                        alt="${item.n}"
+                        loading="lazy"
+                        decoding="async"
+                        width="240"
+                        height="240">
+
+                    <div class="flex-1 w-full text-center md:text-left">
+
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2">
+                            ${item.n}
+                        </h3>
+
+                        <p class="text-white/70 text-base md:text-xl leading-relaxed mb-4 md:mb-6 font-medium">
+                            ${item.d}
+                        </p>
+
+                        <div class="flex items-center justify-between">
+
+                            <div class="flex flex-col text-left">
+
+                                <span class="preco-antigo">
+                                    ${brl.format(item.a)}
+                                </span>
+
+                                <span class="text-3xl md:text-4xl font-black text-[#facc15]">
+                                    ${brl.format(item.p)}
+                                </span>
+                            </div>
+
+                            <button
+                                type="button"
+                                aria-label="Adicionar ${item.n}"
+                                onclick="add('${item.n}', ${item.p})"
+                                class="bg-[#16a34a] hover:bg-[#15803d] p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-xl transition-all active:scale-90">
+
+                                <i data-lucide="plus"
+                                    class="w-8 h-8 md:w-10 md:h-10"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        const tradicionais = [
+            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango" },
+            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
+            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
+            { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 8.00, i: "bacon" },
+            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 8.00, i: "frango_bacon" }
+        ];
+
+        const premium = [
+            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos" },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.90, a: 9.00, i: "carne" },
+            { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
+            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 9.00, i: "lombo" },
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
+        ];
+
+        const doces = [
+            { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
+            { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
+            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada" },
+            { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
+            { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 9.00, i: "romeu_julieta" }
+        ];
+
+        renderItens('lista-tradicionais', tradicionais);
+        renderItens('lista-premium', premium, 'border-[#facc15]/30');
+        renderItens('lista-doces', doces, 'border-pink-500/20');
+
         lucide.createIcons();
-        let carrinho = JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+
+        let carrinho =
+            JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+
         let total = 0;
+        let ultimoFoco = null;
+
         atualizarTotal();
 
+        const modal = document.getElementById('modal-revisao');
+
         function add(nome, preco) {
-            if (!carrinho[nome]) carrinho[nome] = { qtd: 0, preco: preco };
+
+            if (!carrinho[nome]) {
+                carrinho[nome] = {
+                    qtd: 0,
+                    preco: preco
+                };
+            }
+
             carrinho[nome].qtd++;
-            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+
+            localStorage.setItem(
+                'carrinho_esfiha',
+                JSON.stringify(carrinho)
+            );
+
             atualizarTotal();
+
             const t = document.getElementById('toast');
+
             t.style.opacity = '1';
-            setTimeout(() => t.style.opacity = '0', 1000);
+
+            setTimeout(() => {
+                t.style.opacity = '0';
+            }, 1000);
         }
 
         function atualizarTotal() {
+
             total = 0;
-            for (let i in carrinho) { total += carrinho[i].qtd * carrinho[i].preco; }
-            document.getElementById('total-badge').innerText = `R$ ${total.toFixed(2)}`;
-            if(document.getElementById('total-revisao')) 
-                document.getElementById('total-revisao').innerText = `R$ ${total.toFixed(2)}`;
+
+            for (let i in carrinho) {
+                total += carrinho[i].qtd * carrinho[i].preco;
+            }
+
+            document.getElementById('total-badge').innerText =
+                brl.format(total);
+
+            if (document.getElementById('total-revisao')) {
+
+                document.getElementById('total-revisao').innerText =
+                    brl.format(total);
+            }
+        }
+
+        function abrirModal() {
+            if (!modal) return;
+
+            ultimoFoco = document.activeElement;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            const btnEnviar = document.getElementById('btn-enviar');
+            if (btnEnviar) btnEnviar.focus();
+        }
+
+        function fecharRevisao() {
+            if (!modal) return;
+
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+
+            if (ultimoFoco && typeof ultimoFoco.focus === 'function') {
+                ultimoFoco.focus();
+            }
+        }
+
+        function limparSacola() {
+            carrinho = {};
+            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+            atualizarTotal();
+
+            const lista = document.getElementById('lista-revisao');
+            if (lista) lista.innerHTML = '';
+
+            fecharRevisao();
         }
 
         function abrirRevisao() {
+
             if (Object.keys(carrinho).length === 0) {
+
                 alert("Sua sacola está vazia! Escolha uma delícia primeiro. 😋");
+
                 return;
             }
+
             const lista = document.getElementById('lista-revisao');
+
             lista.innerHTML = '';
+
             for (const item in carrinho) {
+
                 lista.innerHTML += `
                 <div class="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/10">
+
                     <div>
-                        <p class="font-bold text-2xl">${carrinho[item].qtd}x ${item}</p>
-                        <p class="text-white/50 text-base">Unitário: R$ ${carrinho[item].preco.toFixed(2)}</p>
+                        <p class="font-bold text-2xl">
+                            ${carrinho[item].qtd}x ${item}
+                        </p>
+
+                        <p class="text-white/50 text-base">
+                            Unitário: ${brl.format(carrinho[item].preco)}
+                        </p>
                     </div>
-                    <span class="font-black text-[#facc15] text-2xl">R$ ${(carrinho[item].qtd * carrinho[item].preco).toFixed(2)}</span>
+
+                    <span class="font-black text-[#facc15] text-2xl">
+                        ${brl.format(carrinho[item].qtd * carrinho[item].preco)}
+                    </span>
                 </div>`;
             }
-            document.getElementById('modal-revisao').style.display = 'flex';
+
+            abrirModal();
         }
 
         function confirmarWhatsApp() {
-            let msg = "Olá! 🧡 Quero saborear o seguinte pedido:\n\n";
-            for (const item in carrinho) { 
-                msg += `🔸 *${carrinho[item].qtd}x* ${item} - R$ ${(carrinho[item].qtd * carrinho[item].preco).toFixed(2)}\n`; 
+
+            let msg =
+                "Olá! 🧡 Quero saborear o seguinte pedido:\n\n";
+
+            for (const item in carrinho) {
+
+                msg +=
+                    `🔸 *${carrinho[item].qtd}x* ${item} - ${brl.format(carrinho[item].qtd * carrinho[item].preco)}\n`;
             }
-            msg += `\n💵 *TOTAL: R$ ${total.toFixed(2)}*`;
-            window.open(`https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`, '_blank');
+
+            msg += `\n💵 *TOTAL: ${brl.format(total)}*`;
+
+            window.open(
+                `https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`,
+                '_blank'
+            );
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (!modal || modal.style.display !== 'flex') return;
+            fecharRevisao();
+        });
+
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target !== modal) return;
+                fecharRevisao();
+            });
         }
     </script>
+
 </body>
+
 </html>
