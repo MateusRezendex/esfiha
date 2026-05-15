@@ -134,9 +134,15 @@
 
             <div class="border-t border-white/10 pt-6 mb-8 flex justify-between items-center">
 
-                <span class="text-2xl font-bold">
-                    Total:
-                </span>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-bold leading-tight">
+                        Total:
+                    </span>
+
+                    <span class="text-white/60 font-semibold">
+                        Itens: <span id="qtd-revisao">0</span>
+                    </span>
+                </div>
 
                 <span id="total-revisao"
                     class="text-4xl font-black text-[#facc15]">
@@ -262,8 +268,16 @@
 
             <div class="flex items-center gap-3 md:gap-4">
 
-                <i data-lucide="shopping-cart"
-                    class="w-6 h-6 md:w-8 md:h-8"></i>
+                <div class="relative">
+                    <i data-lucide="shopping-cart"
+                        class="w-6 h-6 md:w-8 md:h-8"></i>
+
+                    <span id="qtd-badge"
+                        class="hidden absolute -top-2 -right-2 md:-top-3 md:-right-3 min-w-6 h-6 md:min-w-7 md:h-7 px-2 rounded-full bg-[#facc15] text-black text-sm md:text-base font-black flex items-center justify-center shadow-lg"
+                        aria-label="Quantidade de itens na sacola">
+                        0
+                    </span>
+                </div>
 
                 <span class="text-lg hidden sm:flex md:text-2xl font-black uppercase tracking-tighter">
                     Ver Sacola
@@ -376,6 +390,7 @@
             JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
 
         let total = 0;
+        let totalQtd = 0;
         let ultimoFoco = null;
 
         atualizarTotal();
@@ -412,19 +427,31 @@
         function atualizarTotal() {
 
             total = 0;
+            totalQtd = 0;
 
             for (let i in carrinho) {
                 total += carrinho[i].qtd * carrinho[i].preco;
+                totalQtd += carrinho[i].qtd;
             }
 
             document.getElementById('total-badge').innerText =
                 brl.format(total);
+
+            const qtdBadge = document.getElementById('qtd-badge');
+            if (qtdBadge) {
+                qtdBadge.innerText = String(totalQtd);
+                if (totalQtd > 0) qtdBadge.classList.remove('hidden');
+                else qtdBadge.classList.add('hidden');
+            }
 
             if (document.getElementById('total-revisao')) {
 
                 document.getElementById('total-revisao').innerText =
                     brl.format(total);
             }
+
+            const qtdRevisao = document.getElementById('qtd-revisao');
+            if (qtdRevisao) qtdRevisao.innerText = String(totalQtd);
         }
 
         function abrirModal() {
@@ -500,15 +527,15 @@
         function confirmarWhatsApp() {
 
             let msg =
-                "Olá! 🧡 Quero saborear o seguinte pedido:\n\n";
+                "Olá! Quero saborear o seguinte pedido:\n\n";
 
             for (const item in carrinho) {
 
                 msg +=
-                    `🔸 *${carrinho[item].qtd}x* ${item} - ${brl.format(carrinho[item].qtd * carrinho[item].preco)}\n`;
+                    `*${carrinho[item].qtd}x* ${item} - ${brl.format(carrinho[item].qtd * carrinho[item].preco)}\n`;
             }
 
-            msg += `\n💵 *TOTAL: ${brl.format(total)}*`;
+            msg += `\n *TOTAL: ${brl.format(total)}*`;
 
             window.open(
                 `https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`,
