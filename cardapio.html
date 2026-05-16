@@ -396,6 +396,21 @@
         atualizarTotal();
 
         const modal = document.getElementById('modal-revisao');
+        const listaRevisao = document.getElementById('lista-revisao');
+
+        if (listaRevisao) {
+            listaRevisao.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-carrinho-action]');
+                if (!btn) return;
+
+                const item = decodeURIComponent(btn.getAttribute('data-item') || '');
+                const action = btn.getAttribute('data-carrinho-action');
+
+                if (!item) return;
+
+                ajustarQuantidade(item, action === 'inc' ? 1 : -1);
+            });
+        }
 
         function add(nome, preco) {
 
@@ -408,10 +423,7 @@
 
             carrinho[nome].qtd++;
 
-            localStorage.setItem(
-                'carrinho_esfiha',
-                JSON.stringify(carrinho)
-            );
+            salvarCarrinho();
 
             atualizarTotal();
 
@@ -487,6 +499,84 @@
             fecharRevisao();
         }
 
+        function salvarCarrinho() {
+            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+        }
+
+        function renderRevisao() {
+
+            const lista = document.getElementById('lista-revisao');
+            if (!lista) return;
+
+            lista.innerHTML = '';
+
+            for (const item in carrinho) {
+
+                const itemKey = encodeURIComponent(item);
+
+                lista.innerHTML += `
+                <div class="flex justify-between gap-4 items-center bg-white/5 p-5 rounded-2xl border border-white/10">
+
+                    <div class="min-w-0">
+                        <p class="font-bold text-2xl leading-tight truncate">
+                            ${item}
+                        </p>
+
+                        <p class="text-white/50 text-base">
+                            Unitário: ${brl.format(carrinho[item].preco)}
+                        </p>
+
+                        <div class="mt-4 inline-flex items-center gap-3 bg-black/20 rounded-2xl px-3 py-2 border border-white/10">
+                            <button type="button"
+                                data-carrinho-action="dec"
+                                data-item="${itemKey}"
+                                class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 font-black text-2xl leading-none">
+                                -
+                            </button>
+
+                            <span class="font-extrabold text-xl w-7 text-center select-none">
+                                ${carrinho[item].qtd}
+                            </span>
+
+                            <button type="button"
+                                data-carrinho-action="inc"
+                                data-item="${itemKey}"
+                                class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 font-black text-2xl leading-none">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <span class="font-black text-[#facc15] text-2xl whitespace-nowrap">
+                        ${brl.format(carrinho[item].qtd * carrinho[item].preco)}
+                    </span>
+                </div>`;
+            }
+        }
+
+        function ajustarQuantidade(item, delta) {
+
+            if (!carrinho[item]) return;
+
+            carrinho[item].qtd += delta;
+
+            if (carrinho[item].qtd <= 0) {
+                delete carrinho[item];
+            }
+
+            salvarCarrinho();
+            atualizarTotal();
+
+            if (Object.keys(carrinho).length === 0) {
+                const lista = document.getElementById('lista-revisao');
+                if (lista) lista.innerHTML = '';
+                fecharRevisao();
+                return;
+            }
+
+            renderRevisao();
+        }
+
         function abrirRevisao() {
 
             if (Object.keys(carrinho).length === 0) {
@@ -496,30 +586,7 @@
                 return;
             }
 
-            const lista = document.getElementById('lista-revisao');
-
-            lista.innerHTML = '';
-
-            for (const item in carrinho) {
-
-                lista.innerHTML += `
-                <div class="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-white/10">
-
-                    <div>
-                        <p class="font-bold text-2xl">
-                            ${carrinho[item].qtd}x ${item}
-                        </p>
-
-                        <p class="text-white/50 text-base">
-                            Unitário: ${brl.format(carrinho[item].preco)}
-                        </p>
-                    </div>
-
-                    <span class="font-black text-[#facc15] text-2xl">
-                        ${brl.format(carrinho[item].qtd * carrinho[item].preco)}
-                    </span>
-                </div>`;
-            }
+            renderRevisao();
 
             abrirModal();
         }
