@@ -592,6 +592,7 @@
         }
 
         function confirmarWhatsApp() {
+            atualizarTotal();
 
             let msg =
                 "Olá! Quero saborear o seguinte pedido:\n\n";
@@ -608,6 +609,8 @@
                 `https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`,
                 '_blank'
             );
+
+            limparSacola();
         }
 
         document.addEventListener('keydown', (e) => {
