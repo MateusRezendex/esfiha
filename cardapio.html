@@ -787,28 +787,22 @@
 
             msg += `\n\n*PAGAMENTO:* ${pagamento}`;
 
+            // 🔥 ENVIA PARA WHATSAPP
             window.open(
                 `https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`,
                 '_blank'
             );
-        }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key !== 'Escape') return;
-            if (!modal || modal.style.display !== 'flex') return;
+            // ✅ LIMPA SACOLA DEPOIS DO ENVIO
+            carrinho = {};
+            localStorage.removeItem('carrinho_esfiha');
+
+            atualizarTotal();
+
+            const lista = document.getElementById('lista-revisao');
+            if (lista) lista.innerHTML = '';
+
             fecharRevisao();
-        });
-
-        window.addEventListener('resize', () => {
-            if (!modal || modal.style.display !== 'flex') return;
-            atualizarScrollModal();
-        });
-
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target !== modal) return;
-                fecharRevisao();
-            });
         }
     </script>
 
