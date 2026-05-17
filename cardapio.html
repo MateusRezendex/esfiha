@@ -1,187 +1,190 @@
-    <!DOCTYPE html>
-    <html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>Cardápio Completo - Esfiha Sabor que Vicia</title>
+    <title>Cardápio Completo - Esfiha Sabor que Vicia</title>
 
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-            body {
-                font-family: 'Inter', sans-serif;
-                background-color: #4a0000;
-                margin: 0;
-                overflow-x: hidden;
-            }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #4a0000;
+            margin: 0;
+            overflow-x: hidden;
+        }
 
-            .bg-fixed-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-            }
+        .bg-fixed-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-            .bg-img {
-                width: 100%;
-                height: 100%;
-                background-image:
-                    linear-gradient(to bottom,
-                        rgba(74, 0, 0, 0.85),
-                        rgba(74, 0, 0, 0.98)),
-                    url('./img/fundo.png');
+        .bg-img {
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(to bottom,
+                    rgba(74, 0, 0, 0.85),
+                    rgba(74, 0, 0, 0.98)),
+                url('./img/fundo.png');
 
-                background-size: cover;
-                background-position: center;
-            }
+            background-size: cover;
+            background-position: center;
+        }
 
-            .gold-text {
-                color: #d4a017;
-            }
+        .gold-text {
+            color: #d4a017;
+        }
 
-            .category-card {
-                background: rgba(255, 255, 255, 0.04);
-                backdrop-filter: blur(12px);
-                border: 1px solid rgba(212, 160, 23, 0.2);
-                transition: transform 0.2s;
-            }
+        .category-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 160, 23, 0.2);
+            transition: transform 0.2s;
+        }
 
-            .preco-antigo {
-                text-decoration: line-through;
-                color: rgba(255, 255, 255, 0.4);
-                font-size: 0.75rem;
-            }
+        .preco-antigo {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+        }
 
-            #toast {
-                position: fixed;
-                bottom: 120px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #facc15;
-                color: #000;
-                padding: 14px 24px;
-                border-radius: 50px;
-                font-weight: 800;
-                opacity: 0;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                z-index: 1000;
-                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
+        #toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #facc15;
+            color: #000;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-            .custom-scrollbar::-webkit-scrollbar {
-                width: 3px;
-            }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 3px;
+        }
 
-            .custom-scrollbar::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, 0.06);
-                border-radius: 999px;
-                /* Ajustável via JS para "encurtar" a trilha */
-                border: var(--scrollbar-track-margin, 16px) solid transparent;
-                background-clip: padding-box;
-            }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 999px;
+            /* Ajustável via JS para "encurtar" a trilha */
+            border: var(--scrollbar-track-margin, 16px) solid transparent;
+            background-clip: padding-box;
+        }
 
-            .custom-scrollbar::-webkit-scrollbar-track-piece:start { }
-            .custom-scrollbar::-webkit-scrollbar-track-piece:end { }
+        .custom-scrollbar::-webkit-scrollbar-track-piece:start {}
 
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-                background: #d4a017;
-                border-radius: 999px;
-            }
+        .custom-scrollbar::-webkit-scrollbar-track-piece:end {}
 
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                background: #facc15;
-            }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4a017;
+            border-radius: 999px;
+        }
 
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #facc15;
+        }
+
+        /* Firefox */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #d4a017 rgba(255, 255, 255, 0.06);
+        }
+
+        /* Scrollbar custom da MODAL (barra "curta" e mais à esquerda) */
+        #modal-conteudo {
+            position: relative;
+        }
+
+        #modal-scroll.hide-native-scrollbar {
+            scrollbar-width: none;
             /* Firefox */
-            .custom-scrollbar {
-                scrollbar-width: thin;
-                scrollbar-color: #d4a017 rgba(255, 255, 255, 0.06);
-            }
+        }
 
-            /* Scrollbar custom da MODAL (barra "curta" e mais à esquerda) */
-            #modal-conteudo {
-                position: relative;
-            }
+        #modal-scroll.hide-native-scrollbar::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
 
-            #modal-scroll.hide-native-scrollbar {
-                scrollbar-width: none; /* Firefox */
-            }
+        #modal-scrollbar {
+            position: absolute;
+            right: 18px;
+            width: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
 
-            #modal-scroll.hide-native-scrollbar::-webkit-scrollbar {
-                width: 0;
-                height: 0;
-            }
+        #modal-thumb {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            border-radius: 999px;
+            background: #d4a017;
+        }
 
-            #modal-scrollbar {
-                position: absolute;
-                right: 18px;
-                width: 6px;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, 0.06);
-                pointer-events: none;
-                opacity: 0;
-                transition: opacity 0.2s ease;
-            }
+        #modal-revisao {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            /* Garante respiro no topo/rodapé e evita "colar" nas bordas */
+            padding: clamp(24px, 6vh, 64px) 20px;
+            overflow: hidden;
+        }
+    </style>
+</head>
 
-            #modal-thumb {
-                position: absolute;
-                left: 0;
-                width: 100%;
-                border-radius: 999px;
-                background: #d4a017;
-            }
+<body class="text-white min-h-screen">
 
-            #modal-revisao {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.9);
-                z-index: 1100;
-                align-items: center;
-                justify-content: center;
-                /* Garante respiro no topo/rodapé e evita "colar" nas bordas */
-                padding: clamp(24px, 6vh, 64px) 20px;
-                overflow: hidden;
-            }
-        </style>
-    </head>
+    <div class="bg-fixed-container">
+        <div class="bg-img"></div>
+    </div>
 
-    <body class="text-white min-h-screen">
+    <div id="toast" role="status" aria-live="polite" aria-atomic="true">
+        <i data-lucide="shopping-bag"></i>
+        ADICIONADO!
+    </div>
 
-        <div class="bg-fixed-container">
-            <div class="bg-img"></div>
-        </div>
+    <!-- MODAL -->
+    <div id="modal-revisao" role="dialog" aria-modal="true" aria-labelledby="titulo-revisao">
 
-        <div id="toast" role="status" aria-live="polite" aria-atomic="true">
-            <i data-lucide="shopping-bag"></i>
-            ADICIONADO!
-        </div>
-
-        <!-- MODAL -->
-        <div id="modal-revisao" role="dialog" aria-modal="true" aria-labelledby="titulo-revisao">
-
-            <div id="modal-conteudo" class="bg-[#2d0000] border-2 border-[#d4a017]/40 w-full max-w-lg rounded-[3rem] shadow-2xl text-[1.5rem] overflow-hidden">
-                <div id="modal-scroll" class="max-h-[calc(100dvh-4rem)] overflow-y-auto hide-native-scrollbar p-7 md:p-8 pr-12 md:pr-14 box-border">
+        <div id="modal-conteudo"
+            class="bg-[#2d0000] border-2 border-[#d4a017]/40 w-full max-w-lg rounded-[3rem] shadow-2xl text-[1.5rem] overflow-hidden">
+            <div id="modal-scroll"
+                class="max-h-[calc(100dvh-4rem)] overflow-y-auto hide-native-scrollbar p-7 md:p-8 pr-12 md:pr-14 box-border">
 
                 <h2 id="titulo-revisao" class="text-[#d4a017] font-extrabold text-2xl mb-6 text-center">
                     Confira seu Pedido
                 </h2>
 
-                <div id="lista-revisao"
-                    class="space-y-3 overflow-y-auto mb-8 pr-2 custom-scrollbar text-[0.75rem] ">
+                <div id="lista-revisao" class="space-y-3 overflow-y-auto mb-8 pr-2 custom-scrollbar text-[0.75rem] ">
                 </div>
 
                 <button type="button" onclick="limparSacola()"
@@ -201,22 +204,18 @@
                         </span>
                     </div>
 
-                    <span id="total-revisao"
-                        class="text-xl md:text-lg font-black text-[#facc15]">
-                        R$ 0,00
-                    </span>
+                    <div class="flex flex-col items-end gap-1">
+                        <span class="text-white/60 text-[0.7rem] md:text-xs font-semibold">
+                            Taxa de entrega: consultar
+                        </span>
+                        <span id="total-revisao" class="text-xl md:text-lg font-black text-[#facc15]">
+                            R$ 0,00
+                        </span>
+                    </div>
                 </div>
 
                 <!-- DADOS PARA ENTREGA -->
                 <div class="mb-4 space-y-3">
-                    <div class="space-y-1.5">
-                        <label for="endereco" class="font-extrabold text-xs md:text-sm text-white/90">
-                            Endereço
-                        </label>
-                        <textarea id="endereco" rows="2"
-                            class="w-full bg-black/20 border border-white/10 rounded-2xl px-4 py-3 text-xs md:text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-[#facc15]/50"
-                            placeholder="Ex: Rua X, nº 123, Bairro, Apto 4 (referência)"></textarea>
-                    </div>
 
                     <fieldset class="space-y-2">
                         <legend class="font-extrabold text-xs md:text-sm text-white/90">
@@ -224,17 +223,20 @@
                         </legend>
 
                         <div class="grid grid-cols-2 gap-2">
-                            <label class="flex items-center gap-2 bg-black/20 border border-white/10 rounded-2xl px-3 py-2 cursor-pointer select-none">
+                            <label
+                                class="flex items-center gap-2 bg-black/20 border border-white/10 rounded-2xl px-3 py-2 cursor-pointer select-none">
                                 <input type="radio" name="pagamento" value="Pix" class="accent-[#facc15]">
                                 <span class="font-bold text-xs md:text-sm">Pix</span>
                             </label>
 
-                            <label class="flex items-center gap-2 bg-black/20 border border-white/10 rounded-2xl px-3 py-2 cursor-pointer select-none">
+                            <label
+                                class="flex items-center gap-2 bg-black/20 border border-white/10 rounded-2xl px-3 py-2 cursor-pointer select-none">
                                 <input type="radio" name="pagamento" value="Cartão" class="accent-[#facc15]">
                                 <span class="font-bold text-xs md:text-sm">Cartão</span>
                             </label>
                         </div>
                     </fieldset>
+
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
@@ -251,151 +253,142 @@
                         ENVIAR AGORA
                     </button>
                 </div>
-                </div>
+            </div>
 
-                <div id="modal-scrollbar" aria-hidden="true">
-                    <div id="modal-thumb"></div>
-                </div>
+            <div id="modal-scrollbar" aria-hidden="true">
+                <div id="modal-thumb"></div>
             </div>
         </div>
+    </div>
 
-        <!-- NAV -->
-        <nav
-            class="p-5 sticky top-0 bg-[#4a0000]/95 backdrop-blur-lg z-50 border-b border-white/10 flex justify-between items-center">
+    <!-- NAV -->
+    <nav
+        class="p-5 sticky top-0 bg-[#4a0000]/95 backdrop-blur-lg z-50 border-b border-white/10 flex justify-between items-center">
 
-            <a href="index.html"
-                class="flex items-center text-sm md:text-base font-bold hover:text-[#d4a017] transition-colors">
+        <a href="index.html"
+            class="flex items-center text-sm md:text-base font-bold hover:text-[#d4a017] transition-colors">
 
-                <i data-lucide="arrow-left" class="mr-2"></i>
-                INÍCIO
-            </a>
+            <i data-lucide="arrow-left" class="mr-2"></i>
+            INÍCIO
+        </a>
 
-            <span class="gold-text font-black tracking-widest text-base md:text-lg uppercase">
-                Menu
-            </span>
+        <span class="gold-text font-black tracking-widest text-base md:text-lg uppercase">
+            Menu
+        </span>
 
-            <div class="w-10"></div>
-        </nav>
+        <div class="w-10"></div>
+    </nav>
 
-        <!-- MAIN -->
-        <main class="max-w-4xl mx-auto px-4 pt-10 pb-36 relative z-10">
+    <!-- MAIN -->
+    <main class="max-w-4xl mx-auto px-4 pt-10 pb-36 relative z-10">
 
-            <!-- CHEFINHO -->
-            <section class="mb-8 text-center flex flex-col items-center">
+        <!-- CHEFINHO -->
+        <section class="mb-8 text-center flex flex-col items-center">
 
-                <img src="./img/chefinho.png"
-                    alt="Chef Sabor que Vicia"
-                    decoding="async"
-                    class="w-56 md:w-62 h-auto drop-shadow-xl">
+            <img src="./img/chefinho.png" alt="Chef Sabor que Vicia" decoding="async"
+                class="w-56 md:w-62 h-auto drop-shadow-xl">
 
-                <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
+            <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
 
-                    <h2 class="text-xl md:text-2xl font-extrabold gold-text mb-2 tracking-tight">
-                        Que bom te ver por aqui! 🧡
-                    </h2>
-
-                    <p class="text-white/70 text-sm md:text-base leading-relaxed">
-                        Escolha suas favoritas abaixo e monte seu pedido!
-                    </p>
-                </div>
-            </section>
-
-            <!-- TRADICIONAIS -->
-            <section class="mb-16">
-
-                <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
-
-                    <i data-lucide="flame"
-                        class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
-
-                    TRADICIONAIS
+                <h2 class="text-xl md:text-2xl font-extrabold gold-text mb-2 tracking-tight">
+                    Que bom te ver por aqui! 🧡
                 </h2>
 
-                <div class="grid gap-6">
-                    <div id="lista-tradicionais" class="grid gap-6 lg:grid-cols-2"></div>
-                </div>
-            </section>
+                <p class="text-white/70 text-sm md:text-base leading-relaxed">
+                    Escolha suas favoritas abaixo e monte seu pedido!
+                </p>
+            </div>
+        </section>
 
-            <!-- PREMIUM -->
-            <section class="mb-16">
+        <!-- TRADICIONAIS -->
+        <section class="mb-16">
 
-                <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
-                    <i data-lucide="crown"
-                        class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+                <i data-lucide="flame" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
 
-                    PREMIUM
-                </h2>
+                TRADICIONAIS
+            </h2>
 
-                <div class="grid gap-6">
-                    <div id="lista-premium" class="grid gap-6 lg:grid-cols-2"></div>
-                </div>
-            </section>
+            <div class="grid gap-6">
+                <div id="lista-tradicionais" class="grid gap-6 lg:grid-cols-2"></div>
+            </div>
+        </section>
 
-            <!-- DOCES -->
-            <section class="mb-10">
+        <!-- PREMIUM -->
+        <section class="mb-16">
 
-                <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
-                    <i data-lucide="heart"
-                        class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+                <i data-lucide="crown" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
 
-                    DOCES IRRESISTÍVEIS
-                </h2>
+                PREMIUM
+            </h2>
 
-                <div class="grid gap-6">
-                    <div id="lista-doces" class="grid gap-6 lg:grid-cols-2"></div>
-                </div>
-            </section>
+            <div class="grid gap-6">
+                <div id="lista-premium" class="grid gap-6 lg:grid-cols-2"></div>
+            </div>
+        </section>
 
-        </main>
+        <!-- DOCES -->
+        <section class="mb-10">
 
-        <!-- SACOLA -->
-        <div
-            class="fixed bottom-0 left-0 w-full p-4 md:p-6 z-50 bg-gradient-to-t from-[#2d0000] to-transparent">
+            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
-            <button onclick="abrirRevisao()"
-                id="btn-abrir-revisao"
-                class="flex items-center justify-between w-1/2 min-w-[18rem] md:w-[24rem] mx-auto bg-[#16a34a] text-white py-4 md:py-6 px-4 md:px-6 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-t border-white/20">
+                <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
 
-                <div class="flex items-center gap-2 md:gap-3">
+                DOCES IRRESISTÍVEIS
+            </h2>
 
-                    <div class="relative">
-                        <i data-lucide="shopping-cart"
-                            class="w-6 h-6 md:w-8 md:h-8"></i>
+            <div class="grid gap-6">
+                <div id="lista-doces" class="grid gap-6 lg:grid-cols-2"></div>
+            </div>
+        </section>
 
-                        <span id="qtd-badge"
-                            class="hidden absolute -top-2 -right-2 md:-top-3 md:-right-3 min-w-6 h-6 md:min-w-7 md:h-7 px-2 rounded-full bg-[#facc15] text-black text-sm font-black flex items-center justify-center shadow-lg"
-                            aria-label="Quantidade de itens na sacola">
-                            0
-                        </span>
-                    </div>
+    </main>
 
-                    <span class="text-sm hidden sm:flex font-black uppercase tracking-tighter">
-                        Ver Sacola
+    <!-- SACOLA -->
+    <div class="fixed bottom-0 left-0 w-full p-4 md:p-6 z-50 bg-gradient-to-t from-[#2d0000] to-transparent">
+
+        <button onclick="abrirRevisao()" id="btn-abrir-revisao"
+            class="flex items-center justify-between w-1/2 min-w-[18rem] md:w-[24rem] mx-auto bg-[#16a34a] text-white py-4 md:py-6 px-4 md:px-6 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-t border-white/20">
+
+            <div class="flex items-center gap-2 md:gap-3">
+
+                <div class="relative">
+                    <i data-lucide="shopping-cart" class="w-6 h-6 md:w-8 md:h-8"></i>
+
+                    <span id="qtd-badge"
+                        class="hidden absolute -top-2 -right-2 md:-top-3 md:-right-3 min-w-6 h-6 md:min-w-7 md:h-7 px-2 rounded-full bg-[#facc15] text-black text-sm font-black flex items-center justify-center shadow-lg"
+                        aria-label="Quantidade de itens na sacola">
+                        0
                     </span>
                 </div>
 
-                <span id="total-badge"
-                    class="bg-black/30 px-4 md:px-6 py-2 rounded-xl text-sm font-bold">
-
-                    R$ 0,00
+                <span class="text-sm hidden sm:flex font-black uppercase tracking-tighter">
+                    Ver Sacola
                 </span>
-            </button>
-        </div>
+            </div>
 
-        <script>
-            const brl = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            });
+            <span id="total-badge" class="bg-black/30 px-4 md:px-6 py-2 rounded-xl text-sm font-bold">
 
-            function renderItens(containerId, itens, extraCardClasses = '') {
-                const container = document.getElementById(containerId);
+                R$ 0,00
+            </span>
+        </button>
+    </div>
 
-                if (!container) return;
+    <script>
+        const brl = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
 
-                const html = itens.map(item => `
+        function renderItens(containerId, itens, extraCardClasses = '') {
+            const container = document.getElementById(containerId);
+
+            if (!container) return;
+
+            const html = itens.map(item => `
                     <div class="category-card rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:text-sm ${extraCardClasses}">
 
                         <img
@@ -444,211 +437,211 @@
                     </div>
                 `).join('');
 
-                container.innerHTML = html;
+            container.innerHTML = html;
+        }
+
+        const tradicionais = [
+            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango" },
+            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
+            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
+            { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 8.00, i: "bacon" },
+            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 8.00, i: "frango_bacon" }
+        ];
+
+        const premium = [
+            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos" },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.90, a: 9.00, i: "carne" },
+            { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
+            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 9.00, i: "lombo" },
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
+        ];
+
+        const doces = [
+            { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
+            { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
+            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada" },
+            { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
+            { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 9.00, i: "romeu_julieta" }
+        ];
+
+        renderItens('lista-tradicionais', tradicionais);
+        renderItens('lista-premium', premium, 'border-[#facc15]/30');
+        renderItens('lista-doces', doces, 'border-pink-500/20');
+
+        lucide.createIcons();
+
+        let carrinho =
+            JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+
+        let total = 0;
+        let totalQtd = 0;
+        let ultimoFoco = null;
+
+        atualizarTotal();
+
+        const modal = document.getElementById('modal-revisao');
+        const listaRevisao = document.getElementById('lista-revisao');
+        const modalScroll = document.getElementById('modal-scroll');
+
+        if (listaRevisao) {
+            listaRevisao.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-carrinho-action]');
+                if (!btn) return;
+
+                const item = decodeURIComponent(btn.getAttribute('data-item') || '');
+                const action = btn.getAttribute('data-carrinho-action');
+
+                if (!item) return;
+
+                ajustarQuantidade(item, action === 'inc' ? 1 : -1);
+            });
+        }
+
+        if (modalScroll) {
+            modalScroll.addEventListener('scroll', () => {
+                if (!modal || modal.style.display !== 'flex') return;
+                atualizarScrollModal();
+            }, { passive: true });
+        }
+
+        function add(nome, preco) {
+
+            if (!carrinho[nome]) {
+                carrinho[nome] = {
+                    qtd: 0,
+                    preco: preco
+                };
             }
 
-            const tradicionais = [
-                { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango" },
-                { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
-                { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
-                { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
-                { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 8.00, i: "bacon" },
-                { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 8.00, i: "frango_bacon" }
-            ];
+            carrinho[nome].qtd++;
 
-            const premium = [
-                { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos" },
-                { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.90, a: 9.00, i: "carne" },
-                { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
-                { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 9.00, i: "lombo" },
-                { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
-            ];
-
-            const doces = [
-                { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
-                { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
-                { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada" },
-                { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
-                { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 9.00, i: "romeu_julieta" }
-            ];
-
-            renderItens('lista-tradicionais', tradicionais);
-            renderItens('lista-premium', premium, 'border-[#facc15]/30');
-            renderItens('lista-doces', doces, 'border-pink-500/20');
-
-            lucide.createIcons();
-
-            let carrinho =
-                JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
-
-            let total = 0;
-            let totalQtd = 0;
-            let ultimoFoco = null;
+            salvarCarrinho();
 
             atualizarTotal();
 
-            const modal = document.getElementById('modal-revisao');
-            const listaRevisao = document.getElementById('lista-revisao');
-            const modalScroll = document.getElementById('modal-scroll');
+            const t = document.getElementById('toast');
 
-            if (listaRevisao) {
-                listaRevisao.addEventListener('click', (e) => {
-                    const btn = e.target.closest('button[data-carrinho-action]');
-                    if (!btn) return;
+            t.style.opacity = '1';
 
-                    const item = decodeURIComponent(btn.getAttribute('data-item') || '');
-                    const action = btn.getAttribute('data-carrinho-action');
+            setTimeout(() => {
+                t.style.opacity = '0';
+            }, 1000);
+        }
 
-                    if (!item) return;
+        function atualizarTotal() {
 
-                    ajustarQuantidade(item, action === 'inc' ? 1 : -1);
-                });
+            total = 0;
+            totalQtd = 0;
+
+            for (let i in carrinho) {
+                total += carrinho[i].qtd * carrinho[i].preco;
+                totalQtd += carrinho[i].qtd;
             }
 
-            if (modalScroll) {
-                modalScroll.addEventListener('scroll', () => {
-                    if (!modal || modal.style.display !== 'flex') return;
-                    atualizarScrollModal();
-                }, { passive: true });
+            document.getElementById('total-badge').innerText =
+                brl.format(total);
+
+            const qtdBadge = document.getElementById('qtd-badge');
+            if (qtdBadge) {
+                qtdBadge.innerText = String(totalQtd);
+                if (totalQtd > 0) qtdBadge.classList.remove('hidden');
+                else qtdBadge.classList.add('hidden');
             }
 
-            function add(nome, preco) {
+            if (document.getElementById('total-revisao')) {
 
-                if (!carrinho[nome]) {
-                    carrinho[nome] = {
-                        qtd: 0,
-                        preco: preco
-                    };
-                }
-
-                carrinho[nome].qtd++;
-
-                salvarCarrinho();
-
-                atualizarTotal();
-
-                const t = document.getElementById('toast');
-
-                t.style.opacity = '1';
-
-                setTimeout(() => {
-                    t.style.opacity = '0';
-                }, 1000);
-            }
-
-            function atualizarTotal() {
-
-                total = 0;
-                totalQtd = 0;
-
-                for (let i in carrinho) {
-                    total += carrinho[i].qtd * carrinho[i].preco;
-                    totalQtd += carrinho[i].qtd;
-                }
-
-                document.getElementById('total-badge').innerText =
+                document.getElementById('total-revisao').innerText =
                     brl.format(total);
-
-                const qtdBadge = document.getElementById('qtd-badge');
-                if (qtdBadge) {
-                    qtdBadge.innerText = String(totalQtd);
-                    if (totalQtd > 0) qtdBadge.classList.remove('hidden');
-                    else qtdBadge.classList.add('hidden');
-                }
-
-                if (document.getElementById('total-revisao')) {
-
-                    document.getElementById('total-revisao').innerText =
-                        brl.format(total);
-                }
-
-                const qtdRevisao = document.getElementById('qtd-revisao');
-                if (qtdRevisao) qtdRevisao.innerText = String(totalQtd);
             }
 
-            function abrirModal() {
-                if (!modal) return;
+            const qtdRevisao = document.getElementById('qtd-revisao');
+            if (qtdRevisao) qtdRevisao.innerText = String(totalQtd);
+        }
 
-                ultimoFoco = document.activeElement;
-                modal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+        function abrirModal() {
+            if (!modal) return;
 
-                atualizarScrollModal();
+            ultimoFoco = document.activeElement;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
 
-                const btnEnviar = document.getElementById('btn-enviar');
-                if (btnEnviar) btnEnviar.focus();
+            atualizarScrollModal();
+
+            const btnEnviar = document.getElementById('btn-enviar');
+            if (btnEnviar) btnEnviar.focus();
+        }
+
+        function atualizarScrollModal() {
+            const scrollEl = document.getElementById('modal-scroll');
+            const bar = document.getElementById('modal-scrollbar');
+            const thumb = document.getElementById('modal-thumb');
+            if (!scrollEl || !bar || !thumb) return;
+
+            const client = scrollEl.clientHeight || 0;
+            const scrollH = scrollEl.scrollHeight || 0;
+
+            if (!client || scrollH <= client + 1) {
+                bar.style.opacity = '0';
+                return;
             }
 
-            function atualizarScrollModal() {
-                const scrollEl = document.getElementById('modal-scroll');
-                const bar = document.getElementById('modal-scrollbar');
-                const thumb = document.getElementById('modal-thumb');
-                if (!scrollEl || !bar || !thumb) return;
+            // Track com ~70% da altura do container, centralizado.
+            const trackH = Math.max(90, Math.floor(client * 0.7));
+            const top = Math.max(0, Math.floor((client - trackH) / 2));
 
-                const client = scrollEl.clientHeight || 0;
-                const scrollH = scrollEl.scrollHeight || 0;
+            bar.style.top = `${top}px`;
+            bar.style.height = `${trackH}px`;
+            bar.style.opacity = '1';
 
-                if (!client || scrollH <= client + 1) {
-                    bar.style.opacity = '0';
-                    return;
-                }
+            const maxScroll = scrollH - client;
+            const ratio = maxScroll > 0 ? (scrollEl.scrollTop / maxScroll) : 0;
 
-                // Track com ~70% da altura do container, centralizado.
-                const trackH = Math.max(90, Math.floor(client * 0.7));
-                const top = Math.max(0, Math.floor((client - trackH) / 2));
+            const thumbH = Math.max(24, Math.floor(trackH * (client / scrollH)));
+            const thumbTop = Math.floor((trackH - thumbH) * Math.min(1, Math.max(0, ratio)));
 
-                bar.style.top = `${top}px`;
-                bar.style.height = `${trackH}px`;
-                bar.style.opacity = '1';
+            thumb.style.height = `${thumbH}px`;
+            thumb.style.top = `${thumbTop}px`;
+        }
 
-                const maxScroll = scrollH - client;
-                const ratio = maxScroll > 0 ? (scrollEl.scrollTop / maxScroll) : 0;
+        function fecharRevisao() {
+            if (!modal) return;
 
-                const thumbH = Math.max(24, Math.floor(trackH * (client / scrollH)));
-                const thumbTop = Math.floor((trackH - thumbH) * Math.min(1, Math.max(0, ratio)));
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
 
-                thumb.style.height = `${thumbH}px`;
-                thumb.style.top = `${thumbTop}px`;
+            if (ultimoFoco && typeof ultimoFoco.focus === 'function') {
+                ultimoFoco.focus();
             }
+        }
 
-            function fecharRevisao() {
-                if (!modal) return;
+        function limparSacola() {
+            carrinho = {};
+            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+            atualizarTotal();
 
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
+            const lista = document.getElementById('lista-revisao');
+            if (lista) lista.innerHTML = '';
 
-                if (ultimoFoco && typeof ultimoFoco.focus === 'function') {
-                    ultimoFoco.focus();
-                }
-            }
+            fecharRevisao();
+        }
 
-            function limparSacola() {
-                carrinho = {};
-                localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
-                atualizarTotal();
+        function salvarCarrinho() {
+            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+        }
 
-                const lista = document.getElementById('lista-revisao');
-                if (lista) lista.innerHTML = '';
+        function renderRevisao() {
 
-                fecharRevisao();
-            }
+            const lista = document.getElementById('lista-revisao');
+            if (!lista) return;
 
-            function salvarCarrinho() {
-                localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
-            }
+            lista.innerHTML = '';
 
-            function renderRevisao() {
+            for (const item in carrinho) {
 
-                const lista = document.getElementById('lista-revisao');
-                if (!lista) return;
+                const itemKey = encodeURIComponent(item);
 
-                lista.innerHTML = '';
-
-                for (const item in carrinho) {
-
-                    const itemKey = encodeURIComponent(item);
-
-                    lista.innerHTML += `
+                lista.innerHTML += `
                     <div class="flex justify-between gap-3 items-center bg-white/5 p-4 rounded-2xl border border-white/10">
 
                         <div class="min-w-0">
@@ -689,152 +682,136 @@
                             </div>
                         </div>
                     </div>`;
-                }
-
-                ajustarAlturaListaRevisao();
             }
 
-            function ajustarAlturaListaRevisao() {
+            ajustarAlturaListaRevisao();
+        }
+
+        function ajustarAlturaListaRevisao() {
+            const lista = document.getElementById('lista-revisao');
+            if (!lista) return;
+
+            const aplicar = () => {
+                const itens = Array.from(lista.children);
+
+                const maxItensVisiveis = 2;
+
+                if (itens.length <= maxItensVisiveis) {
+                    lista.style.maxHeight = '';
+                    return true;
+                }
+
+                // Altura = bottom do N-ésimo item relativo ao topo da lista.
+                // Usa DOMRects para considerar margens/gaps corretamente.
+                const listaRect = lista.getBoundingClientRect();
+                const ultimoItemVisivel = itens[maxItensVisiveis - 1];
+                const itemRect = ultimoItemVisivel.getBoundingClientRect();
+
+                const altura = Math.max(0, Math.floor(itemRect.bottom - listaRect.top));
+
+                lista.style.maxHeight = `${altura}px`;
+                return altura > 0;
+            };
+
+            requestAnimationFrame(() => {
+                const ok = aplicar();
+                // Reaplica em seguida para garantir after fonts/layout settle.
+                if (!ok) setTimeout(aplicar, 50);
+                else setTimeout(aplicar, 50);
+            });
+        }
+
+        function ajustarQuantidade(item, delta) {
+
+            if (!carrinho[item]) return;
+
+            carrinho[item].qtd += delta;
+
+            if (carrinho[item].qtd <= 0) {
+                delete carrinho[item];
+            }
+
+            salvarCarrinho();
+            atualizarTotal();
+
+            if (Object.keys(carrinho).length === 0) {
                 const lista = document.getElementById('lista-revisao');
-                if (!lista) return;
-
-                const aplicar = () => {
-                    const itens = Array.from(lista.children);
-
-                    const maxItensVisiveis = 2;
-
-                    if (itens.length <= maxItensVisiveis) {
-                        lista.style.maxHeight = '';
-                        return true;
-                    }
-
-                    // Altura = bottom do N-ésimo item relativo ao topo da lista.
-                    // Usa DOMRects para considerar margens/gaps corretamente.
-                    const listaRect = lista.getBoundingClientRect();
-                    const ultimoItemVisivel = itens[maxItensVisiveis - 1];
-                    const itemRect = ultimoItemVisivel.getBoundingClientRect();
-
-                    const altura = Math.max(0, Math.floor(itemRect.bottom - listaRect.top));
-
-                    lista.style.maxHeight = `${altura}px`;
-                    return altura > 0;
-                };
-
-                requestAnimationFrame(() => {
-                    const ok = aplicar();
-                    // Reaplica em seguida para garantir after fonts/layout settle.
-                    if (!ok) setTimeout(aplicar, 50);
-                    else setTimeout(aplicar, 50);
-                });
+                if (lista) lista.innerHTML = '';
+                fecharRevisao();
+                return;
             }
 
-            function ajustarQuantidade(item, delta) {
+            renderRevisao();
+        }
 
-                if (!carrinho[item]) return;
+        function abrirRevisao() {
 
-                carrinho[item].qtd += delta;
+            if (Object.keys(carrinho).length === 0) {
 
-                if (carrinho[item].qtd <= 0) {
-                    delete carrinho[item];
-                }
+                alert("Sua sacola está vazia! Escolha uma delícia primeiro. 😋");
 
-                salvarCarrinho();
-                atualizarTotal();
-
-                if (Object.keys(carrinho).length === 0) {
-                    const lista = document.getElementById('lista-revisao');
-                    if (lista) lista.innerHTML = '';
-                    fecharRevisao();
-                    return;
-                }
-
-                renderRevisao();
+                return;
             }
 
-            function abrirRevisao() {
+            renderRevisao();
 
-                if (Object.keys(carrinho).length === 0) {
+            const pagamentoSalvo = localStorage.getItem('pagamento_esfiha') || '';
 
-                    alert("Sua sacola está vazia! Escolha uma delícia primeiro. 😋");
-
-                    return;
-                }
-
-                renderRevisao();
-
-                const enderecoSalvo = localStorage.getItem('endereco_esfiha') || '';
-                const pagamentoSalvo = localStorage.getItem('pagamento_esfiha') || '';
-
-                const enderecoEl = document.getElementById('endereco');
-                if (enderecoEl && !enderecoEl.value) enderecoEl.value = enderecoSalvo;
-
-                if (pagamentoSalvo) {
-                    const pagamentoEl = document.querySelector(`input[name="pagamento"][value="${pagamentoSalvo}"]`);
-                    if (pagamentoEl) pagamentoEl.checked = true;
-                }
-
-                abrirModal();
+            if (pagamentoSalvo) {
+                const pagamentoEl = document.querySelector(`input[name="pagamento"][value="${pagamentoSalvo}"]`);
+                if (pagamentoEl) pagamentoEl.checked = true;
             }
 
-            function confirmarWhatsApp() {
+            abrirModal();
+        }
 
-                let msg =
-                    "Olá! Quero saborear o seguinte pedido:\n\n";
+        function confirmarWhatsApp() {
 
-                for (const item in carrinho) {
+            let msg = "Olá! Quero saborear o seguinte pedido:\n\n";
 
-                    msg +=
-                        `*${carrinho[item].qtd}x* ${item} - ${brl.format(carrinho[item].qtd * carrinho[item].preco)}\n`;
-                }
-
-                msg += `\n *TOTAL: ${brl.format(total)}*`;
-
-                const enderecoEl = document.getElementById('endereco');
-                const endereco = (enderecoEl?.value || '').trim();
-                if (!endereco) {
-                    alert('Informe o endereço para entrega. 😊');
-                    enderecoEl?.focus();
-                    return;
-                }
-
-                const pagamentoEl = document.querySelector('input[name="pagamento"]:checked');
-                const pagamento = (pagamentoEl?.value || '').trim();
-                if (!pagamento) {
-                    alert('Selecione a forma de pagamento (Pix ou Cartão). 😊');
-                    return;
-                }
-
-                localStorage.setItem('endereco_esfiha', endereco);
-                localStorage.setItem('pagamento_esfiha', pagamento);
-
-                msg += `\n\n*ENDEREÇO:* ${endereco}`;
-                msg += `\n*PAGAMENTO:* ${pagamento}`;
-
-                window.open(
-                    `https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`,
-                    '_blank'
-                );
+            for (const item in carrinho) {
+                msg += `*${carrinho[item].qtd}x* ${item} - ${brl.format(carrinho[item].qtd * carrinho[item].preco)}\n`;
             }
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key !== 'Escape') return;
-                if (!modal || modal.style.display !== 'flex') return;
+            msg += `\n *TOTAL: ${brl.format(total)}*`;
+
+            const pagamentoEl = document.querySelector('input[name="pagamento"]:checked');
+            const pagamento = (pagamentoEl?.value || '').trim();
+
+            if (!pagamento) {
+                alert('Selecione a forma de pagamento (Pix ou Cartão). 😊');
+                return;
+            }
+
+            localStorage.setItem('pagamento_esfiha', pagamento);
+
+            msg += `\n\n*PAGAMENTO:* ${pagamento}`;
+
+            window.open(
+                `https://wa.me/5564992186249?text=${encodeURIComponent(msg)}`,
+                '_blank'
+            );
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (!modal || modal.style.display !== 'flex') return;
+            fecharRevisao();
+        });
+
+        window.addEventListener('resize', () => {
+            if (!modal || modal.style.display !== 'flex') return;
+            atualizarScrollModal();
+        });
+
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target !== modal) return;
                 fecharRevisao();
             });
+        }
+    </script>
 
-            window.addEventListener('resize', () => {
-                if (!modal || modal.style.display !== 'flex') return;
-                atualizarScrollModal();
-            });
+</body>
 
-            if (modal) {
-                modal.addEventListener('click', (e) => {
-                    if (e.target !== modal) return;
-                    fecharRevisao();
-                });
-            }
-        </script>
-
-    </body>
-
-    </html>
+</html>
