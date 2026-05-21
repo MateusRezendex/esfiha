@@ -20,6 +20,15 @@
             overflow-x: hidden;
         }
 
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .bg-fixed-container {
             position: fixed;
             top: 0;
@@ -53,11 +62,6 @@
             transition: transform 0.2s;
         }
 
-        .preco-antigo {
-            text-decoration: line-through;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.75rem;
-        }
 
         #toast {
             position: fixed;
@@ -172,6 +176,40 @@
         ADICIONADO!
     </div>
 
+    <!-- MODAL CUPOM -->
+    <div id="modal-cupom" class="hidden fixed inset-0 z-[1200] items-center justify-center bg-black/80 p-6"
+        role="dialog" aria-modal="true" aria-labelledby="titulo-cupom">
+        <div
+            class="w-full max-w-md rounded-[2.5rem] bg-[#2d0000] border-2 border-[#d4a017]/40 shadow-2xl p-6 md:p-7">
+            <div class="flex items-start justify-between gap-4 mb-3">
+                <h2 id="titulo-cupom" class="text-[#facc15] font-extrabold text-xl leading-tight">
+                    Cupom de 10% OFF
+                </h2>
+                <button type="button" onclick="fecharCupom()" aria-label="Fechar aviso de cupom"
+                    class="w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 grid place-items-center">
+                    <span class="text-lg font-black leading-none">×</span>
+                </button>
+            </div>
+
+            <p class="text-white/80 text-sm leading-relaxed mb-5">
+                Temos um cupom de <span class="font-extrabold text-white">10%</span> de desconto
+                <span class="font-extrabold text-white">válido para dia 21/05/2026</span>.
+                Aplique na sua sacola para economizar no valor total do pedido.
+            </p>
+
+            <div class="flex gap-3">
+                <button type="button" onclick="fecharCupom()"
+                    class="flex-1 bg-white/10 hover:bg-white/15 py-3 rounded-2xl font-bold border border-white/10 text-sm">
+                    Agora não
+                </button>
+                <button id="btn-aplicar-cupom-modal" type="button" onclick="aplicarCupom()"
+                    class="flex-1 bg-[#facc15] hover:bg-[#eab308] text-black py-3 rounded-2xl font-black shadow-lg text-sm">
+                    Aplicar 10%
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL -->
     <div id="modal-revisao" role="dialog" aria-modal="true" aria-labelledby="titulo-revisao">
 
@@ -192,25 +230,60 @@
                     Limpar sacola
                 </button>
 
-                <div class="border-t border-white/10 pt-4 mb-6 flex justify-between items-center">
+                <button id="btn-cupom-sacola" type="button" onclick="abrirCupom()"
+                    class="w-full mb-6 bg-[#facc15] hover:bg-[#eab308] text-black py-2.5 md:py-3 rounded-2xl font-black shadow-lg text-xs md:text-sm">
+                    Aplicar cupom 10%
+                </button>
+                <div id="cupom-status" class="hidden -mt-4 mb-6 text-center text-[0.75rem] text-white/70 font-semibold">
+                    Cupom aplicado: 10% OFF
+                </div>
 
-                    <div class="flex flex-col">
-                        <span class="text-xs md:text-sm font-bold leading-tight">
-                            Total:
-                        </span>
+                <!-- RESUMO DO PEDIDO (UI/UX aprimorado) -->
+                <div class="border-t border-white/10 pt-4 mb-6">
+                    <div class="bg-black/20 border border-white/10 rounded-[1.75rem] p-4 md:p-5">
+                        <div class="space-y-2.5">
+                            <!-- Subtotal -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Subtotal</span>
+                                <span id="subtotal-revisao"
+                                    class="text-[0.75rem] md:text-sm font-extrabold text-white">
+                                    R$ 0,00
+                                </span>
+                            </div>
 
-                        <span class="text-white/60 font-semibold text-xs md:text-sm">
-                            Itens: <span id="qtd-revisao">0</span>
-                        </span>
-                    </div>
+                            <!-- Desconto -->
+                            <div id="linha-desconto" class="hidden flex items-center justify-between">
+                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Desconto (10%)</span>
+                                <span class="text-[0.75rem] md:text-sm font-extrabold text-emerald-300">
+                                    10% OFF
+                                    <span id="desconto-revisao" class="sr-only">R$ 0,00</span>
+                                </span>
+                            </div>
 
-                    <div class="flex flex-col items-end gap-1">
-                        <span class="text-white/60 text-[0.7rem] md:text-xs font-semibold">
-                            Taxa de entrega: consultar
-                        </span>
-                        <span id="total-revisao" class="text-xl md:text-lg font-black text-[#facc15]">
-                            R$ 0,00
-                        </span>
+                            <!-- Entrega -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/60">Entrega</span>
+                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/60">Consultar</span>
+                            </div>
+                        </div>
+
+                        <!-- Separador -->
+                        <div class="my-4 h-px bg-white/10"></div>
+
+                        <!-- Total final -->
+                        <div class="flex items-end justify-between">
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-xs md:text-sm font-extrabold uppercase tracking-tight text-white/85">
+                                    Total
+                                </span>
+                            </div>
+
+                            <span id="total-revisao"
+                                class="text-2xl md:text-3xl font-black text-[#facc15] tracking-tight">
+                                R$ 0,00
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -297,11 +370,37 @@
                 <p class="text-white/70 text-sm md:text-base leading-relaxed">
                     Escolha suas favoritas abaixo e monte seu pedido!
                 </p>
+             </div>
+         </section>
+
+        <!-- FILTROS -->
+        <section class="mb-10">
+            <div class="sticky top-[72px] md:top-[84px] z-40">
+                <div class="bg-[#4a0000]/80 backdrop-blur-xl border border-white/10 rounded-[1.75rem] p-2 shadow-xl">
+                    <div class="flex gap-2 overflow-x-auto no-scrollbar">
+                        <button type="button" data-section-filter="all" aria-pressed="true"
+                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-black tracking-tight bg-[#facc15] text-black">
+                            Todos
+                        </button>
+                        <button type="button" data-section-filter="tradicionais" aria-pressed="false"
+                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-extrabold tracking-tight bg-white/10 hover:bg-white/15 border border-white/10 text-white/90">
+                            Tradicionais
+                        </button>
+                        <button type="button" data-section-filter="premium" aria-pressed="false"
+                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-extrabold tracking-tight bg-white/10 hover:bg-white/15 border border-white/10 text-white/90">
+                            Premium
+                        </button>
+                        <button type="button" data-section-filter="doces" aria-pressed="false"
+                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-extrabold tracking-tight bg-white/10 hover:bg-white/15 border border-white/10 text-white/90">
+                            Doces
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- TRADICIONAIS -->
-        <section class="mb-16">
+        <section id="sec-tradicionais" data-section="tradicionais" class="mb-16">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -316,7 +415,7 @@
         </section>
 
         <!-- PREMIUM -->
-        <section class="mb-16">
+        <section id="sec-premium" data-section="premium" class="mb-16">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -331,7 +430,7 @@
         </section>
 
         <!-- DOCES -->
-        <section class="mb-10">
+        <section id="sec-doces" data-section="doces" class="mb-10">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -389,7 +488,22 @@
             if (!container) return;
 
             const html = itens.map(item => `
-                    <div class="category-card rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:text-sm ${extraCardClasses}">
+                    <div class="category-card relative rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:text-sm ${extraCardClasses}">
+
+                        ${(item.m || item.nov) ? `
+                            <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 pointer-events-none flex flex-col gap-2">
+                                ${item.m ? `
+                                    <span class="inline-flex items-center gap-2 bg-[#facc15]/90 text-black px-3 py-1 rounded-full text-[0.65rem] md:text-[0.7rem] font-black tracking-tight shadow-sm">
+                                        <span>Mais pedida</span>
+                                    </span>
+                                ` : ''}
+                                ${item.nov ? `
+                                    <span class="inline-flex items-center gap-2 bg-pink-500/90 text-white px-3 py-1 rounded-full text-[0.65rem] md:text-[0.7rem] font-black tracking-tight shadow-sm">
+                                        <span>Novidade</span>
+                                    </span>
+                                ` : ''}
+                            </div>
+                        ` : ''}
 
                         <img
                             src="./img/esfihas/${item.i}.png"
@@ -413,20 +527,15 @@
                             <div class="flex items-center justify-between">
 
                                 <div class="flex flex-col text-left">
-
-                                    <span class="preco-antigo">
-                                        ${brl.format(item.a)}
-                                    </span>
-
                                     <span class="text-lg md:text-xl lg:text-lg font-black text-[#facc15]">
-                                        ${brl.format(item.p)}
+                                        ${brl.format(item.a)}
                                     </span>
                                 </div>
 
                                 <button
                                     type="button"
                                     aria-label="Adicionar ${item.n}"
-                                    onclick="add('${item.n}', ${item.p})"
+                                     onclick="add('${item.n}', ${item.a})"
                                     class="bg-[#16a34a] hover:bg-[#15803d] p-2.5 md:p-3 rounded-2xl md:rounded-3xl shadow-xl transition-all active:scale-90">
 
                                     <i data-lucide="plus"
@@ -441,7 +550,7 @@
         }
 
         const tradicionais = [
-            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango" },
+            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango", m: true },
             { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
             { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
             { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
@@ -450,18 +559,19 @@
         ];
 
         const premium = [
-            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos" },
+            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos", m: true },
             { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.90, a: 9.00, i: "carne" },
             { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
-            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 9.00, i: "lombo" },
+            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 9.00, i: "lombo", m: true },
             { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
         ];
 
         const doces = [
             { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
             { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
-            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada" },
+            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada", m: true },
             { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
+            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", p: 9.00, a: 9.00, i: "churros", nov: true },
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 9.00, i: "romeu_julieta" }
         ];
 
@@ -474,13 +584,17 @@
         let carrinho =
             JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
 
+        let cupomAplicado = localStorage.getItem('cupom10_esfiha') === '1';
         let total = 0;
+        let subtotal = 0;
+        let desconto = 0;
         let totalQtd = 0;
         let ultimoFoco = null;
 
         atualizarTotal();
 
         const modal = document.getElementById('modal-revisao');
+        const modalCupom = document.getElementById('modal-cupom');
         const listaRevisao = document.getElementById('lista-revisao');
         const modalScroll = document.getElementById('modal-scroll');
 
@@ -532,12 +646,20 @@
         function atualizarTotal() {
 
             total = 0;
+            subtotal = 0;
+            desconto = 0;
             totalQtd = 0;
 
             for (let i in carrinho) {
-                total += carrinho[i].qtd * carrinho[i].preco;
+                subtotal += carrinho[i].qtd * carrinho[i].preco;
                 totalQtd += carrinho[i].qtd;
             }
+
+            if (cupomAplicado && subtotal > 0) {
+                desconto = subtotal * 0.10;
+            }
+
+            total = Math.max(0, subtotal - desconto);
 
             document.getElementById('total-badge').innerText =
                 brl.format(total);
@@ -555,9 +677,114 @@
                     brl.format(total);
             }
 
+            const subtotalEl = document.getElementById('subtotal-revisao');
+            if (subtotalEl) subtotalEl.innerText = brl.format(subtotal);
+
+            const descontoEl = document.getElementById('desconto-revisao');
+            if (descontoEl) descontoEl.innerText = brl.format(desconto);
+
+            const linhaDesconto = document.getElementById('linha-desconto');
+            if (linhaDesconto) {
+                if (cupomAplicado && subtotal > 0) linhaDesconto.classList.remove('hidden');
+                else linhaDesconto.classList.add('hidden');
+            }
+
+            const cupomStatus = document.getElementById('cupom-status');
+            const btnCupomSacola = document.getElementById('btn-cupom-sacola');
+            if (cupomStatus && btnCupomSacola) {
+                if (cupomAplicado) {
+                    cupomStatus.classList.remove('hidden');
+                    btnCupomSacola.classList.add('hidden');
+                } else {
+                    cupomStatus.classList.add('hidden');
+                    btnCupomSacola.classList.remove('hidden');
+                }
+            }
+
             const qtdRevisao = document.getElementById('qtd-revisao');
             if (qtdRevisao) qtdRevisao.innerText = String(totalQtd);
         }
+
+        function abrirCupom() {
+            if (!modalCupom) return;
+
+            const btnAplicar = document.getElementById('btn-aplicar-cupom-modal');
+            if (btnAplicar) {
+                if (cupomAplicado) {
+                    btnAplicar.disabled = true;
+                    btnAplicar.innerText = 'Já aplicado';
+                    btnAplicar.classList.add('opacity-60', 'cursor-not-allowed');
+                } else {
+                    btnAplicar.disabled = false;
+                    btnAplicar.innerText = 'Aplicar 10%';
+                    btnAplicar.classList.remove('opacity-60', 'cursor-not-allowed');
+                }
+            }
+
+            modalCupom.classList.remove('hidden');
+            modalCupom.classList.add('flex');
+        }
+
+        function fecharCupom() {
+            if (!modalCupom) return;
+            modalCupom.classList.add('hidden');
+            modalCupom.classList.remove('flex');
+        }
+
+        function aplicarCupom() {
+            cupomAplicado = true;
+            localStorage.setItem('cupom10_esfiha', '1');
+            fecharCupom();
+            atualizarTotal();
+        }
+
+        window.addEventListener('load', () => {
+            if (!cupomAplicado) abrirCupom();
+        });
+
+        function setSectionFilter(filter) {
+            const sections = Array.from(document.querySelectorAll('section[data-section]'));
+            const buttons = Array.from(document.querySelectorAll('button.filter-btn[data-section-filter]'));
+
+            sections.forEach((sec) => {
+                const secKey = sec.getAttribute('data-section');
+                const show = filter === 'all' || secKey === filter;
+                sec.classList.toggle('hidden', !show);
+            });
+
+            buttons.forEach((btn) => {
+                const isActive = (btn.getAttribute('data-section-filter') === filter);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                btn.classList.toggle('bg-[#facc15]', isActive);
+                btn.classList.toggle('text-black', isActive);
+                btn.classList.toggle('font-black', isActive);
+
+                btn.classList.toggle('bg-white/10', !isActive);
+                btn.classList.toggle('border', !isActive);
+                btn.classList.toggle('border-white/10', !isActive);
+                btn.classList.toggle('text-white/90', !isActive);
+                btn.classList.toggle('font-extrabold', !isActive);
+            });
+
+            const firstVisible = sections.find(s => !s.classList.contains('hidden'));
+            if (firstVisible) {
+                firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function initSectionFilters() {
+            const buttons = Array.from(document.querySelectorAll('button.filter-btn[data-section-filter]'));
+            if (!buttons.length) return;
+
+            buttons.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.getAttribute('data-section-filter') || 'all';
+                    setSectionFilter(filter);
+                });
+            });
+        }
+
+        initSectionFilters();
 
         function abrirModal() {
             if (!modal) return;
@@ -618,6 +845,8 @@
         function limparSacola() {
             carrinho = {};
             localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+            cupomAplicado = false;
+            localStorage.removeItem('cupom10_esfiha');
             atualizarTotal();
 
             const lista = document.getElementById('lista-revisao');
@@ -770,10 +999,17 @@
             let msg = "Olá! Quero saborear o seguinte pedido:\n\n";
 
             for (const item in carrinho) {
-                msg += `*${carrinho[item].qtd}x* ${item} - ${brl.format(carrinho[item].qtd * carrinho[item].preco)}\n`;
+                msg += `*${carrinho[item].qtd}x* ${item}\n`;
             }
 
-            msg += `\n *TOTAL: ${brl.format(total)}*`;
+            msg += `\nSubtotal: ${brl.format(subtotal)}`;
+
+            if (cupomAplicado && subtotal > 0) {
+                msg += `\nCupom (10%): 10% OFF`;
+            }
+
+            msg += `\n--------------------`;
+            msg += `\n*TOTAL: ${brl.format(total)}*`;
 
             const pagamentoEl = document.querySelector('input[name="pagamento"]:checked');
             const pagamento = (pagamentoEl?.value || '').trim();
@@ -796,6 +1032,8 @@
             // ✅ LIMPA SACOLA DEPOIS DO ENVIO
             carrinho = {};
             localStorage.removeItem('carrinho_esfiha');
+            cupomAplicado = false;
+            localStorage.removeItem('cupom10_esfiha');
 
             atualizarTotal();
 
