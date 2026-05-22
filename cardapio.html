@@ -193,7 +193,7 @@
 
             <p class="text-white/80 text-sm leading-relaxed mb-5">
                 Temos um cupom de <span class="font-extrabold text-white">10%</span> de desconto
-                <span class="font-extrabold text-white">válido para dia 21/05/2026</span>.
+                <span class="font-extrabold text-white">válido até 24/05/2026</span>.
                 Aplique na sua sacola para economizar no valor total do pedido.
             </p>
 
@@ -275,7 +275,10 @@
                             <div class="flex flex-col">
                                 <span
                                     class="text-xs md:text-sm font-extrabold uppercase tracking-tight text-white/85">
-                                    Total
+                                    Subtotal
+                                </span>
+                                <span class="text-[0.7rem] md:text-xs font-semibold text-white/50 -mt-0.5">
+                                    (sem entrega)
                                 </span>
                             </div>
 
@@ -284,6 +287,7 @@
                                 R$ 0,00
                             </span>
                         </div>
+
                     </div>
                 </div>
 
@@ -661,8 +665,14 @@
 
             total = Math.max(0, subtotal - desconto);
 
+            // Valores exibidos sem taxa de entrega (a taxa é consultada depois)
+            // Se o cupom estiver aplicado, exibimos o subtotal já com o desconto.
+            const subtotalExibido = (cupomAplicado && subtotal > 0) ? total : subtotal;
+            const totalExibido = subtotalExibido;
+
+
             document.getElementById('total-badge').innerText =
-                brl.format(total);
+                brl.format(totalExibido);
 
             const qtdBadge = document.getElementById('qtd-badge');
             if (qtdBadge) {
@@ -674,11 +684,13 @@
             if (document.getElementById('total-revisao')) {
 
                 document.getElementById('total-revisao').innerText =
-                    brl.format(total);
+                    brl.format(totalExibido);
             }
 
+            // "Total (com entrega)" é preenchido manualmente
+
             const subtotalEl = document.getElementById('subtotal-revisao');
-            if (subtotalEl) subtotalEl.innerText = brl.format(subtotal);
+            if (subtotalEl) subtotalEl.innerText = brl.format(subtotalExibido);
 
             const descontoEl = document.getElementById('desconto-revisao');
             if (descontoEl) descontoEl.innerText = brl.format(desconto);
@@ -1002,14 +1014,15 @@
                 msg += `*${carrinho[item].qtd}x* ${item}\n`;
             }
 
-            msg += `\nSubtotal: ${brl.format(subtotal)}`;
-
             if (cupomAplicado && subtotal > 0) {
                 msg += `\nCupom (10%): 10% OFF`;
             }
+            const subtotalFinal = (cupomAplicado && subtotal > 0) ? total : subtotal;
+            msg += `\nSubtotal (sem entrega): ${brl.format(subtotalFinal)}`;
 
-            msg += `\n--------------------`;
-            msg += `\n*TOTAL: ${brl.format(total)}*`;
+
+            msg += `\nTaxa de entrega: ____`;
+            msg += `\n*TOTAL (COM ENTREGA): ____*`;
 
             const pagamentoEl = document.querySelector('input[name="pagamento"]:checked');
             const pagamento = (pagamentoEl?.value || '').trim();
