@@ -690,7 +690,7 @@
             // "Total (com entrega)" é preenchido manualmente
 
             const subtotalEl = document.getElementById('subtotal-revisao');
-            if (subtotalEl) subtotalEl.innerText = brl.format(subtotalExibido);
+            if (subtotalEl) subtotalEl.innerText = brl.format(subtotal);
 
             const descontoEl = document.getElementById('desconto-revisao');
             if (descontoEl) descontoEl.innerText = brl.format(desconto);
@@ -1017,8 +1017,12 @@
             if (cupomAplicado && subtotal > 0) {
                 msg += `\nCupom (10%): 10% OFF`;
             }
+            msg += `\nSubtotal: ${brl.format(subtotal)}`;
+
             const subtotalFinal = (cupomAplicado && subtotal > 0) ? total : subtotal;
-            msg += `\nSubtotal (sem entrega): ${brl.format(subtotalFinal)}`;
+            if (cupomAplicado && subtotal > 0) {
+                msg += `\nSubtotal com desconto: ${brl.format(subtotalFinal)}`;
+            }
 
 
             msg += `\nTaxa de entrega: ____`;
