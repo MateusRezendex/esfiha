@@ -55,13 +55,161 @@
             color: #d4a017;
         }
 
+        /* ========================= */
+        /* CARD PREMIUM INTERATIVO */
+        /* ========================= */
+
         .category-card {
             background: rgba(255, 255, 255, 0.04);
+
             backdrop-filter: blur(12px);
+
             border: 1px solid rgba(212, 160, 23, 0.2);
-            transition: transform 0.2s;
+
+            position: relative;
+
+            overflow: hidden;
+
+            cursor: pointer;
+
+            -webkit-tap-highlight-color: transparent;
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
         }
 
+        /* brilho interno suave */
+        .category-card::before {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            border-radius: inherit;
+
+            background:
+                radial-gradient(circle at top left,
+                    rgba(255, 170, 0, 0.08),
+                    transparent 45%);
+
+            opacity: 0;
+
+            transition: opacity 0.3s ease;
+
+            pointer-events: none;
+        }
+
+        /* glow animado */
+        .category-card::after {
+            content: "";
+
+            position: absolute;
+
+            top: -120%;
+            left: -40%;
+
+            width: 60%;
+            height: 300%;
+
+            background:
+                linear-gradient(120deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.08),
+                    transparent);
+
+            transform: rotate(25deg);
+
+            transition: all 0.8s ease;
+
+            pointer-events: none;
+        }
+
+        /* hover desktop */
+        .category-card:hover {
+            transform: translateY(-4px);
+
+            border-color: rgba(250, 204, 21, 0.4);
+
+            box-shadow:
+                0 10px 30px rgba(255, 80, 0, 0.18),
+                0 0 25px rgba(255, 120, 0, 0.08);
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-card:hover::after {
+            left: 140%;
+        }
+
+        /* toque mobile */
+        .category-card:active {
+            transform: translateY(-2px) scale(0.99);
+
+            border-color: rgba(250, 204, 21, 0.5);
+
+            box-shadow:
+                0 10px 25px rgba(255, 80, 0, 0.25),
+                0 0 30px rgba(255, 120, 0, 0.12);
+        }
+
+        /* ========================= */
+        /* IMAGENS */
+        /* ========================= */
+
+        .category-card img {
+            transition:
+                transform 0.35s ease,
+                filter 0.35s ease;
+
+            will-change: transform;
+        }
+
+        /* hover desktop */
+        .category-card:hover img {
+            transform: scale(1.06) rotate(1deg);
+
+            filter:
+                brightness(1.05) saturate(1.08);
+        }
+
+        /* toque mobile */
+        .category-card:active img {
+            transform: scale(1.06);
+
+            filter:
+                brightness(1.1) saturate(1.12);
+        }
+
+        /* ========================= */
+        /* BOTÃO + */
+        /* ========================= */
+
+        .category-card button {
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .category-card button:hover {
+            transform: scale(1.05);
+
+            box-shadow:
+                0 8px 18px rgba(22, 163, 74, 0.35);
+        }
+
+        .category-card button:active {
+            transform: scale(0.92);
+        }
+
+        /* ========================= */
+        /* TOAST */
+        /* ========================= */
 
         #toast {
             position: fixed;
@@ -74,13 +222,26 @@
             border-radius: 50px;
             font-weight: 800;
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            transition:
+                all 0.3s cubic-bezier(0.175,
+                    0.885,
+                    0.32,
+                    1.275);
+
             z-index: 1000;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+
+            box-shadow:
+                0 15px 30px rgba(0, 0, 0, 0.5);
+
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
+        /* ========================= */
+        /* SCROLLBAR */
+        /* ========================= */
 
         .custom-scrollbar::-webkit-scrollbar {
             width: 3px;
@@ -89,14 +250,12 @@
         .custom-scrollbar::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.06);
             border-radius: 999px;
-            /* Ajustável via JS para "encurtar" a trilha */
-            border: var(--scrollbar-track-margin, 16px) solid transparent;
+
+            border:
+                var(--scrollbar-track-margin, 16px) solid transparent;
+
             background-clip: padding-box;
         }
-
-        .custom-scrollbar::-webkit-scrollbar-track-piece:start {}
-
-        .custom-scrollbar::-webkit-scrollbar-track-piece:end {}
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #d4a017;
@@ -107,20 +266,22 @@
             background: #facc15;
         }
 
-        /* Firefox */
         .custom-scrollbar {
             scrollbar-width: thin;
-            scrollbar-color: #d4a017 rgba(255, 255, 255, 0.06);
+            scrollbar-color:
+                #d4a017 rgba(255, 255, 255, 0.06);
         }
 
-        /* Scrollbar custom da MODAL (barra "curta" e mais à esquerda) */
+        /* ========================= */
+        /* MODAL */
+        /* ========================= */
+
         #modal-conteudo {
             position: relative;
         }
 
         #modal-scroll.hide-native-scrollbar {
             scrollbar-width: none;
-            /* Firefox */
         }
 
         #modal-scroll.hide-native-scrollbar::-webkit-scrollbar {
@@ -149,18 +310,82 @@
 
         #modal-revisao {
             display: none;
+
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
+
             background: rgba(0, 0, 0, 0.9);
+
             z-index: 1100;
+
             align-items: center;
             justify-content: center;
-            /* Garante respiro no topo/rodapé e evita "colar" nas bordas */
-            padding: clamp(24px, 6vh, 64px) 20px;
+
+            padding:
+                clamp(24px, 6vh, 64px) 20px;
+
             overflow: hidden;
+        }
+
+        /* ========================= */
+        /* FILTROS PREMIUM */
+        /* ========================= */
+
+        .filter-btn {
+            position: relative;
+
+            overflow: hidden;
+
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .filter-btn::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.08),
+                    transparent);
+
+            opacity: 0;
+
+            transition: opacity 0.3s ease;
+
+            pointer-events: none;
+        }
+
+        .filter-btn:hover::before {
+            opacity: 1;
+        }
+
+        .filter-btn.active-filter {
+            transform: translateY(-1px);
+        }
+
+        .filter-btn.active-filter::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: inherit;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+            pointer-events: none;
         }
     </style>
 </head>
@@ -179,8 +404,7 @@
     <!-- MODAL CUPOM -->
     <div id="modal-cupom" class="hidden fixed inset-0 z-[1200] items-center justify-center bg-black/80 p-6"
         role="dialog" aria-modal="true" aria-labelledby="titulo-cupom">
-        <div
-            class="w-full max-w-md rounded-[2.5rem] bg-[#2d0000] border-2 border-[#d4a017]/40 shadow-2xl p-6 md:p-7">
+        <div class="w-full max-w-md rounded-[2.5rem] bg-[#2d0000] border-2 border-[#d4a017]/40 shadow-2xl p-6 md:p-7">
             <div class="flex items-start justify-between gap-4 mb-3">
                 <h2 id="titulo-cupom" class="text-[#facc15] font-extrabold text-xl leading-tight">
                     Cupom de 10% OFF
@@ -245,15 +469,15 @@
                             <!-- Subtotal -->
                             <div class="flex items-center justify-between">
                                 <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Subtotal</span>
-                                <span id="subtotal-revisao"
-                                    class="text-[0.75rem] md:text-sm font-extrabold text-white">
+                                <span id="subtotal-revisao" class="text-[0.75rem] md:text-sm font-extrabold text-white">
                                     R$ 0,00
                                 </span>
                             </div>
 
                             <!-- Desconto -->
                             <div id="linha-desconto" class="hidden flex items-center justify-between">
-                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Desconto (10%)</span>
+                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Desconto
+                                    (10%)</span>
                                 <span class="text-[0.75rem] md:text-sm font-extrabold text-emerald-300">
                                     10% OFF
                                     <span id="desconto-revisao" class="sr-only">R$ 0,00</span>
@@ -273,8 +497,7 @@
                         <!-- Total final -->
                         <div class="flex items-end justify-between">
                             <div class="flex flex-col">
-                                <span
-                                    class="text-xs md:text-sm font-extrabold uppercase tracking-tight text-white/85">
+                                <span class="text-xs md:text-sm font-extrabold uppercase tracking-tight text-white/85">
                                     Subtotal
                                 </span>
                                 <span class="text-[0.7rem] md:text-xs font-semibold text-white/50 -mt-0.5">
@@ -363,7 +586,7 @@
         <section class="mb-8 text-center flex flex-col items-center">
 
             <img src="./img/chefinho.png" alt="Chef Sabor que Vicia" decoding="async"
-                class="w-56 md:w-62 h-auto drop-shadow-xl">
+                class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
 
             <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
 
@@ -374,30 +597,85 @@
                 <p class="text-white/70 text-sm md:text-base leading-relaxed">
                     Escolha suas favoritas abaixo e monte seu pedido!
                 </p>
-             </div>
-         </section>
+            </div>
+        </section>
 
         <!-- FILTROS -->
         <section class="mb-10">
+
             <div class="sticky top-[72px] md:top-[84px] z-40">
-                <div class="bg-[#4a0000]/80 backdrop-blur-xl border border-white/10 rounded-[1.75rem] p-2 shadow-xl">
-                    <div class="flex gap-2 overflow-x-auto no-scrollbar">
-                        <button type="button" data-section-filter="all" aria-pressed="true"
-                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-black tracking-tight bg-[#facc15] text-black">
+
+                <div class="relative overflow-visible rounded-[2rem]">
+                    <!-- brilho decorativo -->
+                    <div
+                        class="pointer-events-none absolute inset-0
+    bg-gradient-to-r
+    from-white/[0.03]
+    via-transparent
+    to-white/[0.02]"">
+                    </div>
+
+                    <div class="flex gap-3 overflow-x-auto no-scrollbar relative z-10">
+
+                        <!-- TODOS -->
+                        <button type="button" data-section-filter="all" aria-pressed="true" class="filter-btn active-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
+                    text-xs md:text-sm font-black tracking-tight
+                    transition-all duration-300
+                    bg-[#facc15] text-black
+                    shadow-[0_8px_25px_rgba(250,204,21,0.35)]
+                    active:scale-95">
+
                             Todos
                         </button>
-                        <button type="button" data-section-filter="tradicionais" aria-pressed="false"
-                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-extrabold tracking-tight bg-white/10 hover:bg-white/15 border border-white/10 text-white/90">
+
+                        <!-- TRADICIONAIS -->
+                        <button type="button" data-section-filter="tradicionais" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
+                    text-xs md:text-sm font-extrabold tracking-tight
+                    border border-white/10
+                    bg-white/5 text-white/85
+                    backdrop-blur-xl
+                    hover:bg-white/10
+                    hover:border-[#facc15]/30
+                    hover:text-white
+                    hover:-translate-y-1
+                    active:scale-95
+                    transition-all duration-300">
+
                             Tradicionais
                         </button>
-                        <button type="button" data-section-filter="premium" aria-pressed="false"
-                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-extrabold tracking-tight bg-white/10 hover:bg-white/15 border border-white/10 text-white/90">
+
+                        <!-- PREMIUM -->
+                        <button type="button" data-section-filter="premium" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
+                    text-xs md:text-sm font-extrabold tracking-tight
+                    border border-white/10
+                    bg-white/5 text-white/85
+                    backdrop-blur-xl
+                    hover:bg-white/10
+                    hover:border-[#facc15]/30
+                    hover:text-white
+                    hover:-translate-y-1
+                    active:scale-95
+                    transition-all duration-300">
+
                             Premium
                         </button>
-                        <button type="button" data-section-filter="doces" aria-pressed="false"
-                            class="filter-btn flex-shrink-0 px-4 py-2 rounded-[1.25rem] text-xs md:text-sm font-extrabold tracking-tight bg-white/10 hover:bg-white/15 border border-white/10 text-white/90">
+
+                        <!-- DOCES -->
+                        <button type="button" data-section-filter="doces" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
+                    text-xs md:text-sm font-extrabold tracking-tight
+                    border border-white/10
+                    bg-white/5 text-white/85
+                    backdrop-blur-xl
+                    hover:bg-white/10
+                    hover:border-pink-400/40
+                    hover:text-white
+                    hover:-translate-y-1
+                    active:scale-95
+                    transition-all duration-300">
+
                             Doces
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -492,7 +770,7 @@
             if (!container) return;
 
             const html = itens.map(item => `
-                    <div class="category-card relative rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:text-sm ${extraCardClasses}">
+                    <div class="category-card group relative rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:text-sm ${extraCardClasses}">
 
                         ${(item.m || item.nov) ? `
                             <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 pointer-events-none flex flex-col gap-2">
@@ -509,14 +787,14 @@
                             </div>
                         ` : ''}
 
-                        <img
-                            src="./img/esfihas/${item.i}.png"
-                            class="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-cover rounded-[2rem] shadow-xl flex-shrink-0"
-                            alt="${item.n}"
-                            loading="lazy"
-                            decoding="async"
-                            width="176"
-                            height="176">
+<img
+    src="./img/esfihas/${item.i}.png"
+    class="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-cover rounded-[2rem] shadow-xl flex-shrink-0"
+    alt="${item.n}"
+    loading="lazy"
+    decoding="async"
+    width="176"
+    height="176">
 
                         <div class="flex-1 w-full text-center md:text-left">
 
@@ -554,29 +832,29 @@
         }
 
         const tradicionais = [
-            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 8.00, i: "frango", m: true },
-            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 8.00, a: 8.00, i: "carne" },
-            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 8.00, i: "queijo" },
-            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 8.00, i: "presunto" },
-            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 8.00, i: "calabresa" },
-            { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 8.00, i: "bacon" },
-            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 8.00, i: "frango_bacon" }
+            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 7.99, i: "frango", m: true },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.99, a: 7.99, i: "carne" },
+            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 7.99, i: "queijo" },
+            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 7.99, i: "presunto" },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 7.99, i: "calabresa" },
+            { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 7.99, i: "bacon" },
+            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 7.99, i: "frango_bacon" }
         ];
 
         const premium = [
-            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 9.00, i: "3queijos", m: true },
-            { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 9.00, i: "brocolis" },
-            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 9.00, i: "lombo", m: true },
+            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 8.99, i: "3queijos", m: true },
+            { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 8.99, i: "brocolis" },
+            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 8.99, i: "lombo", m: true },
             { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
         ];
 
         const doces = [
-            { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 10.00, i: "chocolate_morango" },
-            { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 10.00, i: "MM" },
-            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 9.00, i: "banana_nevada", m: true },
-            { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 9.00, i: "abacaxi_nevado" },
-            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", p: 9.00, a: 9.00, i: "churros", nov: true },
-            { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 9.00, i: "romeu_julieta" }
+            { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 9.99, i: "chocolate_morango" },
+            { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 9.99, i: "MM" },
+            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 8.99, i: "banana_nevada", m: true },
+            { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 8.99, i: "abacaxi_nevado" },
+            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", p: 8.99, a: 8.99, i: "churros", nov: true },
+            { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 8.99, i: "romeu_julieta" }
         ];
 
         renderItens('lista-tradicionais', tradicionais);
@@ -755,32 +1033,81 @@
         });
 
         function setSectionFilter(filter) {
-            const sections = Array.from(document.querySelectorAll('section[data-section]'));
-            const buttons = Array.from(document.querySelectorAll('button.filter-btn[data-section-filter]'));
+
+            const sections = Array.from(
+                document.querySelectorAll('section[data-section]')
+            );
+
+            const buttons = Array.from(
+                document.querySelectorAll(
+                    'button.filter-btn[data-section-filter]'
+                )
+            );
 
             sections.forEach((sec) => {
+
                 const secKey = sec.getAttribute('data-section');
-                const show = filter === 'all' || secKey === filter;
+
+                const show =
+                    filter === 'all' || secKey === filter;
+
                 sec.classList.toggle('hidden', !show);
             });
 
             buttons.forEach((btn) => {
-                const isActive = (btn.getAttribute('data-section-filter') === filter);
-                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-                btn.classList.toggle('bg-[#facc15]', isActive);
-                btn.classList.toggle('text-black', isActive);
-                btn.classList.toggle('font-black', isActive);
 
-                btn.classList.toggle('bg-white/10', !isActive);
-                btn.classList.toggle('border', !isActive);
-                btn.classList.toggle('border-white/10', !isActive);
-                btn.classList.toggle('text-white/90', !isActive);
-                btn.classList.toggle('font-extrabold', !isActive);
+                const isActive =
+                    btn.getAttribute('data-section-filter') === filter;
+
+                btn.setAttribute(
+                    'aria-pressed',
+                    isActive ? 'true' : 'false'
+                );
+
+                if (isActive) {
+
+                    btn.classList.remove(
+                        'inactive-filter',
+                        'bg-white/5',
+                        'text-white/85',
+                        'border-white/10'
+                    );
+
+                    btn.classList.add(
+                        'active-filter',
+                        'bg-[#facc15]',
+                        'text-black',
+                        'shadow-[0_8px_25px_rgba(250,204,21,0.35)]'
+                    );
+
+                } else {
+
+                    btn.classList.remove(
+                        'active-filter',
+                        'bg-[#facc15]',
+                        'text-black',
+                        'shadow-[0_8px_25px_rgba(250,204,21,0.35)]'
+                    );
+
+                    btn.classList.add(
+                        'inactive-filter',
+                        'bg-white/5',
+                        'text-white/85',
+                        'border-white/10'
+                    );
+                }
             });
 
-            const firstVisible = sections.find(s => !s.classList.contains('hidden'));
+            const firstVisible = sections.find(
+                s => !s.classList.contains('hidden')
+            );
+
             if (firstVisible) {
-                firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                firstVisible.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
         }
 
