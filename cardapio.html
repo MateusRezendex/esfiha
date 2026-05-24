@@ -607,15 +607,14 @@
 
                 <div class="relative overflow-visible rounded-[2rem]">
                     <!-- brilho decorativo -->
-                    <div
-                        class="pointer-events-none absolute inset-0
+                    <div class="pointer-events-none absolute inset-0
     bg-gradient-to-r
     from-white/[0.03]
     via-transparent
     to-white/[0.02]"">
                     </div>
 
-                    <div class="flex gap-3 overflow-x-auto no-scrollbar relative z-10">
+                    <div class=" flex gap-3 overflow-x-auto no-scrollbar relative z-10">
 
                         <!-- TODOS -->
                         <button type="button" data-section-filter="all" aria-pressed="true" class="filter-btn active-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
@@ -787,14 +786,27 @@
                             </div>
                         ` : ''}
 
-<img
-    src="./img/esfihas/${item.i}.png"
-    class="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-cover rounded-[2rem] shadow-xl flex-shrink-0"
-    alt="${item.n}"
-    loading="lazy"
-    decoding="async"
-    width="176"
-    height="176">
+<div class="relative flex-shrink-0">
+
+    <img
+        src="./img/esfihas/${item.i}.png"
+        class="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-cover rounded-[2rem] shadow-xl
+        ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
+        alt="${item.n}"
+        loading="lazy"
+        decoding="async"
+        width="176"
+        height="176">
+
+${item.indisponivel ? `
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <span class="text-red-600 text-sm md:text-lg font-black tracking-[0.2em] rotate-[-25deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            INDISPONÍVEL
+        </span>
+    </div>
+` : ''}
+
+</div>
 
                         <div class="flex-1 w-full text-center md:text-left">
 
@@ -832,29 +844,29 @@
         }
 
         const tradicionais = [
-            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", p: 6.99, a: 7.99, i: "frango", m: true },
-            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", p: 7.99, a: 7.99, i: "carne" },
-            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", p: 6.99, a: 7.99, i: "queijo" },
-            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", p: 6.99, a: 7.99, i: "presunto" },
-            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", p: 6.99, a: 7.99, i: "calabresa" },
-            { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", p: 6.99, a: 7.99, i: "bacon" },
-            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", p: 6.99, a: 7.99, i: "frango_bacon" }
+            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", a: 7.99, i: "frango", m: true },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne" },
+            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", a: 7.99, i: "queijo" },
+            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", a: 7.99, i: "presunto" },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa" },
+            { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", a: 7.99, i: "bacon" },
+            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon" }
         ];
 
         const premium = [
-            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", p: 7.90, a: 8.99, i: "3queijos", m: true },
-            { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", p: 7.90, a: 8.99, i: "brocolis" },
-            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", p: 7.90, a: 8.99, i: "lombo", m: true },
-            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", p: 9.50, a: 10.50, i: "carne_seca" }
+            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos", m: true },
+            { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", a: 8.99, i: "brocolis" },
+            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo", m: true },
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", indisponivel: true }
         ];
 
         const doces = [
-            { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", p: 8.99, a: 9.99, i: "chocolate_morango" },
-            { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", p: 8.99, a: 9.99, i: "MM" },
-            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", p: 7.99, a: 8.99, i: "banana_nevada", m: true },
-            { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", p: 7.99, a: 8.99, i: "abacaxi_nevado" },
-            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", p: 8.99, a: 8.99, i: "churros", nov: true },
-            { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", p: 7.99, a: 8.99, i: "romeu_julieta" }
+            { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos fatiados.", a: 9.99, i: "chocolate_morango" },
+            { n: "Chocolate com MM", d: "Chocolate cremoso coberto com M&Ms coloridos.", a: 9.99, i: "MM" },
+            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", a: 8.99, i: "banana_nevada", m: true },
+            { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", a: 8.99, i: "abacaxi_nevado" },
+            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", a: 8.99, i: "churros", nov: true },
+            { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
 
         renderItens('lista-tradicionais', tradicionais);
