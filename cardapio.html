@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Cardápio Completo - Esfiha Sabor que Vicia</title>
+    <title>Cardápio Completo</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -401,38 +401,7 @@
         ADICIONADO!
     </div>
 
-    <!-- MODAL CUPOM -->
-    <div id="modal-cupom" class="hidden fixed inset-0 z-[1200] items-center justify-center bg-black/80 p-6"
-        role="dialog" aria-modal="true" aria-labelledby="titulo-cupom">
-        <div class="w-full max-w-md rounded-[2.5rem] bg-[#2d0000] border-2 border-[#d4a017]/40 shadow-2xl p-6 md:p-7">
-            <div class="flex items-start justify-between gap-4 mb-3">
-                <h2 id="titulo-cupom" class="text-[#facc15] font-extrabold text-xl leading-tight">
-                    Cupom de 10% OFF
-                </h2>
-                <button type="button" onclick="fecharCupom()" aria-label="Fechar aviso de cupom"
-                    class="w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 grid place-items-center">
-                    <span class="text-lg font-black leading-none">×</span>
-                </button>
-            </div>
-
-            <p class="text-white/80 text-sm leading-relaxed mb-5">
-                Temos um cupom de <span class="font-extrabold text-white">10%</span> de desconto
-                <span class="font-extrabold text-white">válido até 24/05/2026</span>.
-                Aplique na sua sacola para economizar no valor total do pedido.
-            </p>
-
-            <div class="flex gap-3">
-                <button type="button" onclick="fecharCupom()"
-                    class="flex-1 bg-white/10 hover:bg-white/15 py-3 rounded-2xl font-bold border border-white/10 text-sm">
-                    Agora não
-                </button>
-                <button id="btn-aplicar-cupom-modal" type="button" onclick="aplicarCupom()"
-                    class="flex-1 bg-[#facc15] hover:bg-[#eab308] text-black py-3 rounded-2xl font-black shadow-lg text-sm">
-                    Aplicar 10%
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- (cupom removido) -->
 
     <!-- MODAL -->
     <div id="modal-revisao" role="dialog" aria-modal="true" aria-labelledby="titulo-revisao">
@@ -453,15 +422,6 @@
                     class="w-full mb-4 bg-white/10 hover:bg-white/15 py-2.5 md:py-3 rounded-2xl font-bold border border-white/10 text-xs md:text-sm">
                     Limpar sacola
                 </button>
-
-                <button id="btn-cupom-sacola" type="button" onclick="abrirCupom()"
-                    class="w-full mb-6 bg-[#facc15] hover:bg-[#eab308] text-black py-2.5 md:py-3 rounded-2xl font-black shadow-lg text-xs md:text-sm">
-                    Aplicar cupom 10%
-                </button>
-                <div id="cupom-status" class="hidden -mt-4 mb-6 text-center text-[0.75rem] text-white/70 font-semibold">
-                    Cupom aplicado: 10% OFF
-                </div>
-
                 <!-- RESUMO DO PEDIDO (UI/UX aprimorado) -->
                 <div class="border-t border-white/10 pt-4 mb-6">
                     <div class="bg-black/20 border border-white/10 rounded-[1.75rem] p-4 md:p-5">
@@ -473,18 +433,7 @@
                                     R$ 0,00
                                 </span>
                             </div>
-
-                            <!-- Desconto -->
-                            <div id="linha-desconto" class="hidden flex items-center justify-between">
-                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Desconto
-                                    (10%)</span>
-                                <span class="text-[0.75rem] md:text-sm font-extrabold text-emerald-300">
-                                    10% OFF
-                                    <span id="desconto-revisao" class="sr-only">R$ 0,00</span>
-                                </span>
-                            </div>
-
-                            <!-- Entrega -->
+<!-- Entrega -->
                             <div class="flex items-center justify-between">
                                 <span class="text-[0.75rem] md:text-sm font-semibold text-white/60">Entrega</span>
                                 <span class="text-[0.75rem] md:text-sm font-semibold text-white/60">Consultar</span>
@@ -515,29 +464,6 @@
                 </div>
 
                 <!-- DADOS PARA ENTREGA -->
-                <div class="mb-4 space-y-3">
-
-                    <fieldset class="space-y-2">
-                        <legend class="font-extrabold text-xs md:text-sm text-white/90">
-                            Forma de pagamento
-                        </legend>
-
-                        <div class="grid grid-cols-2 gap-2">
-                            <label
-                                class="flex items-center gap-2 bg-black/20 border border-white/10 rounded-2xl px-3 py-2 cursor-pointer select-none">
-                                <input type="radio" name="pagamento" value="Pix" class="accent-[#facc15]">
-                                <span class="font-bold text-xs md:text-sm">Pix</span>
-                            </label>
-
-                            <label
-                                class="flex items-center gap-2 bg-black/20 border border-white/10 rounded-2xl px-3 py-2 cursor-pointer select-none">
-                                <input type="radio" name="pagamento" value="Cartão" class="accent-[#facc15]">
-                                <span class="font-bold text-xs md:text-sm">Cartão</span>
-                            </label>
-                        </div>
-                    </fieldset>
-
-                </div>
 
                 <div class="grid grid-cols-2 gap-4">
 
@@ -569,7 +495,7 @@
             class="flex items-center text-sm md:text-base font-bold hover:text-[#d4a017] transition-colors">
 
             <i data-lucide="arrow-left" class="mr-2"></i>
-            INÍCIO
+            Inicio
         </a>
 
         <span class="gold-text font-black tracking-widest text-base md:text-lg uppercase">
@@ -585,18 +511,46 @@
         <!-- CHEFINHO -->
         <section class="mb-8 text-center flex flex-col items-center">
 
-            <img src="./img/chefinho.png" alt="Chef Sabor que Vicia" decoding="async"
+            <img src="./img/chefinho.png" alt="Chef" decoding="async"
                 class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
 
             <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
 
                 <h2 class="text-xl md:text-2xl font-extrabold gold-text mb-2 tracking-tight">
-                    Que bom te ver por aqui! 🧡
+                    Que bom te ver por aqui!
                 </h2>
 
                 <p class="text-white/70 text-sm md:text-base leading-relaxed">
                     Escolha suas favoritas abaixo e monte seu pedido!
                 </p>
+             </div>
+         </section>
+
+        <!-- DESTAQUES (CAROUSEL) -->
+        <section class="mb-10">
+            <div class="flex items-center gap-3 mb-4">
+                <i data-lucide="star" class="w-6 h-6 md:w-7 md:h-7 text-[#facc15]"></i>
+                <h2 class="text-base md:text-lg font-black tracking-widest uppercase text-[#facc15]">
+                    Destaques de hoje
+                </h2>
+            </div>
+
+            <div class="relative">
+                <button id="carousel-prev" type="button" aria-label="Voltar destaques"
+                    class="hidden md:grid place-items-center absolute left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
+                    onclick="scrollDestaques(-1)">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+
+                <button id="carousel-next" type="button" aria-label="Avançar destaques"
+                    class="hidden md:grid place-items-center absolute right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
+                    onclick="scrollDestaques(1)">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+
+                <div id="carousel-destaques"
+                    class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 pr-2 bg-transparent">
+                </div>
             </div>
         </section>
 
@@ -717,7 +671,7 @@
 
                 <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
 
-                DOCES IRRESISTÍVEIS
+                DOCES
             </h2>
 
             <div class="grid gap-6">
@@ -763,13 +717,51 @@
             currency: 'BRL'
         });
 
+        let carrinho =
+            JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+
+        function escJs(str) {
+            return String(str).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+        }
+
         function renderItens(containerId, itens, extraCardClasses = '') {
             const container = document.getElementById(containerId);
 
             if (!container) return;
 
-            const html = itens.map(item => `
-                    <div class="category-card group relative rounded-[2.2rem] p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 md:gap-8 lg:text-sm ${extraCardClasses}">
+            const html = itens.map(item => {
+                const qtd = (carrinho && carrinho[item.n]) ? carrinho[item.n].qtd : 0;
+                const safeName = escJs(item.n);
+
+                const rightControl = item.indisponivel ? `
+            <button type="button" disabled aria-disabled="true"
+                class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#facc15]/70 text-black grid place-items-center shadow-lg opacity-60 cursor-not-allowed">
+                <i data-lucide="plus" class="w-4 h-4 md:w-4 md:h-4"></i>
+            </button>
+                ` : (qtd > 0 ? `
+            <div class="flex items-center bg-[#facc15] text-black rounded-[1rem] md:rounded-[1.1rem] shadow-lg overflow-hidden">
+                <button type="button" aria-label="Diminuir ${item.n}"
+                    onclick="ajustarQuantidade('${safeName}', -1)"
+                    class="w-8 h-8 md:w-9 md:h-9 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                    <i data-lucide="minus" class="w-4 h-4 md:w-4 md:h-4"></i>
+                </button>
+                <span class="min-w-6 md:min-w-7 text-center font-black text-[0.8rem] md:text-sm px-1">${qtd}</span>
+                <button type="button" aria-label="Aumentar ${item.n}"
+                    onclick="ajustarQuantidade('${safeName}', 1)"
+                    class="w-8 h-8 md:w-9 md:h-9 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                    <i data-lucide="plus" class="w-4 h-4 md:w-4 md:h-4"></i>
+                </button>
+            </div>
+                ` : `
+            <button type="button" aria-label="Adicionar ${item.n}"
+                onclick="add('${safeName}', ${item.a})"
+                class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#facc15] text-black grid place-items-center shadow-lg hover:bg-[#eab308] transition active:scale-95">
+                <i data-lucide="plus" class="w-4 h-4 md:w-4 md:h-4"></i>
+            </button>
+                `);
+
+                return `
+                <div class="category-card group relative overflow-hidden rounded-[2.2rem] px-5 py-4 md:px-6 md:py-5 min-h-[8.5rem] md:min-h-[9.5rem] flex items-center gap-4 md:gap-5 lg:text-sm bg-black/15 border border-white/10 shadow-[0_18px_45px_rgba(0,0,0,0.45)] ${extraCardClasses}">
 
                         ${(item.m || item.nov) ? `
                             <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 pointer-events-none flex flex-col gap-2">
@@ -786,78 +778,51 @@
                             </div>
                         ` : ''}
 
-<div class="relative flex-shrink-0">
+                <div class="relative flex-shrink-0">
+                    <div class="w-28 h-28 md:w-32 md:h-32 rounded-[2rem] bg-white/10 border border-white/10 p-2.5 shadow-2xl ring-1 ring-white/10">
+                        <img src="./img/esfihas/${item.i}.png"
+                            class="w-full h-full object-cover rounded-[1.6rem] ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
+                            alt="${item.n}" loading="lazy" decoding="async" width="128" height="128">
+                    </div>
 
-    <img
-        src="./img/esfihas/${item.i}.png"
-        class="w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 object-cover rounded-[2rem] shadow-xl
-        ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
-        alt="${item.n}"
-        loading="lazy"
-        decoding="async"
-        width="176"
-        height="176">
-
-${item.indisponivel ? `
-    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <span class="text-red-600 text-sm md:text-lg font-black tracking-[0.2em] rotate-[-25deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-            INDISPONÍVEL
-        </span>
-    </div>
-` : ''}
-
-</div>
-
-                        <div class="flex-1 w-full text-center md:text-left">
-
-                            <h3 class="text-base md:text-lg lg:text-base font-extrabold text-white mb-2">
-                                ${item.n}
-                            </h3>
-
-                            <p class="text-white/70 text-[0.75rem] md:text-xs lg:text-[0.75rem] leading-relaxed mb-4 md:mb-6 font-medium">
-                                ${item.d}
-                            </p>
-
-                            <div class="flex items-center justify-between">
-
-                                <div class="flex flex-col text-left">
-                                    <span class="text-lg md:text-xl lg:text-lg font-black text-[#facc15]">
-                                        ${brl.format(item.a)}
-                                    </span>
+                            ${item.indisponivel ? `
+                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <span class="text-red-600 text-sm md:text-lg font-black tracking-[0.2em] rotate-[-25deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">INDISPONÍVEL</span>
                                 </div>
+                            ` : ''}
+                        </div>
 
-                                <button
-                                    type="button"
-                                    aria-label="Adicionar ${item.n}"
-                                     onclick="add('${item.n}', ${item.a})"
-                                    class="bg-[#16a34a] hover:bg-[#15803d] p-2.5 md:p-3 rounded-2xl md:rounded-3xl shadow-xl transition-all active:scale-90">
+                        <div class="flex-1 w-full">
+                            <h3 class="text-base md:text-lg lg:text-base font-extrabold text-white leading-tight">${item.n}</h3>
+                            <p class="text-white/70 text-[0.72rem] md:text-xs lg:text-[0.72rem] leading-relaxed mt-0.5 font-medium line-clamp-2">${item.d}</p>
 
-                                    <i data-lucide="plus"
-                                        class="w-5 h-5 md:w-6 md:h-6"></i>
-                                </button>
+                            <div class="mt-2 flex items-center justify-between gap-4">
+                                <span class="text-lg md:text-xl lg:text-lg font-black text-[#facc15]">${brl.format(item.a)}</span>
+                                <div class="flex items-center justify-end">${rightControl}</div>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `;
+            }).join('');
 
             container.innerHTML = html;
         }
 
         const tradicionais = [
             { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", a: 7.99, i: "frango", m: true },
-            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne" },
-            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e orégano.", a: 7.99, i: "queijo" },
-            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e orégano.", a: 7.99, i: "presunto" },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne", m: true },
+            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e oregano.", a: 7.99, i: "queijo" },
+            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e oregano.", a: 7.99, i: "presunto" },
             { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa" },
             { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", a: 7.99, i: "bacon" },
-            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon" }
+            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon", m: true }
         ];
 
         const premium = [
             { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos", m: true },
             { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", a: 8.99, i: "brocolis" },
-            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo", m: true },
-            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", indisponivel: true }
+            { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca"}
         ];
 
         const doces = [
@@ -868,27 +833,118 @@ ${item.indisponivel ? `
             { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", a: 8.99, i: "churros", nov: true },
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
+        function getDestaques() {
+            const preferidos = [
+                "Carne",
+                "Banana Nevada",
+                "Frango com Catupiry",
+                "3 Queijos",
+                "Frango com Bacon"
+            ];
 
-        renderItens('lista-tradicionais', tradicionais);
-        renderItens('lista-premium', premium, 'border-[#facc15]/30');
-        renderItens('lista-doces', doces, 'border-pink-500/20');
+            const all = [...tradicionais, ...premium, ...doces];
+            const byName = new Map(all.map((it) => [it.n, it]));
 
-        lucide.createIcons();
+            const picks = preferidos
+                .map((n) => byName.get(n))
+                .filter(Boolean);
 
-        let carrinho =
-            JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+            if (picks.length < 5) {
+                all.forEach((it) => {
+                    if (picks.length >= 5) return;
+                    if (picks.some((p) => p.n === it.n)) return;
+                    picks.push(it);
+                });
+            }
 
-        let cupomAplicado = localStorage.getItem('cupom10_esfiha') === '1';
+            return picks;
+        }
+
+        function renderDestaques() {
+            const container = document.getElementById('carousel-destaques');
+            if (!container) return;
+
+            const destaques = getDestaques();
+
+            const badgeFor = (item) => {
+                if (item.nov) return { label: 'Novidade', cls: 'bg-pink-500/90 text-white' };
+                if (item.m) return { label: 'Mais pedida', cls: 'bg-[#facc15]/95 text-black' };
+                return { label: 'Premium', cls: 'bg-black/45 text-white border border-white/15' };
+            };
+
+            container.innerHTML = destaques.map((item, idx) => {
+                const badge = badgeFor(item);
+                const cardWidth = 'w-[85vw] sm:w-[36rem]';
+                const disabled = !!item.indisponivel;
+                const safeName = String(item.n).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+
+                return `
+                    <article class="${cardWidth} flex-shrink-0 snap-start relative overflow-hidden rounded-[2.5rem] shadow-[0_16px_32px_rgba(0,0,0,0.18)]">
+                        <div class="absolute inset-0">
+                            <img src="./img/esfihas/${item.i}.png" alt="" aria-hidden="true"
+                                class="w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : 'brightness-75'}"
+                                loading="lazy" decoding="async">
+                        </div>
+
+                        <div class="relative z-10 p-6 md:p-7 min-h-[13.5rem] flex flex-col justify-end gap-3">
+                            <div class="absolute top-4 left-4">
+                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[0.7rem] font-black tracking-tight shadow ${badge.cls}">
+                                    ${badge.label}
+                                </span>
+                            </div>
+
+                            <h3 class="text-2xl md:text-3xl font-black leading-tight text-white drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)]">
+                                ${item.n}
+                            </h3>
+
+                            <p class="text-white/90 drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)] text-sm md:text-[0.95rem] leading-relaxed max-w-[40rem]">
+                                ${item.d}
+                            </p>
+
+                            <div class="mt-3 flex items-center justify-between gap-4">
+                                <span class="text-[#facc15] text-xl md:text-2xl font-black drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)]">
+                                    ${brl.format(item.a)}
+                                </span>
+
+                                <button type="button"
+                                    ${disabled ? 'disabled aria-disabled="true"' : ''}
+                                    onclick="${disabled ? '' : `add('${safeName}', ${item.a})`}"
+                                    class="${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:brightness-110 active:scale-95'} inline-flex items-center gap-3 bg-[#facc15] text-black px-5 py-3 rounded-[1.4rem] font-black shadow-lg transition">
+                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function scrollDestaques(direction) {
+            const el = document.getElementById('carousel-destaques');
+            if (!el) return;
+            const amount = Math.max(240, Math.floor(el.clientWidth * 0.85));
+            el.scrollBy({ left: direction * amount, behavior: 'smooth' });
+        }
+
+        function renderTudo() {
+            renderDestaques();
+            renderItens('lista-tradicionais', tradicionais);
+            renderItens('lista-premium', premium, 'border-[#facc15]/30');
+            renderItens('lista-doces', doces, 'border-pink-500/20');
+            lucide.createIcons();
+        }
+
+        renderTudo();
+
         let total = 0;
         let subtotal = 0;
-        let desconto = 0;
         let totalQtd = 0;
         let ultimoFoco = null;
 
         atualizarTotal();
 
         const modal = document.getElementById('modal-revisao');
-        const modalCupom = document.getElementById('modal-cupom');
         const listaRevisao = document.getElementById('lista-revisao');
         const modalScroll = document.getElementById('modal-scroll');
 
@@ -927,6 +983,7 @@ ${item.indisponivel ? `
             salvarCarrinho();
 
             atualizarTotal();
+            renderTudo();
 
             const t = document.getElementById('toast');
 
@@ -941,7 +998,6 @@ ${item.indisponivel ? `
 
             total = 0;
             subtotal = 0;
-            desconto = 0;
             totalQtd = 0;
 
             for (let i in carrinho) {
@@ -949,15 +1005,10 @@ ${item.indisponivel ? `
                 totalQtd += carrinho[i].qtd;
             }
 
-            if (cupomAplicado && subtotal > 0) {
-                desconto = subtotal * 0.10;
-            }
-
-            total = Math.max(0, subtotal - desconto);
+            total = Math.max(0, subtotal);
 
             // Valores exibidos sem taxa de entrega (a taxa é consultada depois)
-            // Se o cupom estiver aplicado, exibimos o subtotal já com o desconto.
-            const subtotalExibido = (cupomAplicado && subtotal > 0) ? total : subtotal;
+            const subtotalExibido = subtotal;
             const totalExibido = subtotalExibido;
 
 
@@ -977,72 +1028,14 @@ ${item.indisponivel ? `
                     brl.format(totalExibido);
             }
 
-            // "Total (com entrega)" é preenchido manualmente
+            // Total (com entrega) é preenchido manualmente
 
             const subtotalEl = document.getElementById('subtotal-revisao');
             if (subtotalEl) subtotalEl.innerText = brl.format(subtotal);
 
-            const descontoEl = document.getElementById('desconto-revisao');
-            if (descontoEl) descontoEl.innerText = brl.format(desconto);
-
-            const linhaDesconto = document.getElementById('linha-desconto');
-            if (linhaDesconto) {
-                if (cupomAplicado && subtotal > 0) linhaDesconto.classList.remove('hidden');
-                else linhaDesconto.classList.add('hidden');
-            }
-
-            const cupomStatus = document.getElementById('cupom-status');
-            const btnCupomSacola = document.getElementById('btn-cupom-sacola');
-            if (cupomStatus && btnCupomSacola) {
-                if (cupomAplicado) {
-                    cupomStatus.classList.remove('hidden');
-                    btnCupomSacola.classList.add('hidden');
-                } else {
-                    cupomStatus.classList.add('hidden');
-                    btnCupomSacola.classList.remove('hidden');
-                }
-            }
-
             const qtdRevisao = document.getElementById('qtd-revisao');
             if (qtdRevisao) qtdRevisao.innerText = String(totalQtd);
         }
-
-        function abrirCupom() {
-            if (!modalCupom) return;
-
-            const btnAplicar = document.getElementById('btn-aplicar-cupom-modal');
-            if (btnAplicar) {
-                if (cupomAplicado) {
-                    btnAplicar.disabled = true;
-                    btnAplicar.innerText = 'Já aplicado';
-                    btnAplicar.classList.add('opacity-60', 'cursor-not-allowed');
-                } else {
-                    btnAplicar.disabled = false;
-                    btnAplicar.innerText = 'Aplicar 10%';
-                    btnAplicar.classList.remove('opacity-60', 'cursor-not-allowed');
-                }
-            }
-
-            modalCupom.classList.remove('hidden');
-            modalCupom.classList.add('flex');
-        }
-
-        function fecharCupom() {
-            if (!modalCupom) return;
-            modalCupom.classList.add('hidden');
-            modalCupom.classList.remove('flex');
-        }
-
-        function aplicarCupom() {
-            cupomAplicado = true;
-            localStorage.setItem('cupom10_esfiha', '1');
-            fecharCupom();
-            atualizarTotal();
-        }
-
-        window.addEventListener('load', () => {
-            if (!cupomAplicado) abrirCupom();
-        });
 
         function setSectionFilter(filter) {
 
@@ -1196,9 +1189,8 @@ ${item.indisponivel ? `
         function limparSacola() {
             carrinho = {};
             localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
-            cupomAplicado = false;
-            localStorage.removeItem('cupom10_esfiha');
             atualizarTotal();
+            renderTudo();
 
             const lista = document.getElementById('lista-revisao');
             if (lista) lista.innerHTML = '';
@@ -1230,7 +1222,7 @@ ${item.indisponivel ? `
                             </p>
 
                             <p class="text-white/50 text-[0.7rem] md:text-xs">
-                                Unitário: ${brl.format(carrinho[item].preco)}
+                                Unid: ${brl.format(carrinho[item].preco)}
                             </p>
                         </div>
 
@@ -1313,6 +1305,7 @@ ${item.indisponivel ? `
 
             salvarCarrinho();
             atualizarTotal();
+            renderTudo();
 
             if (Object.keys(carrinho).length === 0) {
                 const lista = document.getElementById('lista-revisao');
@@ -1328,19 +1321,12 @@ ${item.indisponivel ? `
 
             if (Object.keys(carrinho).length === 0) {
 
-                alert("Sua sacola está vazia! Escolha uma delícia primeiro. 😋");
+                alert("Sua sacola está vazia! Escolha uma delícia primeiro.");
 
                 return;
             }
 
             renderRevisao();
-
-            const pagamentoSalvo = localStorage.getItem('pagamento_esfiha') || '';
-
-            if (pagamentoSalvo) {
-                const pagamentoEl = document.querySelector(`input[name="pagamento"][value="${pagamentoSalvo}"]`);
-                if (pagamentoEl) pagamentoEl.checked = true;
-            }
 
             abrirModal();
         }
@@ -1352,32 +1338,9 @@ ${item.indisponivel ? `
             for (const item in carrinho) {
                 msg += `*${carrinho[item].qtd}x* ${item}\n`;
             }
-
-            if (cupomAplicado && subtotal > 0) {
-                msg += `\nCupom (10%): 10% OFF`;
-            }
             msg += `\nSubtotal: ${brl.format(subtotal)}`;
 
-            const subtotalFinal = (cupomAplicado && subtotal > 0) ? total : subtotal;
-            if (cupomAplicado && subtotal > 0) {
-                msg += `\nSubtotal com desconto: ${brl.format(subtotalFinal)}`;
-            }
-
-
-            msg += `\nTaxa de entrega: ____`;
-            msg += `\n*TOTAL (COM ENTREGA): ____*`;
-
-            const pagamentoEl = document.querySelector('input[name="pagamento"]:checked');
-            const pagamento = (pagamentoEl?.value || '').trim();
-
-            if (!pagamento) {
-                alert('Selecione a forma de pagamento (Pix ou Cartão). 😊');
-                return;
-            }
-
-            localStorage.setItem('pagamento_esfiha', pagamento);
-
-            msg += `\n\n*PAGAMENTO:* ${pagamento}`;
+            msg += `\nTaxa de entrega: *Consultar taxa de entrega*`;
 
             // 🔥 ENVIA PARA WHATSAPP
             window.open(
@@ -1388,10 +1351,8 @@ ${item.indisponivel ? `
             // ✅ LIMPA SACOLA DEPOIS DO ENVIO
             carrinho = {};
             localStorage.removeItem('carrinho_esfiha');
-            cupomAplicado = false;
-            localStorage.removeItem('cupom10_esfiha');
-
             atualizarTotal();
+            renderTudo();
 
             const lista = document.getElementById('lista-revisao');
             if (lista) lista.innerHTML = '';
@@ -1403,3 +1364,4 @@ ${item.indisponivel ? `
 </body>
 
 </html>
+
