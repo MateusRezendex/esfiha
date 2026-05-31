@@ -59,12 +59,27 @@
         /* CARD PREMIUM INTERATIVO */
         /* ========================= */
 
+        @property --card-border-angle {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        @keyframes infinite-card-border {
+            to {
+                --card-border-angle: 360deg;
+            }
+        }
+
         .category-card {
-            background: rgba(255, 255, 255, 0.04);
+            background:
+                linear-gradient(180deg,
+                    rgba(74, 0, 0, 0.92),
+                    rgba(45, 0, 0, 0.96));
 
             backdrop-filter: blur(12px);
 
-            border: 1px solid rgba(212, 160, 23, 0.2);
+            border: 1px solid transparent;
 
             position: relative;
 
@@ -81,48 +96,26 @@
                 background 0.3s ease;
         }
 
-        /* brilho interno suave */
+        /* borda desligada neste modelo com foto full-bleed */
         .category-card::before {
-            content: "";
-
-            position: absolute;
-            inset: 0;
-
-            border-radius: inherit;
-
-            background:
-                radial-gradient(circle at top left,
-                    rgba(255, 170, 0, 0.08),
-                    transparent 45%);
-
-            opacity: 0;
-
-            transition: opacity 0.3s ease;
-
-            pointer-events: none;
+            display: none;
         }
 
-        /* glow animado */
+        /* brilho interno sem divisão */
         .category-card::after {
             content: "";
 
             position: absolute;
-
-            top: -120%;
-            left: -40%;
-
-            width: 60%;
-            height: 300%;
+            inset: 1px;
 
             background:
-                linear-gradient(120deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.08),
-                    transparent);
+                radial-gradient(circle at top left,
+                    rgba(255, 255, 255, 0.07),
+                    transparent 44%);
 
-            transform: rotate(25deg);
+            border-radius: inherit;
 
-            transition: all 0.8s ease;
+            opacity: 0.75;
 
             pointer-events: none;
         }
@@ -131,26 +124,14 @@
         .category-card:hover {
             transform: translateY(-4px);
 
-            border-color: rgba(250, 204, 21, 0.4);
-
             box-shadow:
                 0 10px 30px rgba(255, 80, 0, 0.18),
                 0 0 25px rgba(255, 120, 0, 0.08);
         }
 
-        .category-card:hover::before {
-            opacity: 1;
-        }
-
-        .category-card:hover::after {
-            left: 140%;
-        }
-
         /* toque mobile */
         .category-card:active {
             transform: translateY(-2px) scale(0.99);
-
-            border-color: rgba(250, 204, 21, 0.5);
 
             box-shadow:
                 0 10px 25px rgba(255, 80, 0, 0.25),
@@ -185,6 +166,92 @@
                 brightness(1.1) saturate(1.12);
         }
 
+        .menu-card-photo {
+            border-radius: 0;
+            object-position: center;
+            transform: scale(1.01);
+        }
+
+        .category-card:hover .menu-card-photo {
+            transform: scale(1.05) rotate(1deg);
+        }
+
+        .category-card:active .menu-card-photo {
+            transform: scale(1.03);
+        }
+
+        .menu-product-image {
+            transform: scale(1.12);
+            filter:
+                drop-shadow(0 18px 24px rgba(82, 31, 0, 0.28));
+        }
+
+        .category-card:hover .menu-product-image {
+            transform: scale(1.18) rotate(1deg);
+        }
+
+        .category-card:active .menu-product-image {
+            transform: scale(1.17);
+        }
+
+        .menu-product-title {
+            text-wrap: balance;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+        }
+
+        .menu-product-unavailable::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(32, 12, 4, 0.2);
+            pointer-events: none;
+        }
+
+        .card-details-panel {
+            opacity: 0;
+            max-height: 0;
+            transform: translateY(-6px);
+            pointer-events: none;
+            overflow: hidden;
+            transition:
+                opacity 0.25s ease,
+                max-height 0.3s ease,
+                transform 0.25s ease;
+        }
+
+        .card-details-panel.is-open {
+            opacity: 1;
+            max-height: 12rem;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .menu-reveal {
+            opacity: 0;
+            transform: translateY(24px) scale(0.98);
+            filter: blur(8px);
+            transition:
+                opacity 0.65s ease,
+                transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.65s ease;
+            transition-delay: var(--reveal-delay, 0ms);
+        }
+
+        .menu-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .menu-reveal {
+                opacity: 1;
+                transform: none;
+                filter: none;
+                transition: none;
+            }
+        }
+
         /* ========================= */
         /* BOTÃO + */
         /* ========================= */
@@ -200,7 +267,7 @@
             transform: scale(1.05);
 
             box-shadow:
-                0 8px 18px rgba(22, 163, 74, 0.35);
+                0 8px 18px rgba(239, 68, 68, 0.32);
         }
 
         .category-card button:active {
@@ -724,81 +791,112 @@
             return String(str).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
         }
 
+        function toggleDetalhes(btn) {
+            const card = btn.closest('.category-card');
+            if (!card) return;
+
+            const panel = card.querySelector('[data-card-details]');
+            if (!panel) return;
+
+            const isOpen = panel.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            btn.textContent = isOpen ? '- Detalhes' : '+ Detalhes';
+        }
+
         function renderItens(containerId, itens, extraCardClasses = '') {
             const container = document.getElementById(containerId);
 
             if (!container) return;
 
-            const html = itens.map(item => {
+            const html = itens.map((item, idx) => {
                 const qtd = (carrinho && carrinho[item.n]) ? carrinho[item.n].qtd : 0;
                 const safeName = escJs(item.n);
 
                 const rightControl = item.indisponivel ? `
             <button type="button" disabled aria-disabled="true"
-                class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#facc15]/70 text-black grid place-items-center shadow-lg opacity-60 cursor-not-allowed">
-                <i data-lucide="plus" class="w-4 h-4 md:w-4 md:h-4"></i>
+                class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15]/60 text-black grid place-items-center shadow-lg opacity-70 cursor-not-allowed text-xs font-black">
+                Indisponível
             </button>
                 ` : (qtd > 0 ? `
-            <div class="flex items-center bg-[#facc15] text-black rounded-[1rem] md:rounded-[1.1rem] shadow-lg overflow-hidden">
+            <div class="flex items-center bg-[#facc15] text-black rounded-full shadow-lg overflow-hidden">
                 <button type="button" aria-label="Diminuir ${item.n}"
                     onclick="ajustarQuantidade('${safeName}', -1)"
-                    class="w-8 h-8 md:w-9 md:h-9 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
-                    <i data-lucide="minus" class="w-4 h-4 md:w-4 md:h-4"></i>
+                    class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                    <i data-lucide="minus" class="w-4 h-4"></i>
                 </button>
-                <span class="min-w-6 md:min-w-7 text-center font-black text-[0.8rem] md:text-sm px-1">${qtd}</span>
+                <span class="min-w-7 text-center font-black text-sm px-1">${qtd}</span>
                 <button type="button" aria-label="Aumentar ${item.n}"
                     onclick="ajustarQuantidade('${safeName}', 1)"
-                    class="w-8 h-8 md:w-9 md:h-9 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
-                    <i data-lucide="plus" class="w-4 h-4 md:w-4 md:h-4"></i>
+                    class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
                 </button>
             </div>
                 ` : `
             <button type="button" aria-label="Adicionar ${item.n}"
                 onclick="add('${safeName}', ${item.a})"
-                class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-[#facc15] text-black grid place-items-center shadow-lg hover:bg-[#eab308] transition active:scale-95">
-                <i data-lucide="plus" class="w-4 h-4 md:w-4 md:h-4"></i>
+                class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15] text-black inline-flex items-center justify-center gap-2 shadow-lg hover:bg-[#eab308] transition active:scale-95 text-sm font-black">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Adicionar
             </button>
                 `);
 
                 return `
-                <div class="category-card group relative overflow-hidden rounded-[2.2rem] px-5 py-4 md:px-6 md:py-5 min-h-[8.5rem] md:min-h-[9.5rem] flex items-center gap-4 md:gap-5 lg:text-sm bg-black/15 border border-white/10 shadow-[0_18px_45px_rgba(0,0,0,0.45)] ${extraCardClasses}">
+                <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms">
+
+                        <img src="./img/esfihas/${item.i}.png"
+                            class="menu-card-photo absolute inset-0 w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
+                            alt="${item.n}" loading="lazy" decoding="async">
+
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/76 via-black/46 to-black/12"></div>
+                        <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/45 to-transparent"></div>
+
+                        <button type="button"
+                            onclick="toggleDetalhes(this)"
+                            aria-expanded="false"
+                            class="absolute top-5 right-5 md:top-6 md:right-6 z-50 text-white text-xs md:text-sm font-black uppercase tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] hover:text-[#facc15] transition">
+                            + Detalhes
+                        </button>
 
                         ${(item.m || item.nov) ? `
-                            <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 pointer-events-none flex flex-col gap-2">
+                            <div class="absolute top-5 left-5 md:top-6 md:left-6 z-30 pointer-events-none flex flex-col gap-2">
                                 ${item.m ? `
-                                    <span class="inline-flex items-center gap-2 bg-[#facc15]/90 text-black px-3 py-1 rounded-full text-[0.65rem] md:text-[0.7rem] font-black tracking-tight shadow-sm">
+                                    <span class="inline-flex items-center gap-2 whitespace-nowrap bg-[#facc15]/95 text-black px-3 py-1 rounded-full text-[0.63rem] md:text-[0.68rem] font-black tracking-tight shadow-sm uppercase">
                                         <span>Mais pedida</span>
                                     </span>
                                 ` : ''}
                                 ${item.nov ? `
-                                    <span class="inline-flex items-center gap-2 bg-pink-500/90 text-white px-3 py-1 rounded-full text-[0.65rem] md:text-[0.7rem] font-black tracking-tight shadow-sm">
+                                    <span class="inline-flex items-center gap-2 whitespace-nowrap bg-pink-500/90 text-white px-3 py-1 rounded-full text-[0.63rem] md:text-[0.68rem] font-black tracking-tight shadow-sm uppercase">
                                         <span>Novidade</span>
                                     </span>
                                 ` : ''}
                             </div>
                         ` : ''}
 
-                <div class="relative flex-shrink-0">
-                    <div class="w-28 h-28 md:w-32 md:h-32 rounded-[2rem] bg-white/10 border border-white/10 p-2.5 shadow-2xl ring-1 ring-white/10">
-                        <img src="./img/esfihas/${item.i}.png"
-                            class="w-full h-full object-cover rounded-[1.6rem] ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
-                            alt="${item.n}" loading="lazy" decoding="async" width="128" height="128">
-                    </div>
+                        ${item.indisponivel ? `
+                            <div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                                <span class="text-red-500 text-sm md:text-lg font-black tracking-[0.2em] rotate-[-18deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">INDISPONÍVEL</span>
+                            </div>
+                        ` : ''}
 
-                            ${item.indisponivel ? `
-                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                    <span class="text-red-600 text-sm md:text-lg font-black tracking-[0.2em] rotate-[-25deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">INDISPONÍVEL</span>
+                        <div class="relative z-10 min-h-[22rem] px-5 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4 flex flex-col justify-between">
+                            <div class="${(item.m || item.nov) ? 'pt-8 md:pt-8' : ''} max-w-[30rem]">
+                                <h3 class="text-xl md:text-2xl font-black text-white leading-tight drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)]">${item.n}</h3>
+                                <p class="sr-only">${item.d}</p>
+                            </div>
+
+                            <div class="mt-auto mb-0 flex items-end justify-between gap-4">
+                                <span class="text-xl md:text-2xl font-black text-[#facc15] whitespace-nowrap drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)]">${brl.format(item.a)}</span>
+                                <div class="flex items-center justify-end flex-shrink-0">${rightControl}</div>
+                            </div>
+
+                            <div data-card-details
+                                class="card-details-panel mt-4 rounded-2xl bg-black/42 border border-white/10 backdrop-blur-sm">
+                                <div class="p-4">
+                                    <span class="inline-flex mb-2 rounded-full bg-[#facc15] text-black px-3 py-1 text-[0.62rem] font-black uppercase">
+                                        Informações
+                                    </span>
+                                    <p class="text-white/90 text-sm leading-relaxed font-semibold">${item.d}</p>
                                 </div>
-                            ` : ''}
-                        </div>
-
-                        <div class="flex-1 w-full">
-                            <h3 class="text-base md:text-lg lg:text-base font-extrabold text-white leading-tight">${item.n}</h3>
-                            <p class="text-white/70 text-[0.72rem] md:text-xs lg:text-[0.72rem] leading-relaxed mt-0.5 font-medium line-clamp-2">${item.d}</p>
-
-                            <div class="mt-2 flex items-center justify-between gap-4">
-                                <span class="text-lg md:text-xl lg:text-lg font-black text-[#facc15]">${brl.format(item.a)}</span>
-                                <div class="flex items-center justify-end">${rightControl}</div>
                             </div>
                         </div>
                     </div>
@@ -927,12 +1025,41 @@
             el.scrollBy({ left: direction * amount, behavior: 'smooth' });
         }
 
+        let revealObserver = null;
+
+        function initCardReveal() {
+            const cards = Array.from(document.querySelectorAll('.menu-reveal'));
+            if (!cards.length) return;
+
+            if (!('IntersectionObserver' in window)) {
+                cards.forEach((card) => card.classList.add('is-visible'));
+                return;
+            }
+
+            if (revealObserver) revealObserver.disconnect();
+
+            revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle(
+                        'is-visible',
+                        entry.isIntersecting
+                    );
+                });
+            }, {
+                threshold: 0.18,
+                rootMargin: '0px 0px -8% 0px'
+            });
+
+            cards.forEach((card) => revealObserver.observe(card));
+        }
+
         function renderTudo() {
             renderDestaques();
             renderItens('lista-tradicionais', tradicionais);
             renderItens('lista-premium', premium, 'border-[#facc15]/30');
             renderItens('lista-doces', doces, 'border-pink-500/20');
             lucide.createIcons();
+            initCardReveal();
         }
 
         renderTudo();
