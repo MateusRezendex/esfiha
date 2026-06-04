@@ -716,6 +716,22 @@
                             Doces
                         </button>
 
+                        <!-- BEBIDAS -->
+                        <button type="button" data-section-filter="bebidas" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
+                    text-xs md:text-sm font-extrabold tracking-tight
+                    border border-white/10
+                    bg-white/5 text-white/85
+                    backdrop-blur-xl
+                    hover:bg-white/10
+                    hover:border-cyan-300/40
+                    hover:text-white
+                    hover:-translate-y-1
+                    active:scale-95
+                    transition-all duration-300">
+
+                            Bebidas
+                        </button>
+
                     </div>
                 </div>
             </div>
@@ -752,7 +768,7 @@
         </section>
 
         <!-- DOCES -->
-        <section id="sec-doces" data-section="doces" class="mb-10">
+        <section id="sec-doces" data-section="doces" class="mb-16">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -763,6 +779,21 @@
 
             <div class="grid gap-6">
                 <div id="lista-doces" class="grid gap-6 lg:grid-cols-2"></div>
+            </div>
+        </section>
+
+        <!-- BEBIDAS -->
+        <section id="sec-bebidas" data-section="bebidas" class="mb-10">
+
+            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+
+                <i data-lucide="cup-soda" class="w-8 h-8 md:w-10 md:h-10 text-[#d4a017]"></i>
+
+                BEBIDAS
+            </h2>
+
+            <div class="grid gap-6">
+                <div id="lista-bebidas" class="grid gap-6 lg:grid-cols-2"></div>
             </div>
         </section>
 
@@ -807,6 +838,80 @@
         let carrinho =
             JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
 
+        const origensPedido = {
+            direto: { prefixo: '10', nome: 'Site direto' },
+            site: { prefixo: '10', nome: 'Site direto' },
+            google: { prefixo: '11', nome: 'Google' },
+            whatsapp: { prefixo: '12', nome: 'WhatsApp' },
+
+            facebook: { prefixo: '20', nome: 'Facebook' },
+            fb: { prefixo: '20', nome: 'Facebook' },
+            anuncio: { prefixo: '20', nome: 'Anúncio Facebook' },
+            anuncio_facebook: { prefixo: '20', nome: 'Anúncio Facebook' },
+            facebook_feed: { prefixo: '21', nome: 'Facebook Feed' },
+            facebook_stories: { prefixo: '22', nome: 'Facebook Stories' },
+            facebook_reels: { prefixo: '23', nome: 'Facebook Reels' },
+            facebook_marketplace: { prefixo: '24', nome: 'Facebook Marketplace' },
+
+            instagram: { prefixo: '30', nome: 'Instagram' },
+            ig: { prefixo: '30', nome: 'Instagram' },
+            anuncio_instagram: { prefixo: '30', nome: 'Anúncio Instagram' },
+            instagram_ads: { prefixo: '30', nome: 'Anúncio Instagram' },
+            instagram_feed: { prefixo: '31', nome: 'Instagram Feed' },
+            instagram_stories: { prefixo: '32', nome: 'Instagram Stories' },
+            instagram_reels: { prefixo: '33', nome: 'Instagram Reels' },
+            instagram_bio: { prefixo: '34', nome: 'Instagram Bio' }
+        };
+
+        function normalizarOrigem(valor) {
+            return String(valor || '')
+                .trim()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9_-]/g, '');
+        }
+
+        function detectarOrigemPedido() {
+            const params = new URLSearchParams(window.location.search);
+            const origem = normalizarOrigem(
+                params.get('origem') ||
+                params.get('utm_source') ||
+                params.get('utm_medium')
+            );
+            const destino = normalizarOrigem(
+                params.get('destino') ||
+                params.get('posicionamento') ||
+                params.get('utm_content') ||
+                params.get('utm_campaign')
+            );
+            const origemComDestino = destino ? `${origem}_${destino}` : origem;
+
+            if (origensPedido[origemComDestino]) {
+                return origensPedido[origemComDestino];
+            }
+
+            if (origensPedido[origem]) {
+                return origensPedido[origem];
+            }
+
+            return origensPedido.direto;
+        }
+
+        function gerarNumeroPedido(origemPedido) {
+            const agora = new Date();
+            const dataHora = [
+                String(agora.getMonth() + 1).padStart(2, '0'),
+                String(agora.getDate()).padStart(2, '0'),
+                String(agora.getHours()).padStart(2, '0'),
+                String(agora.getMinutes()).padStart(2, '0'),
+                String(agora.getSeconds()).padStart(2, '0')
+            ].join('');
+            const finalAleatorio = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+
+            return `#${origemPedido.prefixo}${dataHora}${finalAleatorio}`;
+        }
+
         function escJs(str) {
             return String(str).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
         }
@@ -831,6 +936,7 @@
             const html = itens.map((item, idx) => {
                 const qtd = (carrinho && carrinho[item.n]) ? carrinho[item.n].qtd : 0;
                 const safeName = escJs(item.n);
+                const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
 
                 const rightControl = item.indisponivel ? `
             <button type="button" disabled aria-disabled="true"
@@ -863,7 +969,7 @@
                 return `
                 <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms">
 
-                        <img src="./img/esfihas/${item.i}.png"
+                        <img src="${imgSrc}"
                             class="menu-card-photo absolute inset-0 w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
                             alt="${item.n}" loading="lazy" decoding="async">
 
@@ -940,6 +1046,7 @@
             { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos", m: true },
             { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", a: 8.99, i: "brocolis" },
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
+            { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso.", a: 9.99, i: "lombo_creamcheese", nov: true },
             { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca"}
         ];
 
@@ -949,11 +1056,24 @@
             { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", a: 8.99, i: "banana_nevada", m: true },
             { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", a: 8.99, i: "abacaxi_nevado" },
             { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", a: 8.99, i: "churros", nov: true },
+            { n: "Banoffe", d: "Doce de leite cremoso, banana fatiada e marshmallow.", a: 8.99, i: "banoffee", nov: true },
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
+
+        const bebidas = [
+            {
+                n: "Coca-Cola 1 Litro",
+                d: "Refrigerante Coca-Cola sabor original, garrafa de 1 litro.",
+                a: 12.00,
+                img: "./img/bebidas/hHh0cL_Pn42fFR0zDFm09SQ52x6053zAzjvNO4-Geyc09s5Zu3Q7rTmbjzUdN-HNT588LBDkfTGxQu21KJLqAIqqjeo7LY4BCNndPlVARmL2cOhtjWtWaOfKvfnGaWZ18jOcqt5mG0-GfwXQAoSHEyyDA4cepdjmVJobnOBE3Ms.jpg"
+            }
+        ];
+
         function getDestaques() {
             const preferidos = [
                 "Carne",
+                "Lombo com Cream Cheese",
+                "Banoffe",
                 "Banana Nevada",
                 "Frango com Catupiry",
                 "3 Queijos",
@@ -1078,6 +1198,7 @@
             renderItens('lista-tradicionais', tradicionais);
             renderItens('lista-premium', premium, 'border-[#facc15]/30');
             renderItens('lista-doces', doces, 'border-pink-500/20');
+            renderItens('lista-bebidas', bebidas, 'border-cyan-300/20');
             lucide.createIcons();
             initCardReveal();
         }
@@ -1480,7 +1601,9 @@
 
         function confirmarWhatsApp() {
 
-            let msg = "Olá! Quero saborear o seguinte pedido:\n\n";
+            const origemPedido = detectarOrigemPedido();
+            const numeroPedido = gerarNumeroPedido(origemPedido);
+            let msg = `Olá! Quero saborear o seguinte pedido:\n\nPedido: *${numeroPedido}*\n\n`;
 
             for (const item in carrinho) {
                 msg += `*${carrinho[item].qtd}x* ${item}\n`;

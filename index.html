@@ -88,7 +88,7 @@
         <div class="w-full space-y-4 mb-6">
 
             <!-- CARDÁPIO -->
-            <a href="cardapio.html"
+            <a id="link-cardapio" href="cardapio.html"
                 class="flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
 
                 <div class="bg-[#facc15] p-3 rounded-full mr-4 shadow-lg text-black">
@@ -132,6 +132,18 @@
 
     <script>
         lucide.createIcons();
+
+        const linkCardapio = document.getElementById('link-cardapio');
+        const params = new URLSearchParams(window.location.search);
+        const origem = params.get('origem') || params.get('utm_source') || params.get('utm_medium');
+        const destino = params.get('destino') || params.get('posicionamento') || params.get('utm_content') || params.get('utm_campaign');
+
+        if (linkCardapio && (origem || destino)) {
+            const cardapioUrl = new URL(linkCardapio.getAttribute('href'), window.location.href);
+            if (origem) cardapioUrl.searchParams.set('origem', origem);
+            if (destino) cardapioUrl.searchParams.set('destino', destino);
+            linkCardapio.href = `${cardapioUrl.pathname.split('/').pop()}${cardapioUrl.search}`;
+        }
 
         document.getElementById('current-year').textContent =
             new Date().getFullYear();
