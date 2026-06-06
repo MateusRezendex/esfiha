@@ -47,6 +47,21 @@
             scrollbar-width: none;
         }
 
+        .feedback-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.28);
+            transition:
+                width 0.25s ease,
+                background-color 0.25s ease;
+        }
+
+        .feedback-dot.is-active {
+            width: 24px;
+            background: #facc15;
+        }
+
         .bg-fixed-container {
             position: fixed;
             top: 0;
@@ -795,6 +810,71 @@
             <div class="grid gap-6">
                 <div id="lista-bebidas" class="grid gap-6 lg:grid-cols-2"></div>
             </div>
+        </section>
+
+        <!-- FEEDBACKS -->
+        <section class="mb-10" aria-labelledby="feedback-title">
+            <div class="flex items-center justify-between gap-4 mb-6">
+                <h2 id="feedback-title"
+                    class="text-xl md:text-2xl font-black gold-text flex items-center gap-3">
+                    <i data-lucide="messages-square" class="w-8 h-8 md:w-10 md:h-10"></i>
+                    FEEDBACKS
+                </h2>
+
+                <div class="hidden md:flex items-center gap-2">
+                    <button type="button" onclick="scrollFeedback(-1)" aria-label="Feedback anterior"
+                        class="grid place-items-center w-10 h-10 rounded-full border border-[#d4a017]/40 bg-black/30 hover:bg-white/10 transition">
+                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                    </button>
+
+                    <button type="button" onclick="scrollFeedback(1)" aria-label="Proximo feedback"
+                        class="grid place-items-center w-10 h-10 rounded-full border border-[#d4a017]/40 bg-black/30 hover:bg-white/10 transition">
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="feedback-carousel"
+                class="flex gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-5"
+                aria-label="Carrossel de feedbacks">
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/Mari.jpg" alt="Feedback da cliente Mari"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/Marcia.jpg" alt="Feedback da cliente Marcia"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/Luke 24-05.jpg" alt="Feedback do cliente Luke"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/Imara.jpg" alt="Feedback da cliente Imara"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/huberson.jpeg" alt="Feedback do cliente Huberson"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/Edinalber.jpg" alt="Feedback do cliente Edinalber"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+            </div>
+
+            <div id="feedback-dots" class="flex items-center justify-center gap-2" aria-hidden="true"></div>
         </section>
 
     </main>
@@ -1632,6 +1712,89 @@
             if (lista) lista.innerHTML = '';
 
             fecharRevisao();
+        }
+
+        const feedbackCarousel =
+            document.getElementById('feedback-carousel');
+
+        const feedbackCards = feedbackCarousel
+            ? Array.from(
+                feedbackCarousel.querySelectorAll('.feedback-card')
+            )
+            : [];
+
+        const feedbackDots =
+            document.getElementById('feedback-dots');
+
+        if (feedbackDots) {
+            feedbackDots.innerHTML = feedbackCards
+                .map((_, index) =>
+                    `<span class="feedback-dot${index === 0 ? ' is-active' : ''}"></span>`
+                )
+                .join('');
+        }
+
+        function scrollFeedback(direction) {
+            if (!feedbackCarousel || !feedbackCards.length) return;
+
+            const cardWidth =
+                feedbackCards[0].getBoundingClientRect().width;
+
+            feedbackCarousel.scrollBy({
+                left: direction * (cardWidth + 20),
+                behavior: 'smooth'
+            });
+        }
+
+        function updateFeedbackDots() {
+            if (
+                !feedbackCarousel ||
+                !feedbackDots ||
+                !feedbackCards.length
+            ) return;
+
+            const carouselCenter =
+                feedbackCarousel.scrollLeft +
+                (feedbackCarousel.clientWidth / 2);
+
+            let activeIndex = 0;
+            let closestDistance = Infinity;
+
+            feedbackCards.forEach((card, index) => {
+                const cardCenter =
+                    card.offsetLeft + (card.offsetWidth / 2);
+
+                const distance =
+                    Math.abs(carouselCenter - cardCenter);
+
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    activeIndex = index;
+                }
+            });
+
+            Array.from(feedbackDots.children)
+                .forEach((dot, index) => {
+                    dot.classList.toggle(
+                        'is-active',
+                        index === activeIndex
+                    );
+                });
+        }
+
+        if (feedbackCarousel) {
+            feedbackCarousel.addEventListener(
+                'scroll',
+                updateFeedbackDots,
+                { passive: true }
+            );
+
+            window.addEventListener(
+                'resize',
+                updateFeedbackDots
+            );
+
+            updateFeedbackDots();
         }
     </script>
 
