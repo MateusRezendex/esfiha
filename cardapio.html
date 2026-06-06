@@ -1124,7 +1124,7 @@
 
         const premium = [
             { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos", m: true },
-            { n: "Carne e Queijo", d: "Carne moída temperada com uma generosa camada de queijo.", a: 8.99, i: "carne_queijo" },
+            { n: "Carne e Queijo", d: "Carne moída temperada com uma generosa camada de queijo.", a: 8.99, i: "carne_queijo", nov: true },
             { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", a: 8.99, i: "brocolis" },
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
             { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso.", a: 9.99, i: "lombo_creamcheese", nov: true },
@@ -1167,9 +1167,13 @@
             const all = [...tradicionais, ...premium, ...doces];
             const byName = new Map(all.map((it) => [it.n, it]));
 
-            const picks = preferidos
-                .map((n) => byName.get(n))
-                .filter(Boolean);
+            const picks = all.filter((item) => item.nov);
+
+            preferidos.forEach((name) => {
+                const item = byName.get(name);
+                if (!item || picks.some((pick) => pick.n === item.n)) return;
+                picks.push(item);
+            });
 
             if (picks.length < 5) {
                 all.forEach((it) => {
