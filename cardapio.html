@@ -1008,43 +1008,68 @@
             btn.textContent = isOpen ? '- Detalhes' : '+ Detalhes';
         }
 
+        function renderControleProduto(item) {
+            const qtd = (carrinho && carrinho[item.n]) ? carrinho[item.n].qtd : 0;
+            const safeName = escJs(item.n);
+
+            if (item.indisponivel) {
+                return `
+                    <button type="button" disabled aria-disabled="true"
+                        class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15]/60 text-black grid place-items-center shadow-lg opacity-70 cursor-not-allowed text-xs font-black">
+                        Indisponível
+                    </button>
+                `;
+            }
+
+            if (qtd > 0) {
+                return `
+                    <div class="flex items-center bg-[#facc15] text-black rounded-full shadow-lg overflow-hidden">
+                        <button type="button" aria-label="Diminuir ${item.n}"
+                            onclick="ajustarQuantidade('${safeName}', -1)"
+                            class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                            <i data-lucide="minus" class="w-4 h-4"></i>
+                        </button>
+                        <span class="min-w-7 text-center font-black text-sm px-1">${qtd}</span>
+                        <button type="button" aria-label="Aumentar ${item.n}"
+                            onclick="ajustarQuantidade('${safeName}', 1)"
+                            class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <button type="button" aria-label="Adicionar ${item.n}"
+                    onclick="add('${safeName}', ${item.a})"
+                    class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15] text-black inline-flex items-center justify-center gap-2 shadow-lg hover:bg-[#eab308] transition active:scale-95 text-sm font-black">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Adicionar
+                </button>
+            `;
+        }
+
+        function atualizarControleProduto(nome) {
+            const item = [...tradicionais, ...premium, ...doces, ...bebidas]
+                .find((produto) => produto.n === nome);
+
+            if (!item) return;
+
+            document.querySelectorAll('[data-product-control]').forEach((controle) => {
+                if (controle.dataset.productControl !== nome) return;
+                controle.innerHTML = renderControleProduto(item);
+            });
+
+            lucide.createIcons();
+        }
+
         function renderItens(containerId, itens, extraCardClasses = '') {
             const container = document.getElementById(containerId);
 
             if (!container) return;
 
             const html = itens.map((item, idx) => {
-                const qtd = (carrinho && carrinho[item.n]) ? carrinho[item.n].qtd : 0;
-                const safeName = escJs(item.n);
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
-
-                const rightControl = item.indisponivel ? `
-            <button type="button" disabled aria-disabled="true"
-                class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15]/60 text-black grid place-items-center shadow-lg opacity-70 cursor-not-allowed text-xs font-black">
-                Indisponível
-            </button>
-                ` : (qtd > 0 ? `
-            <div class="flex items-center bg-[#facc15] text-black rounded-full shadow-lg overflow-hidden">
-                <button type="button" aria-label="Diminuir ${item.n}"
-                    onclick="ajustarQuantidade('${safeName}', -1)"
-                    class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
-                    <i data-lucide="minus" class="w-4 h-4"></i>
-                </button>
-                <span class="min-w-7 text-center font-black text-sm px-1">${qtd}</span>
-                <button type="button" aria-label="Aumentar ${item.n}"
-                    onclick="ajustarQuantidade('${safeName}', 1)"
-                    class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
-                    <i data-lucide="plus" class="w-4 h-4"></i>
-                </button>
-            </div>
-                ` : `
-            <button type="button" aria-label="Adicionar ${item.n}"
-                onclick="add('${safeName}', ${item.a})"
-                class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15] text-black inline-flex items-center justify-center gap-2 shadow-lg hover:bg-[#eab308] transition active:scale-95 text-sm font-black">
-                <i data-lucide="plus" class="w-4 h-4"></i>
-                Adicionar
-            </button>
-                `);
 
                 return `
                 <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms">
@@ -1092,7 +1117,8 @@
 
                             <div class="mt-auto mb-0 flex items-end justify-between gap-4">
                                 <span class="text-xl md:text-2xl font-black text-[#facc15] whitespace-nowrap drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)]">${brl.format(item.a)}</span>
-                                <div class="flex items-center justify-end flex-shrink-0">${rightControl}</div>
+                                <div data-product-control="${item.n}"
+                                    class="flex items-center justify-end flex-shrink-0">${renderControleProduto(item)}</div>
                             </div>
 
                             <div data-card-details
@@ -1339,7 +1365,7 @@
             salvarCarrinho();
 
             atualizarTotal();
-            renderTudo();
+            atualizarControleProduto(nome);
 
             const t = document.getElementById('toast');
 
@@ -1661,7 +1687,7 @@
 
             salvarCarrinho();
             atualizarTotal();
-            renderTudo();
+            atualizarControleProduto(item);
 
             if (Object.keys(carrinho).length === 0) {
                 const lista = document.getElementById('lista-revisao');
