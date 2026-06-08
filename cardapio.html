@@ -731,22 +731,6 @@
                             Doces
                         </button>
 
-                        <!-- BEBIDAS -->
-                        <button type="button" data-section-filter="bebidas" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
-                    text-xs md:text-sm font-extrabold tracking-tight
-                    border border-white/10
-                    bg-white/5 text-white/85
-                    backdrop-blur-xl
-                    hover:bg-white/10
-                    hover:border-cyan-300/40
-                    hover:text-white
-                    hover:-translate-y-1
-                    active:scale-95
-                    transition-all duration-300">
-
-                            Bebidas
-                        </button>
-
                     </div>
                 </div>
             </div>
@@ -794,21 +778,6 @@
 
             <div class="grid gap-6">
                 <div id="lista-doces" class="grid gap-6 lg:grid-cols-2"></div>
-            </div>
-        </section>
-
-        <!-- BEBIDAS -->
-        <section id="sec-bebidas" data-section="bebidas" class="mb-10">
-
-            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
-
-                <i data-lucide="cup-soda" class="w-8 h-8 md:w-10 md:h-10 text-[#d4a017]"></i>
-
-                BEBIDAS
-            </h2>
-
-            <div class="grid gap-6">
-                <div id="lista-bebidas" class="grid gap-6 lg:grid-cols-2"></div>
             </div>
         </section>
 
@@ -870,6 +839,30 @@
                 <figure
                     class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
                     <img src="./img/feedback/Edinalber.jpg" alt="Feedback do cliente Edinalber"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.24.jpeg" alt="Feedback recebido pelo WhatsApp"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.24 (1).jpeg" alt="Feedback recebido pelo WhatsApp"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.25.jpeg" alt="Feedback recebido pelo WhatsApp"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.26.jpeg" alt="Feedback recebido pelo WhatsApp"
                         class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
                 </figure>
             </div>
@@ -1140,17 +1133,17 @@
 
         const tradicionais = [
             { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", a: 7.99, i: "frango", m: true },
-            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne", m: true },
-            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e oregano.", a: 7.99, i: "queijo" },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne" },
+            { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e oregano.", a: 7.99, i: "queijo", m: true },
             { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e oregano.", a: 7.99, i: "presunto" },
-            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa" },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa", m: true },
             { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", a: 7.99, i: "bacon" },
-            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon", m: true }
+            { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon" }
         ];
 
         const premium = [
-            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos", m: true },
-            { n: "Carne e Queijo", d: "Carne moída temperada com uma generosa camada de queijo.", a: 8.99, i: "carne_queijo", nov: true },
+            { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos" },
+            { n: "Carne e Queijo", d: "Carne moída temperada com uma generosa camada de queijo.", a: 8.99, i: "carne_queijo", m: true },
             { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", a: 8.99, i: "brocolis" },
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
             { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso.", a: 9.99, i: "lombo_creamcheese", nov: true },
@@ -1170,44 +1163,27 @@
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
 
-        const bebidas = [
-            {
-                n: "Coca-Cola 1 Litro",
-                d: "Refrigerante Coca-Cola sabor original, garrafa de 1 litro.",
-                a: 12.00,
-                img: "./img/bebidas/hHh0cL_Pn42fFR0zDFm09SQ52x6053zAzjvNO4-Geyc09s5Zu3Q7rTmbjzUdN-HNT588LBDkfTGxQu21KJLqAIqqjeo7LY4BCNndPlVARmL2cOhtjWtWaOfKvfnGaWZ18jOcqt5mG0-GfwXQAoSHEyyDA4cepdjmVJobnOBE3Ms.jpg"
-            }
-        ];
-
         function getDestaques() {
             const preferidos = [
-                "Carne",
-                "Lombo com Cream Cheese",
-                "Banoffe",
-                "Banana Nevada",
+                "Carne e Queijo",
+                "Calabresa com Cebola",
+                "Queijo",
                 "Frango com Catupiry",
-                "3 Queijos",
-                "Frango com Bacon"
+                "Banana Nevada"
             ];
 
             const all = [...tradicionais, ...premium, ...doces];
             const byName = new Map(all.map((it) => [it.n, it]));
 
-            const picks = all.filter((item) => item.nov);
+            const picks = preferidos
+                .map((n) => byName.get(n))
+                .filter(Boolean);
 
-            preferidos.forEach((name) => {
-                const item = byName.get(name);
-                if (!item || picks.some((pick) => pick.n === item.n)) return;
-                picks.push(item);
+            all.forEach((it) => {
+                if (!it.nov) return;
+                if (picks.some((p) => p.n === it.n)) return;
+                picks.push(it);
             });
-
-            if (picks.length < 5) {
-                all.forEach((it) => {
-                    if (picks.length >= 5) return;
-                    if (picks.some((p) => p.n === it.n)) return;
-                    picks.push(it);
-                });
-            }
 
             return picks;
         }
@@ -1312,7 +1288,6 @@
             renderItens('lista-tradicionais', tradicionais);
             renderItens('lista-premium', premium, 'border-[#facc15]/30');
             renderItens('lista-doces', doces, 'border-pink-500/20');
-            renderItens('lista-bebidas', bebidas, 'border-cyan-300/20');
             lucide.createIcons();
             initCardReveal();
         }
