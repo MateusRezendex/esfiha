@@ -38,6 +38,69 @@
             overflow-x: hidden;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .chef-callout {
+            position: relative;
+            max-width: 14rem;
+            color: #4a0000;
+            background: linear-gradient(135deg, #fde047, #d4a017);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            animation: chef-callout-float 2.4s ease-in-out infinite;
+        }
+
+        @keyframes chef-callout-float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .chef-callout:hover,
+        .chef-callout:focus-visible {
+            animation-play-state: paused;
+            transform: translateY(0);
+        }
+
+        .chef-callout::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -0.7rem;
+            width: 1.4rem;
+            height: 1.4rem;
+            background: #efd02d;
+            transform: translateY(-50%) rotate(45deg);
+            border-radius: 0.2rem;
+        }
+
+        .chef-callout:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 4px;
+        }
+
+        #feedbacks {
+            scroll-margin-top: 6.5rem;
+        }
+
+        @media (max-width: 639px) {
+            .chef-callout {
+                max-width: 12rem;
+            }
+
+            .chef-callout::before {
+                top: -0.55rem;
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+            }
+        }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -277,6 +340,14 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .chef-callout {
+                animation: none;
+            }
+
             .menu-reveal {
                 opacity: 1;
                 transform: none;
@@ -613,8 +684,22 @@
         <!-- CHEFINHO -->
         <section class="mb-8 text-center flex flex-col items-center">
 
-            <img src="./img/chefinho.png" alt="Chef" decoding="async"
-                class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7 mb-4">
+                <img src="./img/chefinho.png" alt="Chef" decoding="async"
+                    class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
+
+                <a href="#feedbacks"
+                    class="chef-callout group rounded-2xl px-5 py-4 text-left font-extrabold leading-snug"
+                    aria-label="Ir para os feedbacks de clientes">
+                    <span class="relative z-10">
+                        Veja o que nossos clientes estão dizendo
+                    </span>
+                    <span class="relative z-10 mt-2 flex items-center gap-1 text-xs font-bold uppercase tracking-wide">
+                        VER AVALIAÇÕES
+                        <i data-lucide="arrow-down" class="w-4 h-4 transition-transform group-hover:translate-y-1"></i>
+                    </span>
+                </a>
+            </div>
 
             <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
 
@@ -782,7 +867,7 @@
         </section>
 
         <!-- FEEDBACKS -->
-        <section class="mb-10" aria-labelledby="feedback-title">
+        <section id="feedbacks" class="mb-10" aria-labelledby="feedback-title">
             <div class="flex items-center justify-between gap-4 mb-6">
                 <h2 id="feedback-title"
                     class="text-xl md:text-2xl font-black gold-text flex items-center gap-3">

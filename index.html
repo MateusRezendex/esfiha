@@ -59,6 +59,63 @@
             background-color: rgba(255, 255, 255, 0.1);
             transform: scale(1.02);
         }
+
+        .feedback-callout {
+            position: relative;
+            width: min(14rem, 100%);
+            color: #4a0000;
+            background: linear-gradient(135deg, #fde047, #d4a017);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            animation: callout-float 2.4s ease-in-out infinite;
+        }
+
+        @keyframes callout-float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .feedback-callout:hover,
+        .feedback-callout:focus-visible {
+            animation-play-state: paused;
+            transform: translateY(0);
+        }
+
+        .feedback-callout::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -0.7rem;
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: 0.2rem;
+            background: #efd02d;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .feedback-callout:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 767px) {
+            .feedback-callout::before {
+                top: -0.55rem;
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .feedback-callout {
+                animation: none;
+            }
+        }
     </style>
 </head>
 
@@ -67,10 +124,10 @@
             src="https://www.facebook.com/tr?id=2164884420944203&ev=PageView&noscript=1" /></noscript>
 
     <main
-        class="h-full w-full max-w-md mx-auto px-6 py-2 flex flex-col items-center justify-center relative z-10">
+        class="h-full w-full max-w-2xl mx-auto px-6 py-2 flex flex-col items-center justify-center relative z-10">
 
         <!-- LOGO -->
-        <div class="flex-none flex flex-col items-center justify-center w-full pt-4 mb-10">
+        <div class="relative flex-none flex flex-col items-center justify-center gap-5 w-full pt-2 mb-5 sm:mb-8">
 
             <div class="relative flex flex-col items-center">
 
@@ -78,8 +135,22 @@
 
                 <img src="./img/logo.png"
                     alt="Esfiha Logo"
-                    class="relative max-h-[45vh] w-auto object-contain transition-all duration-500">
+                    class="relative max-h-[34vh] sm:max-h-[45vh] w-auto object-contain transition-all duration-500">
 
+            </div>
+
+            <div
+                class="flex justify-center md:absolute md:left-[calc(50%+11rem)] md:top-1/2 md:w-56 md:-translate-y-1/2">
+                <a id="link-feedbacks" href="cardapio.html#feedbacks"
+                    class="feedback-callout flex-none rounded-2xl px-5 py-4 text-left font-bold leading-snug"
+                    aria-label="Ver avaliações dos clientes">
+                    <span class="relative z-10 block">
+                        Veja o que nossos clientes estão dizendo
+                    </span>
+                    <span class="relative z-10 mt-2 flex items-center gap-1 text-xs font-bold uppercase tracking-wide">
+                        Ver avaliações
+                    </span>
+                </a>
             </div>
 
         </div>
@@ -134,16 +205,19 @@
         lucide.createIcons();
 
         const linkCardapio = document.getElementById('link-cardapio');
+        const linkFeedbacks = document.getElementById('link-feedbacks');
         const params = new URLSearchParams(window.location.search);
         const origem = params.get('origem') || params.get('utm_source') || params.get('utm_medium');
         const destino = params.get('destino') || params.get('posicionamento') || params.get('utm_content') || params.get('utm_campaign');
 
-        if (linkCardapio && (origem || destino)) {
-            const cardapioUrl = new URL(linkCardapio.getAttribute('href'), window.location.href);
+        [linkCardapio, linkFeedbacks].forEach((link) => {
+            if (!link || (!origem && !destino)) return;
+
+            const cardapioUrl = new URL(link.getAttribute('href'), window.location.href);
             if (origem) cardapioUrl.searchParams.set('origem', origem);
             if (destino) cardapioUrl.searchParams.set('destino', destino);
-            linkCardapio.href = `${cardapioUrl.pathname.split('/').pop()}${cardapioUrl.search}`;
-        }
+            link.href = `${cardapioUrl.pathname.split('/').pop()}${cardapioUrl.search}${cardapioUrl.hash}`;
+        });
 
         document.getElementById('current-year').textContent =
             new Date().getFullYear();
