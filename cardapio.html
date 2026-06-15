@@ -768,22 +768,6 @@
                             Todos
                         </button>
 
-                        <!-- TRADICIONAIS -->
-                        <button type="button" data-section-filter="tradicionais" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
-                    text-xs md:text-sm font-extrabold tracking-tight
-                    border border-white/10
-                    bg-white/5 text-white/85
-                    backdrop-blur-xl
-                    hover:bg-white/10
-                    hover:border-[#facc15]/30
-                    hover:text-white
-                    hover:-translate-y-1
-                    active:scale-95
-                    transition-all duration-300">
-
-                            Tradicionais
-                        </button>
-
                         <!-- PREMIUM -->
                         <button type="button" data-section-filter="premium" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
                     text-xs md:text-sm font-extrabold tracking-tight
@@ -798,6 +782,22 @@
                     transition-all duration-300">
 
                             Premium
+                        </button>
+
+                        <!-- TRADICIONAIS -->
+                        <button type="button" data-section-filter="tradicionais" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
+                    text-xs md:text-sm font-extrabold tracking-tight
+                    border border-white/10
+                    bg-white/5 text-white/85
+                    backdrop-blur-xl
+                    hover:bg-white/10
+                    hover:border-[#facc15]/30
+                    hover:text-white
+                    hover:-translate-y-1
+                    active:scale-95
+                    transition-all duration-300">
+
+                            Tradicionais
                         </button>
 
                         <!-- DOCES -->
@@ -821,21 +821,6 @@
             </div>
         </section>
 
-        <!-- TRADICIONAIS -->
-        <section id="sec-tradicionais" data-section="tradicionais" class="mb-16">
-
-            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
-
-                <i data-lucide="flame" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
-
-                TRADICIONAIS
-            </h2>
-
-            <div class="grid gap-6">
-                <div id="lista-tradicionais" class="grid gap-6 lg:grid-cols-2"></div>
-            </div>
-        </section>
-
         <!-- PREMIUM -->
         <section id="sec-premium" data-section="premium" class="mb-16">
 
@@ -848,6 +833,21 @@
 
             <div class="grid gap-6">
                 <div id="lista-premium" class="grid gap-6 lg:grid-cols-2"></div>
+            </div>
+        </section>
+
+        <!-- TRADICIONAIS -->
+        <section id="sec-tradicionais" data-section="tradicionais" class="mb-16">
+
+            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+
+                <i data-lucide="flame" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+
+                TRADICIONAIS
+            </h2>
+
+            <div class="grid gap-6">
+                <div id="lista-tradicionais" class="grid gap-6 lg:grid-cols-2"></div>
             </div>
         </section>
 
@@ -1152,7 +1152,9 @@
 
             if (!container) return;
 
-            const html = itens.map((item, idx) => {
+            const itensOrdenados = [...itens].sort((a, b) => b.a - a.a);
+
+            const html = itensOrdenados.map((item, idx) => {
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
 
                 return `
@@ -1276,7 +1278,7 @@
                 picks.push(it);
             });
 
-            return picks;
+            return picks.sort((a, b) => b.a - a.a);
         }
 
         function renderDestaques() {
