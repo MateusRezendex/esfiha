@@ -7,26 +7,45 @@
 
     <title>Cardápio Completo</title>
 
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <!-- Meta Pixel Code -->
     <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2164884420944203');
-        fbq('track', 'PageView');
+        window.fbq = window.fbq || function () {
+            window.fbq.callMethod
+                ? window.fbq.callMethod.apply(window.fbq, arguments)
+                : window.fbq.queue.push(arguments);
+        };
+        window._fbq = window._fbq || window.fbq;
+        window.fbq.push = window.fbq;
+        window.fbq.loaded = false;
+        window.fbq.version = '2.0';
+        window.fbq.queue = window.fbq.queue || [];
+        window.fbq('init', '2164884420944203');
+        window.fbq('track', 'PageView');
+
+        const loadFacebookPixel = () => {
+            if (window.fbq.scriptLoaded) return;
+            window.fbq.scriptLoaded = true;
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+            document.head.appendChild(script);
+        };
+
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadFacebookPixel, { timeout: 2500 });
+        } else {
+            window.addEventListener('load', loadFacebookPixel, { once: true });
+        }
     </script>
     <!-- End Meta Pixel Code -->
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest" defer onload="window.renderIcons && window.renderIcons()"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
@@ -190,6 +209,10 @@
                 box-shadow 0.3s ease,
                 border-color 0.3s ease,
                 background 0.3s ease;
+
+            contain: layout paint;
+            content-visibility: auto;
+            contain-intrinsic-size: 352px;
         }
 
         /* borda desligada neste modelo com foto full-bleed */
@@ -353,6 +376,12 @@
                 transform: none;
                 filter: none;
                 transition: none;
+            }
+        }
+
+        @media (hover: none) {
+            .category-card img {
+                will-change: auto;
             }
         }
 
@@ -685,7 +714,8 @@
         <section class="mb-8 text-center flex flex-col items-center">
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7 mb-4">
-                <img src="./img/chefinho.png" alt="Chef" decoding="async"
+                <img src="./img/chefinho.png" alt="Chef" width="500" height="500" decoding="async"
+                    fetchpriority="high"
                     class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
 
                 <a href="#feedbacks"
@@ -752,7 +782,7 @@
     bg-gradient-to-r
     from-white/[0.03]
     via-transparent
-    to-white/[0.02]"">
+                    to-white/[0.02]">
                     </div>
 
                     <div class=" flex gap-3 overflow-x-auto no-scrollbar relative z-10">
@@ -822,7 +852,7 @@
         </section>
 
         <!-- PREMIUM -->
-        <section id="sec-premium" data-section="premium" class="mb-16">
+        <section id="sec-premium" data-section="premium" class="mb-16 scroll-mt-36">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -837,7 +867,7 @@
         </section>
 
         <!-- TRADICIONAIS -->
-        <section id="sec-tradicionais" data-section="tradicionais" class="mb-16">
+        <section id="sec-tradicionais" data-section="tradicionais" class="mb-16 scroll-mt-36">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -852,7 +882,7 @@
         </section>
 
         <!-- DOCES -->
-        <section id="sec-doces" data-section="doces" class="mb-16">
+        <section id="sec-doces" data-section="doces" class="mb-16 scroll-mt-36">
 
             <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
 
@@ -1012,13 +1042,34 @@
     </div>
 
     <script>
+        function renderIcons(root = document) {
+            if (!window.lucide) return;
+            lucide.createIcons({
+                attrs: {
+                    'aria-hidden': 'true'
+                },
+                nameAttr: 'data-lucide',
+                root
+            });
+        }
+
+        window.renderIcons = renderIcons;
+
         const brl = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
         });
 
-        let carrinho =
-            JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+        function carregarCarrinho() {
+            try {
+                return JSON.parse(localStorage.getItem('carrinho_esfiha')) || {};
+            } catch {
+                return {};
+            }
+        }
+
+        let carrinho = carregarCarrinho();
+        let toastTimer = null;
 
         const origensPedido = {
             direto: { prefixo: '10', nome: 'Site direto' },
@@ -1098,6 +1149,32 @@
             return String(str).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
         }
 
+        const imageDimensions = {
+            '3queijos': [903, 852],
+            abacaxi_nevado: [612, 542],
+            bacon: [913, 934],
+            banana_nevada: [748, 709],
+            banoffee: [896, 633],
+            brocolis: [873, 872],
+            calabresa: [907, 872],
+            carne: [845, 719],
+            carne_queijo: [781, 679],
+            carne_seca: [764, 706],
+            chocolate_morango: [714, 693],
+            churros: [925, 904],
+            frango: [825, 758],
+            frango_bacon: [733, 664],
+            laka: [810, 723],
+            laka_morango: [836, 788],
+            lombo: [917, 869],
+            lombo_creamcheese: [796, 635],
+            MM: [768, 757],
+            presunto: [941, 916],
+            queijo: [920, 916],
+            romeu_julieta: [767, 640],
+            torta_limao: [776, 656]
+        };
+
         function toggleDetalhes(btn) {
             const card = btn.closest('.category-card');
             if (!card) return;
@@ -1152,8 +1229,7 @@
         }
 
         function atualizarControleProduto(nome) {
-            const item = [...tradicionais, ...premium, ...doces, ...bebidas]
-                .find((produto) => produto.n === nome);
+            const item = getProdutos().find((produto) => produto.n === nome);
 
             if (!item) return;
 
@@ -1162,7 +1238,19 @@
                 controle.innerHTML = renderControleProduto(item);
             });
 
-            lucide.createIcons();
+            renderIcons();
+        }
+
+        function atualizarTodosControlesProdutos() {
+            document.querySelectorAll('[data-product-control]').forEach((controle) => {
+                const item = getProdutos()
+                    .find((produto) => produto.n === controle.dataset.productControl);
+
+                if (!item) return;
+                controle.innerHTML = renderControleProduto(item);
+            });
+
+            renderIcons();
         }
 
         function renderItens(containerId, itens, extraCardClasses = '') {
@@ -1174,13 +1262,16 @@
 
             const html = itensOrdenados.map((item, idx) => {
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
+                const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
+                const isInitialProduct = containerId === 'lista-premium' && idx < 2;
 
                 return `
                 <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms">
 
                         <img src="${imgSrc}"
                             class="menu-card-photo absolute inset-0 w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
-                            alt="${item.n}" loading="lazy" decoding="async">
+                            alt="${item.n}" width="${imgWidth}" height="${imgHeight}"
+                            loading="${isInitialProduct ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${isInitialProduct ? 'high' : 'low'}">
 
                         <div class="absolute inset-0 bg-gradient-to-r from-black/76 via-black/46 to-black/12"></div>
                         <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/45 to-transparent"></div>
@@ -1246,7 +1337,7 @@
             { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", a: 7.99, i: "frango", m: true },
             { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne" },
             { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e oregano.", a: 7.99, i: "queijo", m: true },
-            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e oregano.", a: 7.99, i: "presunto", indisponivel:true },
+            { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e oregano.", a: 7.99, i: "presunto" },
             { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa", m: true },
             { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", a: 7.99, i: "bacon" },
             { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon" }
@@ -1273,6 +1364,10 @@
             { n: "Torta de Limão", d: "Mousse de limão com Marshmallow.", a: 8.99, i: "torta_limao", nov: true },
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
+
+        function getProdutos() {
+            return [...tradicionais, ...premium, ...doces];
+        }
 
         function getDestaques() {
             const preferidos = [
@@ -1316,13 +1411,15 @@
                 const cardWidth = 'w-[85vw] sm:w-[36rem]';
                 const disabled = !!item.indisponivel;
                 const safeName = String(item.n).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+                const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
 
                 return `
                     <article class="${cardWidth} flex-shrink-0 snap-start relative overflow-hidden rounded-[2.5rem] shadow-[0_16px_32px_rgba(0,0,0,0.18)]">
                         <div class="absolute inset-0">
                             <img src="./img/esfihas/${item.i}.png" alt="" aria-hidden="true"
                                 class="w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : 'brightness-75'}"
-                                loading="lazy" decoding="async">
+                                width="${imgWidth}" height="${imgHeight}"
+                                loading="${idx === 0 ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${idx === 0 ? 'high' : 'low'}">
                         </div>
 
                         <div class="relative z-10 p-6 md:p-7 min-h-[13.5rem] flex flex-col justify-end gap-3">
@@ -1399,7 +1496,7 @@
             renderItens('lista-tradicionais', tradicionais);
             renderItens('lista-premium', premium, 'border-[#facc15]/30');
             renderItens('lista-doces', doces, 'border-pink-500/20');
-            lucide.createIcons();
+            renderIcons();
             initCardReveal();
         }
 
@@ -1437,6 +1534,18 @@
             }, { passive: true });
         }
 
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) fecharRevisao();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+                fecharRevisao();
+            }
+        });
+
         function add(nome, preco) {
 
             if (!carrinho[nome]) {
@@ -1455,10 +1564,14 @@
 
             const t = document.getElementById('toast');
 
-            t.style.opacity = '1';
+            if (toastTimer) clearTimeout(toastTimer);
 
-            setTimeout(() => {
+            t.style.opacity = '1';
+            t.style.transform = 'translateX(-50%) translateY(0)';
+
+            toastTimer = setTimeout(() => {
                 t.style.opacity = '0';
+                t.style.transform = 'translateX(-50%) translateY(8px)';
             }, 1000);
         }
 
@@ -1605,7 +1718,7 @@
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
 
-            atualizarScrollModal();
+            requestAnimationFrame(atualizarScrollModal);
 
             const btnEnviar = document.getElementById('btn-enviar');
             if (btnEnviar) btnEnviar.focus();
@@ -1656,9 +1769,9 @@
 
         function limparSacola() {
             carrinho = {};
-            localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
+            localStorage.removeItem('carrinho_esfiha');
             atualizarTotal();
-            renderTudo();
+            atualizarTodosControlesProdutos();
 
             const lista = document.getElementById('lista-revisao');
             if (lista) lista.innerHTML = '';
@@ -1822,7 +1935,7 @@
             carrinho = {};
             localStorage.removeItem('carrinho_esfiha');
             atualizarTotal();
-            renderTudo();
+            atualizarTodosControlesProdutos();
 
             const lista = document.getElementById('lista-revisao');
             if (lista) lista.innerHTML = '';
