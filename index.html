@@ -60,6 +60,18 @@
             transform: scale(1.02);
         }
 
+        .home-action {
+            min-height: 3.5rem;
+        }
+
+        .home-action-icon {
+            width: 3rem;
+            height: 3rem;
+            display: grid;
+            place-items: center;
+            flex: 0 0 3rem;
+        }
+
         .feedback-callout {
             position: relative;
             width: min(14rem, 100%);
@@ -160,9 +172,9 @@
 
             <!-- CARDÁPIO -->
             <a id="link-cardapio" href="cardapio.html"
-                class="flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
+                class="home-action flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
 
-                <div class="bg-[#facc15] p-3 rounded-full mr-4 shadow-lg text-black">
+                <div class="home-action-icon bg-[#facc15] rounded-full mr-4 shadow-lg text-black">
 
                     <!-- ÍCONE CARDÁPIO -->
                     <i data-lucide="book-open-text" class="w-6 h-6"></i>
@@ -178,9 +190,9 @@
             <!-- WHATSAPP -->
             <a href="https://wa.me/5564992186249?text=Olá! Gostaria de fazer um pedido."
                 target="_blank"
-                class="flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
+                class="home-action flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
 
-                <div class="bg-[#16a34a] p-3 rounded-full mr-4 shadow-lg">
+                <div class="home-action-icon bg-[#16a34a] rounded-full mr-4 shadow-lg">
 
                     <i data-lucide="message-circle" class="w-6 h-6"></i>
 
@@ -188,6 +200,24 @@
 
                 <span class="flex-1 text-center font-bold text-sm tracking-wide uppercase">
                     Peça pelo WhatsApp
+                </span>
+
+            </a>
+
+            <!-- INSTAGRAM -->
+            <a href="https://www.instagram.com/esfihasdelivery_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home-action flex items-center p-1 pr-6 border-2 gold-border rounded-full glass-btn btn-hover transition-all duration-300">
+
+                <div class="home-action-icon bg-gradient-to-br from-[#f97316] via-[#e11d48] to-[#7c3aed] rounded-full mr-4 shadow-lg">
+
+                    <i data-lucide="instagram" class="w-6 h-6"></i>
+
+                </div>
+
+                <span class="flex-1 text-center font-bold text-sm tracking-wide uppercase">
+                    Siga no Instagram
                 </span>
 
             </a>
