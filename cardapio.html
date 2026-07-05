@@ -1373,6 +1373,18 @@
             return [...tradicionais, ...premium, ...doces];
         }
 
+        function ordenarItensParaPedido() {
+            const nomesDoces = new Set(doces.map((item) => item.n));
+
+            return Object.keys(carrinho).sort((a, b) => {
+                const aDoce = nomesDoces.has(a);
+                const bDoce = nomesDoces.has(b);
+
+                if (aDoce === bDoce) return 0;
+                return aDoce ? 1 : -1;
+            });
+        }
+
         function getDestaques() {
             const preferidos = [
                 "Carne e Queijo",
@@ -1922,9 +1934,9 @@
             const numeroPedido = gerarNumeroPedido(origemPedido);
             let msg = `Olá! Quero saborear o seguinte pedido:\n\nPedido: *${numeroPedido}*\n\n`;
 
-            for (const item in carrinho) {
+            ordenarItensParaPedido().forEach((item) => {
                 msg += `*${carrinho[item].qtd}x* ${item}\n`;
-            }
+            });
             msg += `\nSubtotal: ${brl.format(subtotal)}`;
 
             msg += `\nTaxa de entrega: *Consultar taxa de entrega*`;
