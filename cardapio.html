@@ -758,13 +758,13 @@
 
             <div class="relative">
                 <button id="carousel-prev" type="button" aria-label="Voltar destaques"
-                    class="hidden md:grid place-items-center absolute left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
+                    class="grid place-items-center absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
                     onclick="scrollDestaques(-1)">
                     <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </button>
 
                 <button id="carousel-next" type="button" aria-label="Avançar destaques"
-                    class="hidden md:grid place-items-center absolute right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
+                    class="grid place-items-center absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
                     onclick="scrollDestaques(1)">
                     <i data-lucide="chevron-right" class="w-5 h-5"></i>
                 </button>
@@ -925,6 +925,18 @@
             <div id="feedback-carousel"
                 class="flex gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-5"
                 aria-label="Carrossel de feedbacks">
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/WhatsApp Image 2026-07-12 at 22.28.10.jpeg" alt="Feedback recebido pelo WhatsApp"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
+                <figure
+                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
+                    <img src="./img/feedback/WhatsApp Image 2026-07-12 at 22.28.10 (1).jpeg" alt="Feedback recebido pelo WhatsApp"
+                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
+                </figure>
+
                 <figure
                     class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
                     <img src="./img/feedback/Mari.jpg" alt="Feedback da cliente Mari"
@@ -1155,6 +1167,7 @@
 
         const imageDimensions = {
             '3queijos': [903, 852],
+            '4queijos': [1216, 1293],
             abacaxi_nevado: [612, 542],
             bacon: [913, 934],
             banana_nevada: [748, 709],
@@ -1162,15 +1175,20 @@
             brocolis: [873, 872],
             calabresa: [907, 872],
             carne: [845, 719],
+            carne_cheddar_bacon: [1254, 1254],
             carne_queijo: [781, 679],
             carne_seca: [764, 706],
+            cheddar_bacon: [854, 672],
             chocolate_morango: [714, 693],
             churros: [925, 904],
+            calabresa_creamcheese: [971, 988],
             frango: [825, 758],
             frango_bacon: [733, 664],
+            frango_cheddar_bacon: [993, 941],
             laka: [810, 723],
             laka_morango: [836, 788],
             lombo: [917, 869],
+            lombo_cheddar: [1171, 1343],
             lombo_creamcheese: [796, 635],
             MM: [768, 757],
             presunto: [941, 916],
@@ -1338,34 +1356,40 @@
         }
 
         const tradicionais = [
-            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", a: 7.99, i: "frango", m: true },
-            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne" },
+            { n: "Frango com Catupiry", d: "Frango desfiado com catupiry original e cheiro verde fresco.", a: 7.99, i: "frango" },
+            { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne", m: true },
             { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e oregano.", a: 7.99, i: "queijo", m: true },
             { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e oregano.", a: 7.99, i: "presunto" },
-            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa", m: true },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa" },
             { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", a: 7.99, i: "bacon" },
             { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon" }
         ];
 
         const premium = [
             { n: "3 Queijos", d: "A união nobre de Mussarela, Catupiry e Provolone defumado.", a: 8.99, i: "3queijos" },
+            { n: "4 Queijos", d: "Mussarela, cheddar, catupiry e provolone em uma combinação cremosa.", a: 9.99, i: "4queijos", nov: true },
             { n: "Carne e Queijo", d: "Carne moída temperada com uma generosa camada de queijo.", a: 8.99, i: "carne_queijo", m: true },
+            { n: "Carne, Cheddar e Bacon", d: "Carne moída temperada, cheddar cremoso e bacon crocante.", a: 10.50, i: "carne_cheddar_bacon", nov: true },
+            { n: "Cheddar com Bacon", d: "Cheddar cremoso com bacon crocante.", a: 8.99, i: "cheddar_bacon", img: "./img/esfihas/cheddar_bacon.jpeg", nov: true },
             { n: "Brócolis com Queijo", d: "Brócolis fresco no vapor, mussarela e pedaços de bacon.", a: 8.99, i: "brocolis" },
+            { n: "Calabresa com Cream Cheese", d: "Calabresa fatiada com cream cheese cremoso.", a: 8.99, i: "calabresa_creamcheese", img: "./img/esfihas/calabresa_cream cheese.jpeg", nov: true },
+            { n: "Frango, Cheddar e Bacon", d: "Frango desfiado com cheddar cremoso, bacon crocante", a: 9.99, i: "frango_cheddar_bacon", img: "./img/esfihas/frango_cheddar_bacon.jpeg", nov: true },
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
-            { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso e tomate cereja.", a: 9.99, i: "lombo_creamcheese", nov: true },
-            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca"}
+            { n: "Lombo com Cheddar", d: "Lombo canadense fatiado com cheddar cremoso.", a: 9.99, i: "lombo_cheddar", nov: true },
+            { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso e tomate cereja.", a: 9.99, i: "lombo_creamcheese" },
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", m: true}
         ];
 
         const doces = [
             { n: "Chocolate c/ Morango", d: "Ganache de chocolate ao leite com morangos frescos picado.", a: 10.98, i: "chocolate_morango" },
-            { n: "Laka", d: "Chocolate branco Laka cremoso.", a: 8.99, i: "laka", nov: true },
-            { n: "Laka com Morango", d: "Chocolate branco Laka cremoso com morangos frescos picados.", a: 10.98, i: "laka_morango", nov: true },
+            { n: "Laka", d: "Chocolate branco Laka cremoso.", a: 8.99, i: "laka" },
+            { n: "Laka com Morango", d: "Chocolate branco Laka cremoso com morangos frescos picados.", a: 10.98, i: "laka_morango" },
             { n: "Chocolate com confetes", d: "Chocolate cremoso coberto com confetes coloridos.", a: 9.99, i: "MM" },
             { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", a: 8.99, i: "banana_nevada", m: true },
             { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", a: 8.99, i: "abacaxi_nevado" },
-            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", a: 8.99, i: "churros", nov: true },
-            { n: "Banoffe", d: "Doce de leite cremoso, banana fatiada e marshmallow.", a: 8.99, i: "banoffee", nov: true },
-            { n: "Torta de Limão", d: "Mousse de limão com Marshmallow.", a: 8.99, i: "torta_limao", nov: true },
+            { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", a: 8.99, i: "churros" },
+            { n: "Banoffe", d: "Doce de leite cremoso, banana fatiada e marshmallow.", a: 8.99, i: "banoffee" },
+            { n: "Torta de Limão", d: "Mousse de limão com Marshmallow.", a: 8.99, i: "torta_limao" },
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
 
@@ -1387,10 +1411,10 @@
 
         function getDestaques() {
             const preferidos = [
-                "Carne e Queijo",
-                "Calabresa com Cebola",
+                "Carne",
                 "Queijo",
-                "Frango com Catupiry",
+                "Carne Seca",
+                "Carne e Queijo",
                 "Banana Nevada"
             ];
 
@@ -1427,12 +1451,13 @@
                 const cardWidth = 'w-[85vw] sm:w-[36rem]';
                 const disabled = !!item.indisponivel;
                 const safeName = String(item.n).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
+                const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
                 const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
 
                 return `
                     <article class="${cardWidth} flex-shrink-0 snap-start relative overflow-hidden rounded-[2.5rem] shadow-[0_16px_32px_rgba(0,0,0,0.18)]">
                         <div class="absolute inset-0">
-                            <img src="./img/esfihas/${item.i}.png" alt="" aria-hidden="true"
+                            <img src="${imgSrc}" alt="" aria-hidden="true"
                                 class="w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : 'brightness-75'}"
                                 width="${imgWidth}" height="${imgHeight}"
                                 loading="${idx === 0 ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${idx === 0 ? 'high' : 'low'}">
@@ -1472,11 +1497,69 @@
             }).join('');
         }
 
-        function scrollDestaques(direction) {
+        let destaquesAutoplayTimer = null;
+        let destaquesResumeTimer = null;
+
+        function scrollDestaques(direction, isAuto = false) {
             const el = document.getElementById('carousel-destaques');
             if (!el) return;
+
+            if (!isAuto) pauseDestaquesAutoplay(4500);
+
             const amount = Math.max(240, Math.floor(el.clientWidth * 0.85));
+            const nearStart = el.scrollLeft <= 4;
+            const nearEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8;
+
+            if (direction > 0 && nearEnd) {
+                el.scrollTo({ left: 0, behavior: 'smooth' });
+                return;
+            }
+
+            if (direction < 0 && nearStart) {
+                el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' });
+                return;
+            }
+
             el.scrollBy({ left: direction * amount, behavior: 'smooth' });
+        }
+
+        function startDestaquesAutoplay() {
+            const el = document.getElementById('carousel-destaques');
+            if (!el || el.children.length <= 1) return;
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            if (destaquesAutoplayTimer) clearInterval(destaquesAutoplayTimer);
+
+            destaquesAutoplayTimer = setInterval(() => {
+                if (document.hidden) return;
+                scrollDestaques(1, true);
+            }, 3500);
+        }
+
+        function pauseDestaquesAutoplay(delay = 3500) {
+            if (destaquesAutoplayTimer) {
+                clearInterval(destaquesAutoplayTimer);
+                destaquesAutoplayTimer = null;
+            }
+
+            if (destaquesResumeTimer) clearTimeout(destaquesResumeTimer);
+
+            destaquesResumeTimer = setTimeout(() => {
+                startDestaquesAutoplay();
+            }, delay);
+        }
+
+        function initDestaquesCarousel() {
+            const el = document.getElementById('carousel-destaques');
+            if (!el) return;
+
+            startDestaquesAutoplay();
+
+            el.addEventListener('mouseenter', () => pauseDestaquesAutoplay(6000));
+            el.addEventListener('focusin', () => pauseDestaquesAutoplay(6000));
+            el.addEventListener('pointerdown', () => pauseDestaquesAutoplay(4500), { passive: true });
+            el.addEventListener('touchstart', () => pauseDestaquesAutoplay(4500), { passive: true });
         }
 
         let revealObserver = null;
@@ -1509,6 +1592,7 @@
 
         function renderTudo() {
             renderDestaques();
+            initDestaquesCarousel();
             renderItens('lista-tradicionais', tradicionais);
             renderItens('lista-premium', premium, 'border-[#facc15]/30');
             renderItens('lista-doces', doces, 'border-pink-500/20');
