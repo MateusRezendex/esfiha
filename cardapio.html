@@ -1379,7 +1379,7 @@
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
             { n: "Lombo com Cheddar", d: "Lombo canadense fatiado com cheddar cremoso.", a: 9.99, i: "lombo_cheddar", nov: true },
             { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso e tomate cereja.", a: 9.99, i: "lombo_creamcheese" },
-            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", m: true}
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", m: true, indisponivel: true }
         ];
 
         const doces = [
@@ -1398,6 +1398,23 @@
 
         function getProdutos() {
             return [...tradicionais, ...premium, ...doces];
+        }
+
+        function produtoIndisponivel(nome) {
+            const produto = getProdutos().find((item) => item.n === nome);
+            return !!(produto && produto.indisponivel);
+        }
+
+        function limparCarrinhoIndisponiveis() {
+            let alterado = false;
+
+            Object.keys(carrinho).forEach((nome) => {
+                if (!produtoIndisponivel(nome)) return;
+                delete carrinho[nome];
+                alterado = true;
+            });
+
+            if (alterado) salvarCarrinho();
         }
 
         function ordenarItensParaPedido() {
@@ -1426,9 +1443,10 @@
 
             const picks = preferidos
                 .map((n) => byName.get(n))
-                .filter(Boolean);
+                .filter((item) => item && !item.indisponivel);
 
             all.forEach((it) => {
+                if (it.indisponivel) return;
                 if (!it.nov) return;
                 if (picks.some((p) => p.n === it.n)) return;
                 picks.push(it);
@@ -1603,6 +1621,7 @@
             initCardReveal();
         }
 
+        limparCarrinhoIndisponiveis();
         renderTudo();
 
         let total = 0;
@@ -1650,6 +1669,7 @@
         });
 
         function add(nome, preco) {
+            if (produtoIndisponivel(nome)) return;
 
             if (!carrinho[nome]) {
                 carrinho[nome] = {
@@ -1980,6 +2000,7 @@
         function ajustarQuantidade(item, delta) {
 
             if (!carrinho[item]) return;
+            if (delta > 0 && produtoIndisponivel(item)) return;
 
             carrinho[item].qtd += delta;
 
