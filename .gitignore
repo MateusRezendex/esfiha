@@ -4,5 +4,7 @@ Thumbs.db
 .vscode/
 node_modules/
 dist/
+!dist/
+!dist/tailwind.css
 build/
 

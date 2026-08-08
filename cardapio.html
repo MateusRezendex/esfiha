@@ -7,10 +7,12 @@
 
     <title>Cardápio Completo</title>
 
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="./img/logo.webp" type="image/webp">
+    <link rel="stylesheet" href="./dist/tailwind.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 
     <!-- Meta Pixel Code -->
     <script>
@@ -36,20 +38,18 @@
             document.head.appendChild(script);
         };
 
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(loadFacebookPixel, { timeout: 2500 });
-        } else {
-            window.addEventListener('load', loadFacebookPixel, { once: true });
-        }
+        window.addEventListener('pointerdown', loadFacebookPixel, { once: true, passive: true });
+        window.addEventListener('keydown', loadFacebookPixel, { once: true });
+        window.addEventListener('load', () => {
+            setTimeout(loadFacebookPixel, 8000);
+        }, { once: true });
     </script>
     <!-- End Meta Pixel Code -->
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest" defer onload="window.renderIcons && window.renderIcons()"></script>
+    <script src="./js/analytics.js" defer></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: #4a0000;
@@ -160,7 +160,7 @@
                 linear-gradient(to bottom,
                     rgba(74, 0, 0, 0.85),
                     rgba(74, 0, 0, 0.98)),
-                url('./img/fundo.png');
+                image-set(url('./img/fundo.webp') type('image/webp'), url('./img/fundo.png') type('image/png'));
 
             background-size: cover;
             background-position: center;
@@ -718,9 +718,12 @@
         <section class="mb-8 text-center flex flex-col items-center">
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7 mb-4">
-                <img src="./img/chefinho.png" alt="Chef" width="500" height="500" decoding="async"
-                    fetchpriority="high"
-                    class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
+                <picture>
+                    <source srcset="./img/chefinho.webp" type="image/webp">
+                    <img src="./img/chefinho.png" alt="Chef" width="500" height="500" decoding="async"
+                        fetchpriority="high"
+                        class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
+                </picture>
 
                 <a href="#feedbacks"
                     class="chef-callout group rounded-2xl px-5 py-4 text-left font-extrabold leading-snug"
@@ -1208,6 +1211,14 @@
             const isOpen = panel.classList.toggle('is-open');
             btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
             btn.textContent = isOpen ? '- Detalhes' : '+ Detalhes';
+
+            if (isOpen) {
+                trackAnalytics('product_view', {
+                    product: produtoAnalytics(card.dataset.analyticsProduct || ''),
+                    location: card.dataset.analyticsSurface || 'menu',
+                    metadata: { action: 'details_open' }
+                });
+            }
         }
 
         function renderControleProduto(item) {
@@ -1286,15 +1297,24 @@
             const html = itensOrdenados.map((item, idx) => {
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
                 const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
-                const isInitialProduct = containerId === 'lista-premium' && idx < 2;
+                const isInitialProduct = false;
 
                 return `
-                <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms">
+                    <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms"
+                        data-analytics-product="${item.n}"
+                        data-analytics-product-id="${item.i || item.n}"
+                        data-analytics-category="${categoriaProduto(item.n)}"
+                        data-analytics-price="${item.a}"
+                        data-analytics-position="${idx + 1}"
+                        data-analytics-surface="menu">
 
-                        <img src="${imgSrc}"
-                            class="menu-card-photo absolute inset-0 w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
-                            alt="${item.n}" width="${imgWidth}" height="${imgHeight}"
-                            loading="${isInitialProduct ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${isInitialProduct ? 'high' : 'low'}">
+                        <picture>
+                            <source data-srcset="${optimizedImageSrc(imgSrc)}" type="image/webp">
+                            <img src="${transparentPixel}" data-src="${imgSrc}"
+                                class="menu-card-photo absolute inset-0 w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
+                                alt="${item.n}" width="${imgWidth}" height="${imgHeight}"
+                                loading="${isInitialProduct ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${isInitialProduct ? 'high' : 'low'}">
+                        </picture>
 
                         <div class="absolute inset-0 bg-gradient-to-r from-black/76 via-black/46 to-black/12"></div>
                         <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/45 to-transparent"></div>
@@ -1400,9 +1420,101 @@
             return [...tradicionais, ...premium, ...doces];
         }
 
+        function categoriaProduto(nome) {
+            if (tradicionais.some((item) => item.n === nome)) return 'tradicionais';
+            if (premium.some((item) => item.n === nome)) return 'premium';
+            if (doces.some((item) => item.n === nome)) return 'doces';
+            return '';
+        }
+
+        function produtoAnalytics(nome, quantidade = 1) {
+            const produto = getProdutos().find((item) => item.n === nome) || {};
+            return {
+                id: produto.i || nome,
+                name: produto.n || nome,
+                category: categoriaProduto(nome),
+                price: Number(produto.a || 0),
+                quantity: quantidade
+            };
+        }
+
+        function trackAnalytics(eventName, data = {}, options = {}) {
+            if (!window.SQVAnalytics) return;
+            window.SQVAnalytics.track(eventName, data, options);
+        }
+
+        function resumoCarrinhoAnalytics() {
+            let cartValue = 0;
+            let itemsCount = 0;
+            const items = Object.keys(carrinho).map((nome) => {
+                const item = carrinho[nome];
+                const quantity = Number(item.qtd || 0);
+                const price = Number(item.preco || 0);
+                cartValue += quantity * price;
+                itemsCount += quantity;
+                return produtoAnalytics(nome, quantity);
+            });
+
+            return {
+                cartValue,
+                itemsCount,
+                metadata: {
+                    uniqueItems: items.length,
+                    items: items.map((item) => `${item.quantity}x ${item.name}`).join(' | ').slice(0, 500)
+                }
+            };
+        }
+
         function produtoIndisponivel(nome) {
             const produto = getProdutos().find((item) => item.n === nome);
             return !!(produto && produto.indisponivel);
+        }
+
+        function optimizedImageSrc(src) {
+            return String(src || '').replace(/\.(png|jpe?g)$/i, '.webp').replaceAll(' ', '%20');
+        }
+
+        const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+        let deferredImageObserver = null;
+
+        function loadDeferredImage(img) {
+            const picture = img.closest('picture');
+            if (picture) {
+                picture.querySelectorAll('source[data-srcset]').forEach((source) => {
+                    source.srcset = source.dataset.srcset;
+                    source.removeAttribute('data-srcset');
+                });
+            }
+
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            }
+        }
+
+        function initDeferredImages(root = document) {
+            const images = Array.from(root.querySelectorAll('img[data-src]'));
+            if (!images.length) return;
+
+            if (!('IntersectionObserver' in window)) {
+                images.forEach(loadDeferredImage);
+                return;
+            }
+
+            if (!deferredImageObserver) {
+                deferredImageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        loadDeferredImage(entry.target);
+                        deferredImageObserver.unobserve(entry.target);
+                    });
+                }, {
+                    rootMargin: '520px 0px',
+                    threshold: 0.01
+                });
+            }
+
+            images.forEach((img) => deferredImageObserver.observe(img));
         }
 
         function limparCarrinhoIndisponiveis() {
@@ -1474,14 +1586,24 @@
                 const safeName = String(item.n).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
                 const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
+                const immediateImage = idx === 0;
 
                 return `
-                    <article class="${cardWidth} flex-shrink-0 snap-start relative overflow-hidden rounded-[2.5rem] shadow-[0_16px_32px_rgba(0,0,0,0.18)]">
+                    <article class="${cardWidth} flex-shrink-0 snap-start relative overflow-hidden rounded-[2.5rem] shadow-[0_16px_32px_rgba(0,0,0,0.18)]"
+                        data-analytics-product="${item.n}"
+                        data-analytics-product-id="${item.i || item.n}"
+                        data-analytics-category="${categoriaProduto(item.n)}"
+                        data-analytics-price="${item.a}"
+                        data-analytics-position="${idx + 1}"
+                        data-analytics-surface="destaques">
                         <div class="absolute inset-0">
-                            <img src="${imgSrc}" alt="" aria-hidden="true"
-                                class="w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : 'brightness-75'}"
-                                width="${imgWidth}" height="${imgHeight}"
-                                loading="${idx === 0 ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${idx === 0 ? 'high' : 'low'}">
+                            <picture>
+                                <source ${immediateImage ? `srcset="${optimizedImageSrc(imgSrc)}"` : `data-srcset="${optimizedImageSrc(imgSrc)}"`} type="image/webp">
+                                <img ${immediateImage ? `src="${imgSrc}"` : `src="${transparentPixel}" data-src="${imgSrc}"`} alt="" aria-hidden="true"
+                                    class="w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : 'brightness-75'}"
+                                    width="${imgWidth}" height="${imgHeight}"
+                                    loading="${immediateImage ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${immediateImage ? 'high' : 'low'}">
+                            </picture>
                         </div>
 
                         <div class="relative z-10 p-6 md:p-7 min-h-[13.5rem] flex flex-col justify-end gap-3">
@@ -1525,7 +1647,13 @@
             const el = document.getElementById('carousel-destaques');
             if (!el) return;
 
-            if (!isAuto) pauseDestaquesAutoplay(4500);
+            if (!isAuto) {
+                pauseDestaquesAutoplay(4500);
+                trackAnalytics('carousel_click', {
+                    buttonName: direction > 0 ? 'destaques_next' : 'destaques_prev',
+                    location: 'destaques'
+                });
+            }
 
             const amount = Math.max(240, Math.floor(el.clientWidth * 0.85));
             const nearStart = el.scrollLeft <= 4;
@@ -1575,7 +1703,9 @@
             const el = document.getElementById('carousel-destaques');
             if (!el) return;
 
-            startDestaquesAutoplay();
+            window.addEventListener('load', () => {
+                setTimeout(startDestaquesAutoplay, 9000);
+            }, { once: true });
 
             el.addEventListener('mouseenter', () => pauseDestaquesAutoplay(6000));
             el.addEventListener('focusin', () => pauseDestaquesAutoplay(6000));
@@ -1611,14 +1741,69 @@
             cards.forEach((card) => revealObserver.observe(card));
         }
 
-        function renderTudo() {
-            renderDestaques();
-            initDestaquesCarousel();
-            renderItens('lista-tradicionais', tradicionais);
-            renderItens('lista-premium', premium, 'border-[#facc15]/30');
-            renderItens('lista-doces', doces, 'border-pink-500/20');
+        const renderedMenuSections = new Set();
+
+        function renderMenuSection(sectionKey) {
+            if (renderedMenuSections.has(sectionKey)) return;
+
+            const renderers = {
+                tradicionais: () => renderItens('lista-tradicionais', tradicionais),
+                premium: () => renderItens('lista-premium', premium, 'border-[#facc15]/30'),
+                doces: () => renderItens('lista-doces', doces, 'border-pink-500/20'),
+            };
+
+            if (!renderers[sectionKey]) return;
+
+            renderers[sectionKey]();
+            renderedMenuSections.add(sectionKey);
+            const section = document.querySelector(`section[data-section="${sectionKey}"]`);
+            if (section) initDeferredImages(section);
             renderIcons();
             initCardReveal();
+
+            if (window.SQVAnalytics && section) {
+                window.SQVAnalytics.trackProductImpressions(section);
+            }
+        }
+
+        function initLazyMenuSections() {
+            const lazySections = ['premium', 'doces'];
+
+            if (!('IntersectionObserver' in window)) {
+                lazySections.forEach(renderMenuSection);
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    const sectionKey = entry.target.getAttribute('data-section');
+                    renderMenuSection(sectionKey);
+                    observer.unobserve(entry.target);
+                });
+            }, {
+                rootMargin: '0px 0px 180px 0px',
+                threshold: 0.01
+            });
+
+            lazySections.forEach((sectionKey) => {
+                const section = document.querySelector(`section[data-section="${sectionKey}"]`);
+                if (section) observer.observe(section);
+            });
+        }
+
+        function renderTudo() {
+            renderDestaques();
+            initDeferredImages(document.getElementById('carousel-destaques') || document);
+            initDestaquesCarousel();
+            renderMenuSection('tradicionais');
+            initLazyMenuSections();
+            renderIcons();
+            initCardReveal();
+            if (window.SQVAnalytics) {
+                const destaques = document.getElementById('carousel-destaques');
+                if (destaques) window.SQVAnalytics.trackProductImpressions(destaques);
+            }
         }
 
         limparCarrinhoIndisponiveis();
@@ -1685,6 +1870,11 @@
             atualizarTotal();
             atualizarControleProduto(nome);
 
+            trackAnalytics('add_to_cart', {
+                product: produtoAnalytics(nome, 1),
+                location: 'cardapio'
+            });
+
             const t = document.getElementById('toast');
 
             if (toastTimer) clearTimeout(toastTimer);
@@ -1742,6 +1932,9 @@
         }
 
         function setSectionFilter(filter) {
+            if (filter !== 'all') {
+                renderMenuSection(filter);
+            }
 
             const sections = Array.from(
                 document.querySelectorAll('section[data-section]')
@@ -1818,6 +2011,12 @@
                     block: 'start'
                 });
             }
+
+            trackAnalytics('category_click', {
+                buttonName: filter,
+                location: 'filters',
+                metadata: { category: filter }
+            });
         }
 
         function initSectionFilters() {
@@ -1833,6 +2032,24 @@
         }
 
         initSectionFilters();
+
+        document.querySelectorAll('a[href*="instagram.com"]').forEach((link) => {
+            link.addEventListener('click', () => {
+                trackAnalytics('instagram_click', {
+                    buttonName: 'instagram',
+                    location: 'menu'
+                });
+            });
+        });
+
+        document.querySelectorAll('a[href="#feedbacks"]').forEach((link) => {
+            link.addEventListener('click', () => {
+                trackAnalytics('reviews_click', {
+                    buttonName: 'feedbacks',
+                    location: 'cardapio'
+                });
+            });
+        });
 
         function abrirModal() {
             if (!modal) return;
@@ -2012,6 +2229,12 @@
             atualizarTotal();
             atualizarControleProduto(item);
 
+            trackAnalytics(delta > 0 ? 'add_to_cart' : 'remove_from_cart', {
+                product: produtoAnalytics(item, Math.abs(delta)),
+                location: 'cart_modal',
+                metadata: { delta }
+            });
+
             if (Object.keys(carrinho).length === 0) {
                 const lista = document.getElementById('lista-revisao');
                 if (lista) lista.innerHTML = '';
@@ -2033,6 +2256,16 @@
 
             renderRevisao();
 
+            const cartPayload = resumoCarrinhoAnalytics();
+            trackAnalytics('view_cart', {
+                ...cartPayload,
+                location: 'floating_cart'
+            });
+            trackAnalytics('begin_checkout', {
+                ...cartPayload,
+                location: 'review_modal'
+            });
+
             abrirModal();
         }
 
@@ -2040,6 +2273,29 @@
 
             const origemPedido = detectarOrigemPedido();
             const numeroPedido = gerarNumeroPedido(origemPedido);
+            const cartPayload = resumoCarrinhoAnalytics();
+            window.__sqvCheckoutSubmitted = true;
+
+            trackAnalytics('checkout_submit', {
+                ...cartPayload,
+                location: 'review_modal',
+                metadata: {
+                    ...cartPayload.metadata,
+                    orderNumber: numeroPedido,
+                    orderSource: origemPedido.nome
+                }
+            }, { beacon: true });
+            trackAnalytics('whatsapp_click', {
+                ...cartPayload,
+                buttonName: 'enviar_agora',
+                location: 'checkout',
+                metadata: {
+                    ...cartPayload.metadata,
+                    orderNumber: numeroPedido,
+                    orderSource: origemPedido.nome
+                }
+            }, { beacon: true });
+
             let msg = `Olá! Quero saborear o seguinte pedido:\n\nPedido: *${numeroPedido}*\n\n`;
 
             ordenarItensParaPedido().forEach((item) => {
@@ -2066,6 +2322,16 @@
 
             fecharRevisao();
         }
+
+        window.addEventListener('pagehide', () => {
+            if (window.__sqvCheckoutSubmitted) return;
+            if (!carrinho || Object.keys(carrinho).length === 0) return;
+
+            trackAnalytics('cart_abandoned_signal', {
+                ...resumoCarrinhoAnalytics(),
+                location: 'pagehide'
+            }, { beacon: true });
+        });
 
         const feedbackCarousel =
             document.getElementById('feedback-carousel');
