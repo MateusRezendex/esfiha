@@ -3,52 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Esfiha Delivery</title>
-
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="./img/logo.webp" type="image/webp">
-    <link rel="stylesheet" href="./dist/tailwind.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
 
     <!-- Meta Pixel Code -->
     <script>
-        window.fbq = window.fbq || function () {
-            window.fbq.callMethod
-                ? window.fbq.callMethod.apply(window.fbq, arguments)
-                : window.fbq.queue.push(arguments);
-        };
-        window._fbq = window._fbq || window.fbq;
-        window.fbq.push = window.fbq;
-        window.fbq.loaded = false;
-        window.fbq.version = '2.0';
-        window.fbq.queue = window.fbq.queue || [];
-        window.fbq('init', '2164884420944203');
-        window.fbq('track', 'PageView');
-
-        const loadFacebookPixel = () => {
-            if (window.fbq.scriptLoaded) return;
-            window.fbq.scriptLoaded = true;
-            const script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://connect.facebook.net/en_US/fbevents.js';
-            document.head.appendChild(script);
-        };
-
-        window.addEventListener('pointerdown', loadFacebookPixel, { once: true, passive: true });
-        window.addEventListener('keydown', loadFacebookPixel, { once: true });
-        window.addEventListener('load', () => {
-            setTimeout(loadFacebookPixel, 8000);
-        }, { once: true });
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2164884420944203');
+        fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel Code -->
 
-    <script src="https://unpkg.com/lucide@latest" defer></script>
-    <script src="./js/analytics.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #4a0000;
@@ -56,7 +37,7 @@
                 linear-gradient(to bottom,
                     rgba(74, 0, 0, 0.75),
                     rgba(74, 0, 0, 0.95)),
-                image-set(url('./img/fundo.webp') type('image/webp'), url('./img/fundo.png') type('image/png'));
+                url('./img/fundo.png');
 
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -135,10 +116,6 @@
         }
 
         @media (max-width: 767px) {
-            body {
-                background-attachment: scroll;
-            }
-
             .feedback-callout::before {
                 top: -0.55rem;
                 left: 50%;
@@ -168,16 +145,9 @@
 
                 <div class="absolute inset-0 bg-yellow-500 rounded-full blur-3xl opacity-20"></div>
 
-                <picture>
-                    <source srcset="./img/logo.webp" type="image/webp">
-                    <img src="./img/logo.png"
-                        alt="Esfiha Logo"
-                        width="500"
-                        height="500"
-                        decoding="async"
-                        fetchpriority="high"
-                        class="relative max-h-[34vh] sm:max-h-[45vh] w-auto object-contain transition-all duration-500">
-                </picture>
+                <img src="./img/logo.png"
+                    alt="Esfiha Logo"
+                    class="relative max-h-[34vh] sm:max-h-[45vh] w-auto object-contain transition-all duration-500">
 
             </div>
 
@@ -262,37 +232,10 @@
     </main>
 
     <script>
-        if (window.lucide) lucide.createIcons();
-        window.addEventListener('load', () => {
-            if (window.lucide) lucide.createIcons();
-        }, { once: true });
+        lucide.createIcons();
 
         const linkCardapio = document.getElementById('link-cardapio');
         const linkFeedbacks = document.getElementById('link-feedbacks');
-        const trackHomeClick = (eventName, button) => {
-            if (!window.SQVAnalytics) return;
-            window.SQVAnalytics.track(eventName, {
-                buttonName: button,
-                location: 'home'
-            });
-        };
-
-        if (linkCardapio) {
-            linkCardapio.addEventListener('click', () => trackHomeClick('menu_click', 'cardapio'));
-        }
-
-        if (linkFeedbacks) {
-            linkFeedbacks.addEventListener('click', () => trackHomeClick('reviews_click', 'feedbacks'));
-        }
-
-        document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
-            link.addEventListener('click', () => trackHomeClick('whatsapp_click', 'whatsapp'));
-        });
-
-        document.querySelectorAll('a[href*="instagram.com"]').forEach((link) => {
-            link.addEventListener('click', () => trackHomeClick('instagram_click', 'instagram'));
-        });
-
         const params = new URLSearchParams(window.location.search);
         const origem = params.get('origem') || params.get('utm_source') || params.get('utm_medium');
         const destino = params.get('destino') || params.get('posicionamento') || params.get('utm_content') || params.get('utm_campaign');
