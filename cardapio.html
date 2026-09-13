@@ -532,6 +532,116 @@
             overflow: hidden;
         }
 
+        .cart-modal-card {
+            width: min(100%, 43rem);
+            max-height: min(94dvh, 58rem);
+            border-radius: 2rem;
+            border: 1px solid rgba(250, 204, 21, 0.18);
+            background:
+                radial-gradient(circle at 50% -12%, rgba(119, 12, 7, 0.72), transparent 34%),
+                linear-gradient(180deg, #3f0403 0%, #1f0000 46%, #120000 100%);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.75);
+        }
+
+        .cart-icon-badge {
+            position: absolute;
+            top: -0.32rem;
+            right: -0.32rem;
+            min-width: 1.05rem;
+            height: 1.05rem;
+            padding: 0 0.2rem;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: #facc15;
+            color: #220700;
+            font-size: 0.56rem;
+            font-weight: 900;
+            box-shadow: 0 0 0 2px #3b0403;
+        }
+
+        .cart-line-item {
+            display: grid;
+            grid-template-columns: 5.6rem minmax(0, 1fr) auto;
+            gap: 0.85rem;
+            align-items: center;
+            padding: 0.78rem 0;
+            border-bottom: 1px solid rgba(250, 204, 21, 0.12);
+        }
+
+        .cart-line-item:first-child {
+            border-top: 1px solid rgba(250, 204, 21, 0.12);
+        }
+
+        .cart-item-photo {
+            width: 5.6rem;
+            height: 4.25rem;
+            border-radius: 0.8rem;
+            object-fit: cover;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.34);
+        }
+
+        .cart-summary-panel {
+            border: 1px solid rgba(250, 204, 21, 0.12);
+            border-radius: 1.15rem;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .delivery-discount-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 4.1rem;
+            border: 1px solid rgba(250, 204, 21, 0.82);
+            border-radius: 1rem;
+            background:
+                linear-gradient(90deg, rgba(44, 0, 0, 0.98) 0%, rgba(52, 3, 2, 0.96) 58%, rgba(83, 10, 4, 0.82) 100%);
+        }
+
+        .delivery-discount-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 82% 30%, rgba(250, 204, 21, 0.18), transparent 28%);
+            pointer-events: none;
+        }
+
+        .delivery-discount-image {
+            position: absolute;
+            right: -0.65rem;
+            top: 50%;
+            width: 5.7rem;
+            height: 5.7rem;
+            transform: translateY(-50%);
+            object-fit: cover;
+            border-radius: 999px;
+            filter: saturate(1.12) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
+        }
+
+        .discount-progress-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.46);
+            background: transparent;
+        }
+
+        .discount-progress-dot.is-filled {
+            border-color: #facc15;
+            background: #facc15;
+        }
+
+        @media (max-width: 420px) {
+            .cart-line-item {
+                grid-template-columns: 4.8rem minmax(0, 1fr) auto;
+                gap: 0.65rem;
+            }
+
+            .cart-item-photo {
+                width: 4.8rem;
+                height: 3.8rem;
+            }
+        }
+
         /* ========================= */
         /* FILTROS PREMIUM */
         /* ========================= */
@@ -587,6 +697,302 @@
 
             pointer-events: none;
         }
+
+        @keyframes store-status-fade {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .store-status-wrap {
+            position: relative;
+            z-index: 60;
+            width: 100%;
+            padding: 1.25rem 1.75rem 0;
+            background: #2b0000;
+        }
+
+        .store-status-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: min(100%, 1080px);
+            min-height: 18px;
+            margin: 0 auto;
+            padding: 0.15rem 0.65rem;
+            border: 1px solid var(--store-status-accent, #8a2a08);
+            border-radius: 999px;
+            background: rgba(45, 0, 0, 0.96);
+            color: #f8e7cf;
+            text-align: center;
+            font-size: 0.58rem;
+            font-weight: 700;
+            line-height: 1.2;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+            animation: store-status-fade 0.45s ease-out both;
+        }
+
+        .store-status-banner::after {
+            content: "ⓘ";
+            margin-left: 0.35rem;
+            color: rgba(248, 231, 207, 0.82);
+            font-size: 0.7em;
+            line-height: 1;
+        }
+
+        .store-status-banner.store-status--open {
+            --store-status-accent: #2f8f1f;
+        }
+
+        .store-status-banner.store-status--opens-today {
+            --store-status-accent: #d4a017;
+        }
+
+        .store-status-banner.store-status--closed {
+            --store-status-accent: #9f1d1d;
+        }
+
+        .checkout-status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            padding: 0.25rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 900;
+            line-height: 1;
+            white-space: nowrap;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+        }
+
+        .checkout-status-pill.store-status--open {
+            background: rgba(220, 252, 231, 0.96);
+            color: #14532d;
+        }
+
+        .checkout-status-pill.store-status--closed,
+        .checkout-status-pill.store-status--opens-today {
+            background: rgba(254, 226, 226, 0.96);
+            color: #7f1d1d;
+        }
+
+        @media (min-width: 768px) {
+            .store-status-banner {
+                font-size: 0.68rem;
+            }
+        }
+
+        :root {
+            --app-bg: #160000;
+            --panel-bg: #350202;
+            --panel-bg-soft: #430504;
+            --line-soft: rgba(250, 204, 21, 0.14);
+            --gold: #facc15;
+        }
+
+        body {
+            background: #000;
+        }
+
+        .bg-fixed-container {
+            display: none;
+        }
+
+        .menu-app-shell {
+            width: 100%;
+            min-height: 100dvh;
+            max-width: none;
+            margin: 0;
+            background:
+                radial-gradient(circle at 50% -8%, rgba(135, 20, 6, 0.5), transparent 35%),
+                linear-gradient(180deg, #440503 0%, var(--app-bg) 34rem, #0b0000 100%);
+            box-shadow: none;
+        }
+
+        .menu-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 70;
+            min-height: 3.9rem;
+            background: rgba(63, 3, 2, 0.96);
+            border-bottom: 1px solid rgba(250, 204, 21, 0.13);
+            backdrop-filter: blur(16px);
+        }
+
+        .menu-logo {
+            width: 6.4rem;
+            height: 2.3rem;
+            object-fit: contain;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.45));
+        }
+
+        .store-status-wrap {
+            padding: 0;
+            background: rgba(23, 0, 0, 0.82);
+            border-bottom: 1px solid rgba(250, 204, 21, 0.1);
+        }
+
+        .store-status-banner {
+            width: 100%;
+            min-height: 2.1rem;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            color: rgba(255, 244, 216, 0.9);
+            font-size: 0.65rem;
+        }
+
+        .menu-hero {
+            position: relative;
+            min-height: clamp(9.2rem, 30vw, 13.5rem);
+            overflow: hidden;
+            border-bottom: 1px solid rgba(250, 204, 21, 0.12);
+        }
+
+        .menu-hero img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 66% center;
+            filter: saturate(1.1) brightness(0.78);
+        }
+
+        .menu-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(35, 0, 0, 0.98) 0%, rgba(35, 0, 0, 0.82) 35%, rgba(35, 0, 0, 0.06) 100%),
+                linear-gradient(0deg, rgba(35, 0, 0, 0.32), transparent 50%);
+        }
+
+        .menu-feature-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: rgba(255, 244, 216, 0.86);
+            font-size: 0.62rem;
+            font-weight: 800;
+            line-height: 1.05;
+        }
+
+        .menu-feature-pill i {
+            width: 1.05rem;
+            height: 1.05rem;
+            color: var(--gold);
+        }
+
+        .filter-btn {
+            min-width: 4.15rem;
+            min-height: 1.55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            background: rgba(70, 7, 7, 0.78) !important;
+            color: rgba(255, 236, 212, 0.82) !important;
+            font-size: 0.58rem;
+            font-weight: 800;
+            line-height: 1;
+            box-shadow: inset 0 0 0 1px rgba(120, 37, 31, 0.32);
+        }
+
+        .filter-strip {
+            margin-left: -1rem;
+            margin-right: -1rem;
+            padding: 0.55rem 1rem 0.65rem;
+            background: transparent;
+            border: 0;
+        }
+
+        .filter-btn.active-filter {
+            background: #facc15 !important;
+            border-color: #facc15 !important;
+            color: #130600 !important;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.32),
+                0 5px 12px rgba(250, 204, 21, 0.2);
+        }
+
+        .filter-btn.inactive-filter {
+            background: rgba(67, 5, 5, 0.78) !important;
+            border-color: rgba(255, 255, 255, 0.14) !important;
+            color: rgba(255, 236, 212, 0.82) !important;
+        }
+
+        .menu-section-title {
+            color: #fff;
+            font-size: 1.05rem;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .menu-section-subtitle {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.68rem;
+            line-height: 1.2;
+        }
+
+        .category-card {
+            min-height: 0;
+            border-color: rgba(250, 204, 21, 0.12);
+            background: linear-gradient(180deg, rgba(83, 11, 10, 0.92), rgba(49, 3, 3, 0.96));
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .menu-card-photo {
+            object-position: center;
+        }
+
+        .compact-card-image {
+            aspect-ratio: 1.45 / 1;
+        }
+
+        .card-details-panel.is-open {
+            max-height: 8rem;
+        }
+
+        .menu-product-title {
+            text-shadow: none;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .menu-app-shell {
+                margin-top: 0;
+                margin-bottom: 0;
+                min-height: 100dvh;
+                border-radius: 0;
+                overflow: visible;
+            }
+
+            .menu-topbar {
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 639px) {
+            .menu-app-shell {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -608,79 +1014,148 @@
     <!-- MODAL -->
     <div id="modal-revisao" role="dialog" aria-modal="true" aria-labelledby="titulo-revisao">
 
-        <div id="modal-conteudo"
-            class="bg-[#2d0000] border-2 border-[#d4a017]/40 w-full max-w-lg rounded-[3rem] shadow-2xl text-[1.5rem] overflow-hidden">
+        <div id="modal-conteudo" class="cart-modal-card overflow-hidden">
             <div id="modal-scroll"
-                class="max-h-[calc(100dvh-4rem)] overflow-y-auto hide-native-scrollbar p-7 md:p-8 pr-12 md:pr-14 box-border">
+                class="max-h-[min(94dvh,58rem)] overflow-y-auto hide-native-scrollbar px-5 py-4 md:px-7 md:py-5 box-border">
 
-                <h2 id="titulo-revisao" class="text-[#d4a017] font-extrabold text-2xl mb-6 text-center">
-                    Confira seu Pedido
-                </h2>
+                <div class="flex items-center justify-between gap-3 mb-5">
+                    <button id="btn-voltar" type="button" onclick="fecharRevisao()"
+                        class="grid place-items-center w-10 h-10 rounded-full text-white hover:text-[#facc15] transition-colors"
+                        aria-label="Fechar sacola">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
 
-                <div id="lista-revisao" class="space-y-3 overflow-y-auto mb-8 pr-2 custom-scrollbar text-[0.75rem] ">
+                    <img src="./img/logo.png" alt="Esfihas Delivery" class="menu-logo">
+
+                    <button type="button" onclick="limparSacola()"
+                        class="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-white/72 hover:text-[#facc15] transition-colors">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        Limpar sacola
+                    </button>
                 </div>
 
-                <button type="button" onclick="limparSacola()"
-                    class="w-full mb-4 bg-white/10 hover:bg-white/15 py-2.5 md:py-3 rounded-2xl font-bold border border-white/10 text-xs md:text-sm">
-                    Limpar sacola
-                </button>
-                <!-- RESUMO DO PEDIDO (UI/UX aprimorado) -->
-                <div class="border-t border-white/10 pt-4 mb-6">
-                    <div class="bg-black/20 border border-white/10 rounded-[1.75rem] p-4 md:p-5">
-                        <div class="space-y-2.5">
-                            <!-- Subtotal -->
-                            <div class="flex items-center justify-between">
-                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/70">Subtotal</span>
-                                <span id="subtotal-revisao" class="text-[0.75rem] md:text-sm font-extrabold text-white">
-                                    R$ 0,00
-                                </span>
-                            </div>
-<!-- Entrega -->
-                            <div class="flex items-center justify-between">
-                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/60">Entrega</span>
-                                <span class="text-[0.75rem] md:text-sm font-semibold text-white/60">Consultar</span>
-                            </div>
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="relative text-[#facc15]">
+                            <i data-lucide="shopping-cart" class="w-8 h-8"></i>
+                            <span id="qtd-revisao" class="cart-icon-badge">0</span>
                         </div>
 
-                        <!-- Separador -->
-                        <div class="my-4 h-px bg-white/10"></div>
-
-                        <!-- Total final -->
-                        <div class="flex items-end justify-between">
-                            <div class="flex flex-col">
-                                <span class="text-xs md:text-sm font-extrabold uppercase tracking-tight text-white/85">
-                                    Subtotal
-                                </span>
-                                <span class="text-[0.7rem] md:text-xs font-semibold text-white/50 -mt-0.5">
-                                    (sem entrega)
-                                </span>
-                            </div>
-
-                            <span id="total-revisao"
-                                class="text-2xl md:text-3xl font-black text-[#facc15] tracking-tight">
-                                R$ 0,00
-                            </span>
+                        <div>
+                            <h2 id="titulo-revisao" class="text-xl md:text-2xl font-black leading-none">
+                                Sua sacola
+                            </h2>
+                            <p class="mt-1 text-[0.68rem] md:text-xs text-white/64 font-semibold">
+                                Confira os itens do seu pedido
+                            </p>
                         </div>
+                    </div>
 
+                    <div class="hidden sm:flex items-center gap-2 rounded-xl border border-[#facc15]/55 px-2.5 py-1.5 text-[#facc15]">
+                        <i data-lucide="truck" class="w-4 h-4"></i>
+                        <span class="text-[0.56rem] font-black leading-tight">
+                            Falta pouco!<br>
+                            <span class="text-white/70 font-semibold">Seu pedido está quase completo.</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- DADOS PARA ENTREGA -->
-
-                <div class="grid grid-cols-2 gap-4">
-
-                    <button id="btn-voltar" type="button" onclick="fecharRevisao()"
-                        class="bg-white/10 py-2.5 md:py-3 rounded-2xl font-bold text-xs md:text-sm">
-
-                        Voltar
-                    </button>
-
-                    <button id="btn-enviar" type="button" onclick="confirmarWhatsApp()"
-                        class="bg-[#16a34a] py-2.5 md:py-3 rounded-2xl font-black shadow-lg text-xs md:text-sm">
-
-                        ENVIAR AGORA
-                    </button>
+                <div id="lista-revisao" class="overflow-y-auto mb-4 pr-1 custom-scrollbar text-[0.75rem]">
                 </div>
+
+                <div class="delivery-discount-card mb-4 px-4 py-3">
+                    <img src="./img/esfihas/carne.png" alt="" class="delivery-discount-image" width="900" height="900"
+                        loading="lazy" decoding="async">
+
+                    <div class="relative z-10 grid grid-cols-[auto_1fr] items-center gap-3 pr-16">
+                        <div class="text-[#facc15]">
+                            <i data-lucide="truck" class="w-8 h-8"></i>
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-white text-[0.68rem] font-black leading-none">
+                                        Peça 6 ou mais e ganhe
+                                    </p>
+                                    <p class="mt-0.5 text-[#facc15] text-2xl font-black leading-none">
+                                        30% OFF
+                                    </p>
+                                    <p class="mt-0.5 text-white text-[0.72rem] font-bold leading-none">
+                                        na taxa de entrega!
+                                    </p>
+                                </div>
+
+                                <div class="hidden min-[390px]:block h-9 w-px bg-[#facc15]/35"></div>
+
+                                <div class="hidden min-[390px]:block">
+                                    <p id="discount-progress-label" class="text-white text-[0.66rem] font-black leading-none">
+                                        Faltam 6 esfihas
+                                    </p>
+                                    <div id="discount-progress-dots" class="mt-2 flex items-center gap-1.5" aria-hidden="true">
+                                        <span class="discount-progress-dot"></span>
+                                        <span class="discount-progress-dot"></span>
+                                        <span class="discount-progress-dot"></span>
+                                        <span class="discount-progress-dot"></span>
+                                        <span class="discount-progress-dot"></span>
+                                        <span class="discount-progress-dot"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <h3 class="mb-2 flex items-center gap-1.5 text-sm font-black">
+                        <i data-lucide="badge-check" class="w-4 h-4 text-[#facc15]"></i>
+                        Resumo do pedido
+                    </h3>
+
+                    <div class="cart-summary-panel px-3.5 py-3">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-3 text-[0.68rem] font-semibold text-white/76">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-white/55"></i>
+                                    Subtotal (<span id="qtd-resumo">0</span> itens)
+                                </span>
+                                <span id="subtotal-revisao" class="font-bold text-white">R$ 0,00</span>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-3 text-[0.68rem] font-semibold text-white/76">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i data-lucide="truck" class="w-3.5 h-3.5 text-white/55"></i>
+                                    Entrega
+                                </span>
+                                <a href="https://wa.me/5564992186249?text=Ol%C3%A1%21%20Quero%20consultar%20a%20taxa%20de%20entrega."
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="inline-flex items-center gap-1 rounded-full border border-[#facc15]/45 px-2 py-0.5 text-[#facc15] text-[0.62rem] font-black hover:bg-[#facc15] hover:text-black transition-colors"
+                                    aria-label="Consultar taxa de entrega pelo WhatsApp">
+                                    Consultar
+                                    <i data-lucide="message-circle" class="w-3 h-3"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="my-3 h-px bg-white/10"></div>
+
+                        <div class="flex items-end justify-between gap-4">
+                            <span class="text-base font-black">Total</span>
+                            <span id="total-revisao" class="text-lg md:text-xl font-black text-[#facc15]">
+                                R$ 0,00
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-enviar" type="button" onclick="confirmarWhatsApp()"
+                    class="w-full inline-flex items-center justify-center gap-2 bg-[#16a34a] py-3.5 rounded-2xl font-black shadow-lg text-sm">
+                    ENVIAR AGORA
+                    <span class="checkout-status-pill store-status--closed" data-store-status-indicator
+                        aria-live="polite">
+                        Fechado
+                    </span>
+                </button>
             </div>
 
             <div id="modal-scrollbar" aria-hidden="true">
@@ -689,372 +1164,296 @@
         </div>
     </div>
 
+    <div class="menu-app-shell">
+
     <!-- NAV -->
-    <nav
-        class="p-5 sticky top-0 bg-[#4a0000]/95 backdrop-blur-lg z-50 border-b border-white/10 flex justify-between items-center">
+    <nav class="menu-topbar px-4 md:px-6 flex justify-between items-center">
 
         <a href="index.html"
-            class="flex items-center text-sm md:text-base font-bold hover:text-[#d4a017] transition-colors">
-
-            <i data-lucide="arrow-left" class="mr-2"></i>
-            Inicio
+            class="grid place-items-center w-10 h-10 rounded-full text-white hover:text-[#facc15] transition-colors"
+            aria-label="Voltar para o início">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
         </a>
 
-        <span class="gold-text font-black tracking-widest text-base md:text-lg uppercase">
-            Menu
-        </span>
+        <div class="flex flex-col items-center leading-none">
+            <img src="./img/logo.png" alt="Esfihas Delivery" class="menu-logo">
+        </div>
 
-        <a href="https://www.instagram.com/esfihasdelivery_/" target="_blank" rel="noopener noreferrer"
-            class="grid place-items-center w-10 h-10 rounded-full border border-white/10 bg-white/5 text-white hover:text-[#facc15] hover:bg-white/10 transition-colors"
-            aria-label="Abrir Instagram da Esfihas Delivery">
-            <i data-lucide="instagram" class="w-5 h-5"></i>
-        </a>
+        <div class="flex items-center gap-1">
+            <a href="https://www.instagram.com/esfihasdelivery_/" target="_blank" rel="noopener noreferrer"
+                class="grid place-items-center w-10 h-10 rounded-full text-white hover:text-[#facc15] transition-colors"
+                aria-label="Abrir Instagram da Esfihas Delivery">
+                <i data-lucide="search" class="w-5 h-5"></i>
+            </a>
+
+            <button type="button" onclick="abrirRevisao()"
+                class="relative grid place-items-center w-10 h-10 rounded-full text-white hover:text-[#facc15] transition-colors"
+                aria-label="Abrir sacola">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                <span id="qtd-badge"
+                    class="hidden absolute top-1 right-0 min-w-5 h-5 px-1 rounded-full bg-[#facc15] text-black text-[0.62rem] font-black flex items-center justify-center shadow-lg"
+                    aria-label="Quantidade de itens na sacola">0</span>
+            </button>
+        </div>
     </nav>
 
+    <div class="store-status-wrap">
+        <div id="store-status-banner" class="store-status-banner" role="status" aria-live="polite">
+            Verificando horário de funcionamento...
+        </div>
+    </div>
+
+    <section class="menu-hero">
+        <img src="./img/esfihas/carne.png" alt="" width="900" height="900" fetchpriority="high" decoding="async">
+        <div class="relative z-10 px-6 py-5 md:px-8 md:py-7 max-w-[25rem]">
+            <p class="text-[#facc15] text-[0.78rem] md:text-sm font-black italic leading-none mb-1">
+                Esfihas artesanais,
+            </p>
+            <h1 class="text-[1.5rem] md:text-[2rem] font-black leading-[0.98] tracking-tight">
+                do nosso forno<br>para a sua mesa!
+            </h1>
+            <div class="mt-5 flex items-center gap-4 md:gap-5">
+                <span class="menu-feature-pill">
+                    <i data-lucide="leaf"></i>
+                    Massa<br>fresca
+                </span>
+                <span class="menu-feature-pill">
+                    <i data-lucide="package-check"></i>
+                    Recheio<br>generoso
+                </span>
+                <span class="menu-feature-pill">
+                    <i data-lucide="flame"></i>
+                    Assadas<br>na hora
+                </span>
+            </div>
+        </div>
+    </section>
+
     <!-- MAIN -->
-    <main class="max-w-4xl mx-auto px-4 pt-10 pb-36 relative z-10">
+    <main class="px-4 md:px-6 pt-3 pb-28 relative z-10">
 
-        <!-- CHEFINHO -->
-        <section class="mb-8 text-center flex flex-col items-center">
+        <!-- FILTROS -->
+        <section class="mb-5">
+            <div class="filter-strip sticky top-[3.9rem] z-40 backdrop-blur-xl">
+                <div class="flex items-center gap-4 overflow-x-auto no-scrollbar relative z-10">
+                    <button type="button" data-section-filter="all" aria-pressed="true"
+                        class="filter-btn active-filter flex-shrink-0 px-4 py-1.5 transition-all duration-300 active:scale-95">
+                        Todas
+                    </button>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-7 mb-4">
-                <img src="./img/chefinho.png" alt="Chef" width="500" height="500" decoding="async"
-                    fetchpriority="high"
-                    class="w-56 md:w-62 h-auto drop-shadow-xl transition-transform duration-300 ease-out hover:scale-[1.03]">
+                    <button type="button" data-section-filter="tradicionais" aria-pressed="false"
+                        class="filter-btn inactive-filter flex-shrink-0 px-4 py-1.5 active:scale-95 transition-all duration-300">
+                        Tradicionais
+                    </button>
 
-                <a href="#feedbacks"
-                    class="chef-callout group rounded-2xl px-5 py-4 text-left font-extrabold leading-snug"
-                    aria-label="Ir para os feedbacks de clientes">
-                    <span class="relative z-10">
-                        Veja o que nossos clientes estão dizendo
-                    </span>
-                    <span class="relative z-10 mt-2 flex items-center gap-1 text-xs font-bold uppercase tracking-wide">
-                        VER AVALIAÇÕES
-                        <i data-lucide="arrow-down" class="w-4 h-4 transition-transform group-hover:translate-y-1"></i>
-                    </span>
-                </a>
-            </div>
+                    <button type="button" data-section-filter="premium" aria-pressed="false"
+                        class="filter-btn inactive-filter flex-shrink-0 px-4 py-1.5 active:scale-95 transition-all duration-300">
+                        Premium
+                    </button>
 
-            <div class="bg-white/5 border border-white/5 backdrop-blur-sm p-5 rounded-[2rem] w-full shadow-lg">
-
-                <h2 class="text-xl md:text-2xl font-extrabold gold-text mb-2 tracking-tight">
-                    Que bom te ver por aqui!
-                </h2>
-
-                <p class="text-white/70 text-sm md:text-base leading-relaxed">
-                    Escolha suas favoritas abaixo e monte seu pedido!
-                </p>
-             </div>
-         </section>
-
-        <!-- DESTAQUES (CAROUSEL) -->
-        <section class="mb-10">
-            <div class="flex items-center gap-3 mb-4">
-                <i data-lucide="star" class="w-6 h-6 md:w-7 md:h-7 text-[#facc15]"></i>
-                <h2 class="text-base md:text-lg font-black tracking-widest uppercase text-[#facc15]">
-                    Destaques de hoje
-                </h2>
-            </div>
-
-            <div class="relative">
-                <button id="carousel-prev" type="button" aria-label="Voltar destaques"
-                    class="grid place-items-center absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
-                    onclick="scrollDestaques(-1)">
-                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                </button>
-
-                <button id="carousel-next" type="button" aria-label="Avançar destaques"
-                    class="grid place-items-center absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-black/40 hover:bg-black/55 border border-white/10 backdrop-blur-md transition"
-                    onclick="scrollDestaques(1)">
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-
-                <div id="carousel-destaques"
-                    class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-2 pr-2 bg-transparent">
+                    <button type="button" data-section-filter="doces" aria-pressed="false"
+                        class="filter-btn inactive-filter flex-shrink-0 px-4 py-1.5 active:scale-95 transition-all duration-300">
+                        Doces
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- FILTROS -->
-        <section class="mb-10">
-
-            <div class="sticky top-[72px] md:top-[84px] z-40">
-
-                <div class="relative overflow-visible rounded-[2rem]">
-                    <!-- brilho decorativo -->
-                    <div class="pointer-events-none absolute inset-0
-    bg-gradient-to-r
-    from-white/[0.03]
-    via-transparent
-                    to-white/[0.02]">
-                    </div>
-
-                    <div class=" flex gap-3 overflow-x-auto no-scrollbar relative z-10">
-
-                        <!-- TODOS -->
-                        <button type="button" data-section-filter="all" aria-pressed="true" class="filter-btn active-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
-                    text-xs md:text-sm font-black tracking-tight
-                    transition-all duration-300
-                    bg-[#facc15] text-black
-                    shadow-[0_8px_25px_rgba(250,204,21,0.35)]
-                    active:scale-95">
-
-                            Todos
-                        </button>
-
-                        <!-- TRADICIONAIS -->
-                        <button type="button" data-section-filter="tradicionais" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
-                    text-xs md:text-sm font-extrabold tracking-tight
-                    border border-white/10
-                    bg-white/5 text-white/85
-                    backdrop-blur-xl
-                    hover:bg-white/10
-                    hover:border-[#facc15]/30
-                    hover:text-white
-                    hover:-translate-y-1
-                    active:scale-95
-                    transition-all duration-300">
-
-                            Tradicionais
-                        </button>
-
-                        <!-- PREMIUM -->
-                        <button type="button" data-section-filter="premium" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
-                    text-xs md:text-sm font-extrabold tracking-tight
-                    border border-white/10
-                    bg-white/5 text-white/85
-                    backdrop-blur-xl
-                    hover:bg-white/10
-                    hover:border-[#facc15]/30
-                    hover:text-white
-                    hover:-translate-y-1
-                    active:scale-95
-                    transition-all duration-300">
-
-                            Premium
-                        </button>
-
-                        <!-- DOCES -->
-                        <button type="button" data-section-filter="doces" aria-pressed="false" class="filter-btn inactive-filter flex-shrink-0 px-5 py-3 rounded-[1.4rem]
-                    text-xs md:text-sm font-extrabold tracking-tight
-                    border border-white/10
-                    bg-white/5 text-white/85
-                    backdrop-blur-xl
-                    hover:bg-white/10
-                    hover:border-pink-400/40
-                    hover:text-white
-                    hover:-translate-y-1
-                    active:scale-95
-                    transition-all duration-300">
-
-                            Doces
-                        </button>
-
+        <!-- DESTAQUES -->
+        <section class="mb-6">
+            <div class="flex items-center justify-between gap-3 mb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="flame" class="w-6 h-6 text-[#facc15] fill-[#facc15]"></i>
+                    <div>
+                        <h2 class="menu-section-title font-black">Mais Pedidas</h2>
+                        <p class="menu-section-subtitle font-semibold">Os sabores que nossos clientes mais amam!</p>
                     </div>
                 </div>
+
+                <button id="carousel-next" type="button" aria-label="Avançar mais pedidas"
+                    class="grid place-items-center w-9 h-9 rounded-full text-white/80 hover:text-[#facc15] transition"
+                    onclick="scrollDestaques(1)">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div id="carousel-destaques"
+                class="grid grid-cols-1 sm:grid-cols-3 gap-3 overflow-visible">
             </div>
         </section>
 
         <!-- TRADICIONAIS -->
-        <section id="sec-tradicionais" data-section="tradicionais" class="mb-16 scroll-mt-36">
+        <section id="sec-tradicionais" data-section="tradicionais" class="mb-7 scroll-mt-32">
 
-            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+            <h2 class="menu-section-title font-black mb-3 flex items-center gap-2">
 
-                <i data-lucide="flame" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+                <i data-lucide="flame" class="w-5 h-5 text-[#facc15] fill-[#facc15]"></i>
 
-                TRADICIONAIS
+                Tradicionais
             </h2>
 
-            <div class="grid gap-6">
-                <div id="lista-tradicionais" class="grid gap-6 lg:grid-cols-2"></div>
+            <div class="grid gap-3">
+                <div id="lista-tradicionais" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
             </div>
         </section>
 
         <!-- PREMIUM -->
-        <section id="sec-premium" data-section="premium" class="mb-16 scroll-mt-36">
+        <section id="sec-premium" data-section="premium" class="mb-7 scroll-mt-32">
 
-            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+            <h2 class="menu-section-title font-black mb-3 flex items-center gap-2">
 
-                <i data-lucide="crown" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+                <i data-lucide="crown" class="w-5 h-5 text-[#facc15] fill-[#facc15]"></i>
 
-                PREMIUM
+                Premium
             </h2>
 
-            <div class="grid gap-6">
-                <div id="lista-premium" class="grid gap-6 lg:grid-cols-2"></div>
+            <div class="grid gap-3">
+                <div id="lista-premium" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
             </div>
         </section>
 
         <!-- DOCES -->
-        <section id="sec-doces" data-section="doces" class="mb-16 scroll-mt-36">
+        <section id="sec-doces" data-section="doces" class="mb-10 scroll-mt-32">
 
-            <h2 class="text-xl md:text-2xl font-black mb-8 gold-text flex items-center gap-3">
+            <h2 class="menu-section-title font-black mb-3 flex items-center gap-2">
 
-                <i data-lucide="heart" class="w-8 h-8 md:w-10 md:h-10 fill-[#d4a017]"></i>
+                <i data-lucide="heart" class="w-5 h-5 text-[#facc15] fill-[#facc15]"></i>
 
-                DOCES
+                Doces
             </h2>
 
-            <div class="grid gap-6">
-                <div id="lista-doces" class="grid gap-6 lg:grid-cols-2"></div>
+            <div class="grid gap-3">
+                <div id="lista-doces" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
             </div>
         </section>
 
         <!-- FEEDBACKS -->
-        <section id="feedbacks" class="mb-10" aria-labelledby="feedback-title">
-            <div class="flex items-center justify-between gap-4 mb-6">
-                <h2 id="feedback-title"
-                    class="text-xl md:text-2xl font-black gold-text flex items-center gap-3">
-                    <i data-lucide="messages-square" class="w-8 h-8 md:w-10 md:h-10"></i>
-                    QUEM PROVOU APROVOU
-                </h2>
+        <section id="feedbacks" class="mb-10 rounded-[2rem] border border-[#7b1b15]/70 bg-[#2b0000]/62 px-5 py-5 md:px-8 md:py-7 shadow-[0_24px_55px_rgba(0,0,0,0.36)]" aria-labelledby="feedback-title">
+            <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="flex items-center gap-3 min-w-0">
+                    <i data-lucide="messages-square" class="w-8 h-8 md:w-10 md:h-10 text-[#facc15]"></i>
+                    <div class="min-w-0">
+                        <h2 id="feedback-title" class="text-lg md:text-2xl font-black leading-tight">
+                            QUEM PROVOU <span class="text-[#facc15]">APROVOU</span>
+                        </h2>
+                        <p class="mt-1 text-xs md:text-sm text-white/72 font-semibold">
+                            Veja o que nossos clientes estão falando sobre a gente.
+                        </p>
+                    </div>
+                </div>
 
-                <div class="hidden md:flex items-center gap-2">
+                <div class="flex items-center gap-2">
                     <button type="button" onclick="scrollFeedback(-1)" aria-label="Feedback anterior"
-                        class="grid place-items-center w-10 h-10 rounded-full border border-[#d4a017]/40 bg-black/30 hover:bg-white/10 transition">
-                        <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                        class="grid place-items-center w-9 h-9 rounded-full border border-[#facc15] text-[#facc15] hover:bg-[#facc15] hover:text-black transition">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
                     </button>
 
                     <button type="button" onclick="scrollFeedback(1)" aria-label="Proximo feedback"
-                        class="grid place-items-center w-10 h-10 rounded-full border border-[#d4a017]/40 bg-black/30 hover:bg-white/10 transition">
-                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                        class="grid place-items-center w-9 h-9 rounded-full border border-[#facc15] text-[#facc15] hover:bg-[#facc15] hover:text-black transition">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
 
             <div id="feedback-carousel"
-                class="flex gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth pb-5"
+                class="flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth"
                 aria-label="Carrossel de feedbacks">
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-07-12 at 22.28.10.jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
+                <article class="feedback-card w-full flex-none snap-center rounded-2xl border border-[#7b1b15]/80 bg-[#3a0303]/64 p-5 md:p-6">
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <span class="text-[#facc15] text-xl tracking-[0.12em]" aria-label="5 estrelas">★★★★★</span>
+                            <strong class="text-sm md:text-base font-black">Maravilhosas</strong>
+                        </div>
+                        <time class="text-xs md:text-sm text-white/45">16:38</time>
+                    </div>
+                    <p class="text-base md:text-xl leading-relaxed text-white/92">
+                        “As esfihas são simplesmente incríveis! Massa leve, recheio generoso e chegaram quentinhas. Já virei cliente fiel!”
+                    </p>
+                </article>
 
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-07-12 at 22.28.10 (1).jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
+                <article class="feedback-card w-full flex-none snap-center rounded-2xl border border-[#7b1b15]/80 bg-[#3a0303]/64 p-5 md:p-6">
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <span class="text-[#facc15] text-xl tracking-[0.12em]" aria-label="5 estrelas">★★★★★</span>
+                            <strong class="text-sm md:text-base font-black">Muito saborosas</strong>
+                        </div>
+                        <time class="text-xs md:text-sm text-white/45">19:12</time>
+                    </div>
+                    <p class="text-base md:text-xl leading-relaxed text-white/92">
+                        “Pedido chegou certinho, massa bem macia e o recheio veio caprichado. A de carne é perfeita.”
+                    </p>
+                </article>
 
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/Mari.jpg" alt="Feedback da cliente Mari"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
+                <article class="feedback-card w-full flex-none snap-center rounded-2xl border border-[#7b1b15]/80 bg-[#3a0303]/64 p-5 md:p-6">
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <span class="text-[#facc15] text-xl tracking-[0.12em]" aria-label="5 estrelas">★★★★★</span>
+                            <strong class="text-sm md:text-base font-black">Entrega rápida</strong>
+                        </div>
+                        <time class="text-xs md:text-sm text-white/45">20:07</time>
+                    </div>
+                    <p class="text-base md:text-xl leading-relaxed text-white/92">
+                        “Veio tudo quentinho e muito bem embalado. O catupiry é maravilhoso, recomendo demais.”
+                    </p>
+                </article>
 
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/Marcia.jpg" alt="Feedback da cliente Marcia"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
+                <article class="feedback-card w-full flex-none snap-center rounded-2xl border border-[#7b1b15]/80 bg-[#3a0303]/64 p-5 md:p-6">
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <span class="text-[#facc15] text-xl tracking-[0.12em]" aria-label="5 estrelas">★★★★★</span>
+                            <strong class="text-sm md:text-base font-black">Recheio generoso</strong>
+                        </div>
+                        <time class="text-xs md:text-sm text-white/45">21:20</time>
+                    </div>
+                    <p class="text-base md:text-xl leading-relaxed text-white/92">
+                        “Amei! Dá para sentir que é feita com carinho. Já pedi mais de uma vez e sempre vem impecável.”
+                    </p>
+                </article>
 
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/Luke 24-05.jpg" alt="Feedback do cliente Luke"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/Imara.jpg" alt="Feedback da cliente Imara"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/huberson.jpeg" alt="Feedback do cliente Huberson"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/Edinalber.jpg" alt="Feedback do cliente Edinalber"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.24.jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.24 (1).jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.25.jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-06-07 at 22.20.26.jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/WhatsApp Image 2026-06-13 at 00.47.02.jpeg" alt="Feedback recebido pelo WhatsApp"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/katiuscia.jpg" alt="Feedback da cliente Katiuscia"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/elizangela.jpg" alt="Feedback da cliente Elizangela"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
-
-                <figure
-                    class="feedback-card w-[82vw] max-w-xl h-40 md:h-52 flex-none snap-center flex items-center justify-center">
-                    <img src="./img/feedback/linea.jpg" alt="Feedback da cliente Linea"
-                        class="max-w-full max-h-full w-auto h-auto object-contain" loading="lazy" decoding="async">
-                </figure>
+                <article class="feedback-card w-full flex-none snap-center rounded-2xl border border-[#7b1b15]/80 bg-[#3a0303]/64 p-5 md:p-6">
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <span class="text-[#facc15] text-xl tracking-[0.12em]" aria-label="5 estrelas">★★★★★</span>
+                            <strong class="text-sm md:text-base font-black">Virou favorita</strong>
+                        </div>
+                        <time class="text-xs md:text-sm text-white/45">22:03</time>
+                    </div>
+                    <p class="text-base md:text-xl leading-relaxed text-white/92">
+                        “Esfiha bem assada, sabor equilibrado e atendimento ótimo. A doce de Laka com morango é sensacional.”
+                    </p>
+                </article>
             </div>
 
-            <div id="feedback-dots" class="flex items-center justify-center gap-2" aria-hidden="true"></div>
+            <div id="feedback-dots" class="mt-4 flex items-center justify-center gap-2" aria-hidden="true"></div>
         </section>
 
     </main>
 
     <!-- SACOLA -->
-    <div class="fixed bottom-0 left-0 w-full p-4 md:p-6 z-50 bg-gradient-to-t from-[#2d0000] to-transparent">
+    <div class="fixed bottom-0 left-0 w-full p-4 md:p-6 z-50 pointer-events-none bg-gradient-to-t from-black/75 to-transparent">
 
         <button onclick="abrirRevisao()" id="btn-abrir-revisao"
-            class="flex items-center justify-between w-1/2 min-w-[18rem] md:w-[24rem] mx-auto bg-[#16a34a] text-white py-4 md:py-6 px-4 md:px-6 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-t border-white/20">
+            class="pointer-events-auto flex items-center justify-between w-full max-w-[22rem] mx-auto bg-[#16a34a] text-white py-3 px-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.55)] border border-white/15">
 
             <div class="flex items-center gap-2 md:gap-3">
 
                 <div class="relative">
-                    <i data-lucide="shopping-cart" class="w-6 h-6 md:w-8 md:h-8"></i>
-
-                    <span id="qtd-badge"
-                        class="hidden absolute -top-2 -right-2 md:-top-3 md:-right-3 min-w-6 h-6 md:min-w-7 md:h-7 px-2 rounded-full bg-[#facc15] text-black text-sm font-black flex items-center justify-center shadow-lg"
-                        aria-label="Quantidade de itens na sacola">
-                        0
-                    </span>
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
                 </div>
 
-                <span class="text-sm hidden sm:flex font-black uppercase tracking-tighter">
+                <span class="text-sm font-black uppercase tracking-tighter">
                     Ver Sacola
                 </span>
+
             </div>
 
-            <span id="total-badge" class="bg-black/30 px-4 md:px-6 py-2 rounded-xl text-sm font-bold">
+            <span id="total-badge" class="bg-black/30 px-4 py-2 rounded-xl text-sm font-bold">
 
                 R$ 0,00
             </span>
         </button>
+    </div>
+
     </div>
 
     <script>
@@ -1086,6 +1485,118 @@
 
         let carrinho = carregarCarrinho();
         let toastTimer = null;
+
+        const STORE_OPEN_HOUR = 18;
+        const STORE_OPEN_MINUTE = 30;
+        const STORE_CLOSE_HOUR = 22;
+        const STORE_CLOSE_MINUTE = 30;
+        const STORE_OPEN_DAYS = [0, 4, 5, 6]; // Domingo, quinta, sexta e sábado.
+        const STORE_DAY_NAMES = [
+            'domingo',
+            'segunda-feira',
+            'terça-feira',
+            'quarta-feira',
+            'quinta-feira',
+            'sexta-feira',
+            'sábado'
+        ];
+
+        function minutesFromMidnight(date) {
+            return date.getHours() * 60 + date.getMinutes();
+        }
+
+        function isStoreOpenDay(day) {
+            return STORE_OPEN_DAYS.includes(day);
+        }
+
+        function getNextOpenDay(date = new Date()) {
+            const currentDay = date.getDay();
+
+            for (let offset = 1; offset <= 7; offset++) {
+                const nextDay = (currentDay + offset) % 7;
+
+                if (isStoreOpenDay(nextDay)) {
+                    return {
+                        day: nextDay,
+                        name: STORE_DAY_NAMES[nextDay],
+                        isTomorrow: offset === 1
+                    };
+                }
+            }
+
+            return null;
+        }
+
+        function getStoreStatus(date = new Date()) {
+            const day = date.getDay();
+            const nowMinutes = minutesFromMidnight(date);
+            const openMinutes = STORE_OPEN_HOUR * 60 + STORE_OPEN_MINUTE;
+            const closeMinutes = STORE_CLOSE_HOUR * 60 + STORE_CLOSE_MINUTE;
+
+            if (isStoreOpenDay(day) && nowMinutes < openMinutes) {
+                return {
+                    status: 'opens_today',
+                    mensagem: '🟡 Hoje abrimos às 18h30.',
+                    classeCSS: 'store-status--opens-today'
+                };
+            }
+
+            if (isStoreOpenDay(day) && nowMinutes >= openMinutes && nowMinutes <= closeMinutes) {
+                return {
+                    status: 'open',
+                    mensagem: '🟢 Estamos produzindo agora! Faça seu pedido até às 22h30.',
+                    classeCSS: 'store-status--open'
+                };
+            }
+
+            if (isStoreOpenDay(day) && nowMinutes > closeMinutes) {
+                const nextOpenDay = getNextOpenDay(date);
+                const retorno = nextOpenDay?.isTomorrow
+                    ? 'Voltamos amanhã às 18h30.'
+                    : `Voltamos na ${nextOpenDay.name} às 18h30.`;
+
+                return {
+                    status: 'closed',
+                    mensagem: `🔴 Encerramos a produção de hoje.<br>${retorno}`,
+                    classeCSS: 'store-status--closed'
+                };
+            }
+
+            return {
+                status: 'closed',
+                mensagem: '🔴 Hoje estamos fechados.<br>Voltamos na quinta-feira às 18h30.',
+                classeCSS: 'store-status--closed'
+            };
+        }
+
+        function updateStoreBanner() {
+            const status = getStoreStatus();
+            const banner = document.getElementById('store-status-banner');
+            const checkoutStatuses = document.querySelectorAll('[data-store-status-indicator]');
+            const statusClasses = [
+                'store-status--open',
+                'store-status--opens-today',
+                'store-status--closed'
+            ];
+
+            if (banner) {
+                banner.classList.remove(...statusClasses);
+                banner.classList.add(status.classeCSS);
+                banner.innerHTML = status.mensagem;
+            }
+
+            checkoutStatuses.forEach((checkoutStatus) => {
+                checkoutStatus.classList.remove(...statusClasses);
+
+                if (status.status === 'open') {
+                    checkoutStatus.classList.add('store-status--open');
+                    checkoutStatus.textContent = '🟢 Aberto agora';
+                } else {
+                    checkoutStatus.classList.add('store-status--closed');
+                    checkoutStatus.textContent = '🔴 Fechado';
+                }
+            });
+        }
 
         const origensPedido = {
             direto: { prefixo: '10', nome: 'Site direto' },
@@ -1207,7 +1718,6 @@
 
             const isOpen = panel.classList.toggle('is-open');
             btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-            btn.textContent = isOpen ? '- Detalhes' : '+ Detalhes';
         }
 
         function renderControleProduto(item) {
@@ -1217,7 +1727,7 @@
             if (item.indisponivel) {
                 return `
                     <button type="button" disabled aria-disabled="true"
-                        class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15]/60 text-black grid place-items-center shadow-lg opacity-70 cursor-not-allowed text-xs font-black">
+                        class="h-8 min-w-[6.5rem] rounded-full bg-[#facc15]/60 text-black grid place-items-center shadow-lg opacity-70 cursor-not-allowed text-[0.65rem] font-black">
                         Indisponível
                     </button>
                 `;
@@ -1228,14 +1738,14 @@
                     <div class="flex items-center bg-[#facc15] text-black rounded-full shadow-lg overflow-hidden">
                         <button type="button" aria-label="Diminuir ${item.n}"
                             onclick="ajustarQuantidade('${safeName}', -1)"
-                            class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
-                            <i data-lucide="minus" class="w-4 h-4"></i>
+                            class="w-8 h-8 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                            <i data-lucide="minus" class="w-3.5 h-3.5"></i>
                         </button>
-                        <span class="min-w-7 text-center font-black text-sm px-1">${qtd}</span>
+                        <span class="min-w-6 text-center font-black text-xs px-1">${qtd}</span>
                         <button type="button" aria-label="Aumentar ${item.n}"
                             onclick="ajustarQuantidade('${safeName}', 1)"
-                            class="w-10 h-11 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            class="w-8 h-8 grid place-items-center hover:bg-[#eab308] active:scale-95 transition">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                         </button>
                     </div>
                 `;
@@ -1244,15 +1754,15 @@
             return `
                 <button type="button" aria-label="Adicionar ${item.n}"
                     onclick="add('${safeName}', ${item.a})"
-                    class="h-11 min-w-[8.25rem] rounded-full bg-[#facc15] text-black inline-flex items-center justify-center gap-2 shadow-lg hover:bg-[#eab308] transition active:scale-95 text-sm font-black">
-                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    class="h-8 min-w-[6rem] rounded-full bg-[#facc15] text-black inline-flex items-center justify-center gap-1.5 shadow-lg hover:bg-[#eab308] transition active:scale-95 text-[0.68rem] font-black">
+                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                     Adicionar
                 </button>
             `;
         }
 
         function atualizarControleProduto(nome) {
-            const item = getProdutos().find((produto) => produto.n === nome);
+            const item = produtosPorNome.get(nome);
 
             if (!item) return;
 
@@ -1266,8 +1776,7 @@
 
         function atualizarTodosControlesProdutos() {
             document.querySelectorAll('[data-product-control]').forEach((controle) => {
-                const item = getProdutos()
-                    .find((produto) => produto.n === controle.dataset.productControl);
+                const item = produtosPorNome.get(controle.dataset.productControl);
 
                 if (!item) return;
                 controle.innerHTML = renderControleProduto(item);
@@ -1289,67 +1798,59 @@
                 const isInitialProduct = containerId === 'lista-premium' && idx < 2;
 
                 return `
-                <div class="category-card menu-reveal group relative rounded-[0.85rem] min-h-[22rem] shadow-[0_18px_45px_rgba(0,0,0,0.42)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 70}ms">
+                    <article class="category-card menu-reveal group relative overflow-hidden rounded-lg border shadow-[0_14px_30px_rgba(0,0,0,0.34)] ${item.indisponivel ? 'menu-product-unavailable' : ''} ${extraCardClasses}" style="--reveal-delay: ${Math.min(idx, 5) * 45}ms">
+                        <div class="compact-card-image relative overflow-hidden bg-black/20">
+                            <img src="${imgSrc}"
+                                class="menu-card-photo w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
+                                alt="${item.n}" width="${imgWidth}" height="${imgHeight}"
+                                loading="${isInitialProduct ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${isInitialProduct ? 'high' : 'low'}">
 
-                        <img src="${imgSrc}"
-                            class="menu-card-photo absolute inset-0 w-full h-full object-cover ${item.indisponivel ? 'brightness-50 grayscale' : ''}"
-                            alt="${item.n}" width="${imgWidth}" height="${imgHeight}"
-                            loading="${isInitialProduct ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${isInitialProduct ? 'high' : 'low'}">
+                            ${(item.m || item.nov) ? `
+                                <div class="absolute top-2 left-2 z-20 pointer-events-none flex flex-col gap-1">
+                                    ${item.m ? `
+                                        <span class="inline-flex items-center gap-1 whitespace-nowrap bg-[#facc15] text-black px-2 py-1 rounded-full text-[0.55rem] font-black uppercase shadow-sm">
+                                            <i data-lucide="crown" class="w-3 h-3 fill-black"></i>
+                                            Mais pedida
+                                        </span>
+                                    ` : ''}
+                                    ${item.nov ? `
+                                        <span class="inline-flex items-center gap-1 whitespace-nowrap bg-pink-500 text-white px-2 py-1 rounded-full text-[0.55rem] font-black uppercase shadow-sm">
+                                            Novidade
+                                        </span>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
 
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/76 via-black/46 to-black/12"></div>
-                        <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/45 to-transparent"></div>
+                            ${item.indisponivel ? `
+                                <div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                                    <span class="text-red-500 text-xs font-black tracking-[0.18em] rotate-[-16deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">INDISPONÍVEL</span>
+                                </div>
+                            ` : ''}
+                        </div>
 
-                        <button type="button"
-                            onclick="toggleDetalhes(this)"
-                            aria-expanded="false"
-                            class="absolute top-5 right-5 md:top-6 md:right-6 z-50 text-white text-xs md:text-sm font-black uppercase tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] hover:text-[#facc15] transition">
-                            + Detalhes
-                        </button>
+                        <div class="p-3 md:p-3.5">
+                            <button type="button"
+                                onclick="toggleDetalhes(this)"
+                                aria-expanded="false"
+                                class="block w-full text-left">
+                                <h3 class="menu-product-title text-sm md:text-[0.92rem] font-black text-white leading-tight">${item.n}</h3>
+                                <p class="mt-1 text-[0.65rem] md:text-[0.68rem] text-white/72 font-semibold leading-snug line-clamp-2">${item.d}</p>
+                            </button>
 
-                        ${(item.m || item.nov) ? `
-                            <div class="absolute top-5 left-5 md:top-6 md:left-6 z-30 pointer-events-none flex flex-col gap-2">
-                                ${item.m ? `
-                                    <span class="inline-flex items-center gap-2 whitespace-nowrap bg-[#facc15]/95 text-black px-3 py-1 rounded-full text-[0.63rem] md:text-[0.68rem] font-black tracking-tight shadow-sm uppercase">
-                                        <span>Mais pedida</span>
-                                    </span>
-                                ` : ''}
-                                ${item.nov ? `
-                                    <span class="inline-flex items-center gap-2 whitespace-nowrap bg-pink-500/90 text-white px-3 py-1 rounded-full text-[0.63rem] md:text-[0.68rem] font-black tracking-tight shadow-sm uppercase">
-                                        <span>Novidade</span>
-                                    </span>
-                                ` : ''}
+                            <div data-card-details
+                                class="card-details-panel mt-2 rounded-lg bg-black/24 border border-white/10">
+                                <div class="p-2.5">
+                                    <p class="text-white/88 text-[0.68rem] leading-relaxed font-semibold">${item.d}</p>
+                                </div>
                             </div>
-                        ` : ''}
 
-                        ${item.indisponivel ? `
-                            <div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-                                <span class="text-red-500 text-sm md:text-lg font-black tracking-[0.2em] rotate-[-18deg] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">INDISPONÍVEL</span>
-                            </div>
-                        ` : ''}
-
-                        <div class="relative z-10 min-h-[22rem] px-5 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4 flex flex-col justify-between">
-                            <div class="${(item.m || item.nov) ? 'pt-8 md:pt-8' : ''} max-w-[30rem]">
-                                <h3 class="text-xl md:text-2xl font-black text-white leading-tight drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)]">${item.n}</h3>
-                                <p class="sr-only">${item.d}</p>
-                            </div>
-
-                            <div class="mt-auto mb-0 flex items-end justify-between gap-4">
-                                <span class="text-xl md:text-2xl font-black text-[#facc15] whitespace-nowrap drop-shadow-[0_3px_12px_rgba(0,0,0,0.8)]">${brl.format(item.a)}</span>
+                            <div class="mt-3 flex items-center justify-between gap-2">
+                                <span class="text-base md:text-lg font-black text-[#facc15] whitespace-nowrap">${brl.format(item.a)}</span>
                                 <div data-product-control="${item.n}"
                                     class="flex items-center justify-end flex-shrink-0">${renderControleProduto(item)}</div>
                             </div>
-
-                            <div data-card-details
-                                class="card-details-panel mt-4 rounded-2xl bg-black/42 border border-white/10 backdrop-blur-sm">
-                                <div class="p-4">
-                                    <span class="inline-flex mb-2 rounded-full bg-[#facc15] text-black px-3 py-1 text-[0.62rem] font-black uppercase">
-                                        Informações
-                                    </span>
-                                    <p class="text-white/90 text-sm leading-relaxed font-semibold">${item.d}</p>
-                                </div>
-                            </div>
                         </div>
-                    </div>
+                    </article>
                 `;
             }).join('');
 
@@ -1379,7 +1880,7 @@
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
             { n: "Lombo com Cheddar", d: "Lombo canadense fatiado com cheddar cremoso.", a: 9.99, i: "lombo_cheddar", nov: true },
             { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso e tomate cereja.", a: 9.99, i: "lombo_creamcheese" },
-            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca" }
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", m: true }
         ];
 
         const doces = [
@@ -1396,12 +1897,16 @@
             { n: "Romeu e Julieta", d: "A clássica combinação de queijo minas com goiabada.", a: 8.99, i: "romeu_julieta" }
         ];
 
+        const produtos = [...tradicionais, ...premium, ...doces];
+        const produtosPorNome = new Map(produtos.map((item) => [item.n, item]));
+        const nomesDoces = new Set(doces.map((item) => item.n));
+
         function getProdutos() {
-            return [...tradicionais, ...premium, ...doces];
+            return produtos;
         }
 
         function produtoIndisponivel(nome) {
-            const produto = getProdutos().find((item) => item.n === nome);
+            const produto = produtosPorNome.get(nome);
             return !!(produto && produto.indisponivel);
         }
 
@@ -1418,8 +1923,6 @@
         }
 
         function ordenarItensParaPedido() {
-            const nomesDoces = new Set(doces.map((item) => item.n));
-
             return Object.keys(carrinho).sort((a, b) => {
                 const aDoce = nomesDoces.has(a);
                 const bDoce = nomesDoces.has(b);
@@ -1429,23 +1932,20 @@
             });
         }
 
-        function getDestaques() {
-            const preferidos = [
-                "Carne",
-                "Queijo",
-                "Carne Seca",
-                "Carne e Queijo",
-                "Banana Nevada"
-            ];
+        const nomesDestaquesPreferidos = [
+            "Carne",
+            "Queijo",
+            "Carne Seca",
+            "Carne e Queijo",
+            "Banana Nevada"
+        ];
 
-            const all = [...tradicionais, ...premium, ...doces];
-            const byName = new Map(all.map((it) => [it.n, it]));
-
-            const picks = preferidos
-                .map((n) => byName.get(n))
+        const destaques = (() => {
+            const picks = nomesDestaquesPreferidos
+                .map((n) => produtosPorNome.get(n))
                 .filter((item) => item && !item.indisponivel);
 
-            all.forEach((it) => {
+            produtos.forEach((it) => {
                 if (it.indisponivel) return;
                 if (!it.nov) return;
                 if (picks.some((p) => p.n === it.n)) return;
@@ -1453,62 +1953,51 @@
             });
 
             return picks.sort((a, b) => a.a - b.a);
+        })();
+
+        function getDestaques() {
+            return destaques;
         }
 
         function renderDestaques() {
             const container = document.getElementById('carousel-destaques');
             if (!container) return;
 
-            const destaques = getDestaques();
-
-            const badgeFor = (item) => {
-                if (item.nov) return { label: 'Novidade', cls: 'bg-pink-500/90 text-white' };
-                if (item.m) return { label: 'Mais pedida', cls: 'bg-[#facc15]/95 text-black' };
-                return { label: 'Premium', cls: 'bg-black/45 text-white border border-white/15' };
-            };
+            const destaques = getDestaques().slice(0, 3);
 
             container.innerHTML = destaques.map((item, idx) => {
-                const badge = badgeFor(item);
-                const cardWidth = 'w-[85vw] sm:w-[36rem]';
                 const disabled = !!item.indisponivel;
                 const safeName = String(item.n).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
                 const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
 
                 return `
-                    <article class="${cardWidth} flex-shrink-0 snap-start relative overflow-hidden rounded-[2.5rem] shadow-[0_16px_32px_rgba(0,0,0,0.18)]">
-                        <div class="absolute inset-0">
-                            <img src="${imgSrc}" alt="" aria-hidden="true"
-                                class="w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : 'brightness-75'}"
+                    <article class="category-card relative overflow-hidden rounded-lg border shadow-[0_14px_30px_rgba(0,0,0,0.34)]">
+                        <div class="compact-card-image relative overflow-hidden bg-black/20">
+                            <img src="${imgSrc}" alt="${item.n}"
+                                class="menu-card-photo w-full h-full object-cover ${disabled ? 'brightness-50 grayscale' : ''}"
                                 width="${imgWidth}" height="${imgHeight}"
                                 loading="${idx === 0 ? 'eager' : 'lazy'}" decoding="async" fetchpriority="${idx === 0 ? 'high' : 'low'}">
-                        </div>
 
-                        <div class="relative z-10 p-6 md:p-7 min-h-[13.5rem] flex flex-col justify-end gap-3">
-                            <div class="absolute top-4 left-4">
-                                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[0.7rem] font-black tracking-tight shadow ${badge.cls}">
-                                    ${badge.label}
+                            <div class="absolute top-2 left-2">
+                                <span class="inline-flex items-center gap-1 whitespace-nowrap bg-[#facc15] text-black px-2 py-1 rounded-full text-[0.55rem] font-black uppercase shadow-sm">
+                                    <i data-lucide="crown" class="w-3 h-3 fill-black"></i>
+                                    Mais pedida
                                 </span>
                             </div>
+                        </div>
 
-                            <h3 class="text-2xl md:text-3xl font-black leading-tight text-white drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)]">
-                                ${item.n}
-                            </h3>
+                        <div class="p-3 md:p-3.5">
+                            <h3 class="text-sm md:text-[0.92rem] font-black leading-tight text-white">${item.n}</h3>
+                            <p class="mt-1 text-[0.65rem] md:text-[0.68rem] text-white/72 font-semibold leading-snug line-clamp-2">${item.d}</p>
 
-                            <p class="text-white/90 drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)] text-sm md:text-[0.95rem] leading-relaxed max-w-[40rem]">
-                                ${item.d}
-                            </p>
-
-                            <div class="mt-3 flex items-center justify-between gap-4">
-                                <span class="text-[#facc15] text-xl md:text-2xl font-black drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)]">
-                                    ${brl.format(item.a)}
-                                </span>
-
+                            <div class="mt-3 flex items-center justify-between gap-2">
+                                <span class="text-base md:text-lg font-black text-[#facc15]">${brl.format(item.a)}</span>
                                 <button type="button"
                                     ${disabled ? 'disabled aria-disabled="true"' : ''}
                                     onclick="${disabled ? '' : `add('${safeName}', ${item.a})`}"
-                                    class="${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:brightness-110 active:scale-95'} inline-flex items-center gap-3 bg-[#facc15] text-black px-5 py-3 rounded-[1.4rem] font-black shadow-lg transition">
-                                    <i data-lucide="plus" class="w-5 h-5"></i>
+                                    class="${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:brightness-110 active:scale-95'} h-8 min-w-[6rem] inline-flex items-center justify-center gap-1.5 bg-[#facc15] text-black px-3 rounded-full text-[0.68rem] font-black shadow-lg transition">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                                     Adicionar
                                 </button>
                             </div>
@@ -1628,8 +2117,20 @@
         let subtotal = 0;
         let totalQtd = 0;
         let ultimoFoco = null;
+        const totalElements = {
+            totalBadge: document.getElementById('total-badge'),
+            qtdBadge: document.getElementById('qtd-badge'),
+            totalRevisao: document.getElementById('total-revisao'),
+            subtotalRevisao: document.getElementById('subtotal-revisao'),
+            qtdRevisao: document.getElementById('qtd-revisao'),
+            qtdResumo: document.getElementById('qtd-resumo'),
+            discountLabel: document.getElementById('discount-progress-label'),
+            discountDots: document.getElementById('discount-progress-dots')
+        };
 
         atualizarTotal();
+        updateStoreBanner();
+        setInterval(updateStoreBanner, 60000);
 
         const modal = document.getElementById('modal-revisao');
         const listaRevisao = document.getElementById('lista-revisao');
@@ -1644,6 +2145,11 @@
                 const action = btn.getAttribute('data-carrinho-action');
 
                 if (!item) return;
+
+                if (action === 'remove') {
+                    removerItemCarrinho(item);
+                    return;
+                }
 
                 ajustarQuantidade(item, action === 'inc' ? 1 : -1);
             });
@@ -1715,43 +2221,67 @@
             const subtotalExibido = subtotal;
             const totalExibido = subtotalExibido;
 
+            const totalFormatado = brl.format(totalExibido);
+            const subtotalFormatado = brl.format(subtotal);
 
-            document.getElementById('total-badge').innerText =
-                brl.format(totalExibido);
-
-            const qtdBadge = document.getElementById('qtd-badge');
-            if (qtdBadge) {
-                qtdBadge.innerText = String(totalQtd);
-                if (totalQtd > 0) qtdBadge.classList.remove('hidden');
-                else qtdBadge.classList.add('hidden');
+            if (totalElements.totalBadge) {
+                totalElements.totalBadge.innerText = totalFormatado;
             }
 
-            if (document.getElementById('total-revisao')) {
-
-                document.getElementById('total-revisao').innerText =
-                    brl.format(totalExibido);
+            if (totalElements.qtdBadge) {
+                totalElements.qtdBadge.innerText = String(totalQtd);
+                totalElements.qtdBadge.classList.toggle('hidden', totalQtd === 0);
             }
 
-            // Total (com entrega) é preenchido manualmente
+            if (totalElements.totalRevisao) {
+                totalElements.totalRevisao.innerText = totalFormatado;
+            }
 
-            const subtotalEl = document.getElementById('subtotal-revisao');
-            if (subtotalEl) subtotalEl.innerText = brl.format(subtotal);
+            if (totalElements.subtotalRevisao) {
+                totalElements.subtotalRevisao.innerText = subtotalFormatado;
+            }
 
-            const qtdRevisao = document.getElementById('qtd-revisao');
-            if (qtdRevisao) qtdRevisao.innerText = String(totalQtd);
+            if (totalElements.qtdRevisao) {
+                totalElements.qtdRevisao.innerText = String(totalQtd);
+            }
+
+            if (totalElements.qtdResumo) {
+                totalElements.qtdResumo.innerText = String(totalQtd);
+            }
+
+            const discountGoal = 6;
+            const discountProgress = Math.min(totalQtd, discountGoal);
+            const missingForDiscount = Math.max(0, discountGoal - totalQtd);
+
+            if (totalElements.discountLabel) {
+                totalElements.discountLabel.innerText = missingForDiscount === 0
+                    ? 'Desconto liberado!'
+                    : `Faltam ${missingForDiscount} esfiha${missingForDiscount === 1 ? '' : 's'}`;
+            }
+
+            if (totalElements.discountDots) {
+                Array.from(totalElements.discountDots.children).forEach((dot, index) => {
+                    dot.classList.toggle('is-filled', index < discountProgress);
+                });
+            }
+        }
+
+        let sectionFilterState = null;
+
+        function getSectionFilterState() {
+            if (!sectionFilterState) {
+                sectionFilterState = {
+                    sections: Array.from(document.querySelectorAll('section[data-section]')),
+                    buttons: Array.from(document.querySelectorAll('button.filter-btn[data-section-filter]'))
+                };
+            }
+
+            return sectionFilterState;
         }
 
         function setSectionFilter(filter) {
 
-            const sections = Array.from(
-                document.querySelectorAll('section[data-section]')
-            );
-
-            const buttons = Array.from(
-                document.querySelectorAll(
-                    'button.filter-btn[data-section-filter]'
-                )
-            );
+            const { sections, buttons } = getSectionFilterState();
 
             sections.forEach((sec) => {
 
@@ -1821,7 +2351,7 @@
         }
 
         function initSectionFilters() {
-            const buttons = Array.from(document.querySelectorAll('button.filter-btn[data-section-filter]'));
+            const { buttons } = getSectionFilterState();
             if (!buttons.length) return;
 
             buttons.forEach((btn) => {
@@ -1906,61 +2436,100 @@
             localStorage.setItem('carrinho_esfiha', JSON.stringify(carrinho));
         }
 
+        function removerItemCarrinho(item) {
+            if (!carrinho[item]) return;
+
+            delete carrinho[item];
+            salvarCarrinho();
+            atualizarTotal();
+            atualizarControleProduto(item);
+
+            if (Object.keys(carrinho).length === 0) {
+                const lista = document.getElementById('lista-revisao');
+                if (lista) lista.innerHTML = '';
+                fecharRevisao();
+                return;
+            }
+
+            renderRevisao();
+        }
+
         function renderRevisao() {
 
             const lista = document.getElementById('lista-revisao');
             if (!lista) return;
 
-            lista.innerHTML = '';
-
-            for (const item in carrinho) {
+            lista.innerHTML = Object.keys(carrinho).map((item) => {
 
                 const itemKey = encodeURIComponent(item);
+                const produto = produtosPorNome.get(item);
+                const imgSrc = produto ? (produto.img || `./img/esfihas/${produto.i}.png`) : './img/logo.png';
+                const [imgWidth, imgHeight] = produto ? (imageDimensions[produto.i] || [900, 900]) : [512, 512];
+                const descricao = produto ? produto.d : 'Item selecionado para o seu pedido.';
+                const isMaisPedida = !!(produto && produto.m);
 
-                lista.innerHTML += `
-                    <div class="flex justify-between gap-3 items-center bg-white/5 p-4 rounded-2xl border border-white/10">
+                return `
+                    <div class="cart-line-item">
+                        <img src="${imgSrc}" alt="${item}" width="${imgWidth}" height="${imgHeight}"
+                            class="cart-item-photo" loading="lazy" decoding="async">
 
-                        <div class="min-w-0">
-                            <p class="font-bold leading-tight truncate text-xs md:text-sm">
-                                ${item}
+                        <div class="min-w-0 self-start pt-1">
+                            <p class="font-black leading-tight truncate text-sm md:text-base">${item}</p>
+
+                            <p class="mt-1 text-white/68 text-[0.68rem] md:text-xs leading-snug line-clamp-2">
+                                ${descricao}
                             </p>
 
-                            <p class="text-white/50 text-[0.7rem] md:text-xs">
-                                Unid: ${brl.format(carrinho[item].preco)}
-                            </p>
+                            ${isMaisPedida ? `
+                                <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-[#facc15] px-2 py-1 text-[0.55rem] font-black uppercase text-black">
+                                    <i data-lucide="crown" class="w-3 h-3 fill-black"></i>
+                                    Mais pedida
+                                </span>
+                            ` : ''}
                         </div>
 
-                        <div class="flex items-center justify-end gap-3 flex-shrink-0">
-                            <span class="font-black text-[#facc15] whitespace-nowrap text-xs md:text-sm text-right">
+                        <div class="flex flex-col items-end justify-end gap-3 self-stretch">
+                            <span class="font-black text-[#facc15] whitespace-nowrap text-sm md:text-base text-right">
                                 ${brl.format(carrinho[item].qtd * carrinho[item].preco)}
                             </span>
 
-                            <div class="inline-flex items-center gap-1 bg-black/20 rounded-2xl px-1.5 py-1 border border-white/10">
-                                <button type="button"
-                                    data-carrinho-action="dec"
-                                    data-item="${itemKey}"
-                                    aria-label="Diminuir ${item}"
-                                    class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 font-black text-xs leading-none">
-                                    -
-                                </button>
+                            <div class="inline-flex items-center gap-2">
+                                <div class="inline-flex items-center gap-2 bg-black/20 rounded-full px-1.5 py-1 border border-white/10">
+                                    <button type="button"
+                                        data-carrinho-action="dec"
+                                        data-item="${itemKey}"
+                                        aria-label="Diminuir ${item}"
+                                        class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 font-black text-xs leading-none">
+                                        -
+                                    </button>
 
-                                <span class="font-extrabold text-[0.7rem] w-5 text-center select-none">
-                                    ${carrinho[item].qtd}
-                                </span>
+                                    <span class="font-extrabold text-xs w-5 text-center select-none">
+                                        ${carrinho[item].qtd}
+                                    </span>
+
+                                    <button type="button"
+                                        data-carrinho-action="inc"
+                                        data-item="${itemKey}"
+                                        aria-label="Aumentar ${item}"
+                                        class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 font-black text-xs leading-none">
+                                        +
+                                    </button>
+                                </div>
 
                                 <button type="button"
-                                    data-carrinho-action="inc"
+                                    data-carrinho-action="remove"
                                     data-item="${itemKey}"
-                                    aria-label="Aumentar ${item}"
-                                    class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 font-black text-xs leading-none">
-                                    +
+                                    aria-label="Remover ${item}"
+                                    class="grid place-items-center w-8 h-8 rounded-full text-white/68 hover:text-[#facc15] hover:bg-white/5 transition">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </div>
                         </div>
                     </div>`;
-            }
+            }).join('');
 
             ajustarAlturaListaRevisao();
+            renderIcons(lista);
         }
 
         function ajustarAlturaListaRevisao() {
@@ -1970,7 +2539,7 @@
             const aplicar = () => {
                 const itens = Array.from(lista.children);
 
-                const maxItensVisiveis = 2;
+                const maxItensVisiveis = 3;
 
                 if (itens.length <= maxItensVisiveis) {
                     lista.style.maxHeight = '';
