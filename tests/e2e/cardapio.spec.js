@@ -31,7 +31,14 @@ test.describe('Cardapio', () => {
     await expect(page.getByRole('heading', { name: 'Doces' })).toBeVisible();
     await expect(page.getByRole('heading', { name: /QUEM PROVOU/i })).toBeVisible();
     await expect(page.getByText('Frango com Catupiry').first()).toBeVisible();
-    await expect(page.getByText('30% OFF')).toHaveCount(1);
+    await expect(page.getByText('30% OFF')).toHaveCount(0);
+    await expect(page.locator('#carousel-destaques h3')).toHaveText([
+      'Calabresa com Cebola',
+      'Carne e Queijo',
+      'Carne',
+      'Lombo com Cream Cheese',
+      'Queijo'
+    ]);
   });
 
   test('filtra secoes do cardapio', async ({ page }) => {
@@ -58,7 +65,6 @@ test.describe('Cardapio', () => {
     await page.getByRole('button', { name: 'Abrir sacola' }).click();
     await expect(page.getByRole('heading', { name: 'Sua sacola' })).toBeVisible();
     await expect(page.locator('#qtd-revisao')).toHaveText('2');
-    await expect(page.locator('#discount-progress-label')).toHaveText('Faltam 4 esfihas');
 
     const modal = page.locator('#modal-revisao');
 
@@ -73,15 +79,82 @@ test.describe('Cardapio', () => {
     await expect(page.locator('#qtd-badge')).toBeHidden();
   });
 
-  test('libera aviso de desconto com 6 unidades', async ({ page }) => {
+  test('mantem preco integral sem promocao a partir de 6 unidades', async ({ page }) => {
     await openCardapio(page);
 
     await addProduct(page, 'Carne', 6);
     await page.getByRole('button', { name: 'Abrir sacola' }).click();
 
     await expect(page.locator('#qtd-revisao')).toHaveText('6');
-    await expect(page.locator('#discount-progress-label')).toHaveText('Desconto liberado!');
-    await expect(page.locator('#discount-progress-dots .is-filled')).toHaveCount(6);
+    await expect(page.locator('#subtotal-revisao')).toHaveText('R$ 47,94');
+    await expect(page.locator('#total-revisao')).toHaveText('R$ 47,94');
+    await expect(page.getByText(/30% OFF|Desconto liberado|Faltam \d+ esfihas/i)).toHaveCount(0);
+
+    await page.locator('#modal-revisao').getByRole('button', { name: 'Aumentar Carne' }).click();
+    await expect(page.locator('#qtd-revisao')).toHaveText('7');
+    await expect(page.locator('#total-revisao')).toHaveText('R$ 55,93');
+    await expect(page.getByText(/30% OFF|Desconto liberado|Faltam \d+ esfihas/i)).toHaveCount(0);
+  });
+
+  test('sincroniza quantidade dos destaques com produtos e sacola', async ({ page }) => {
+    await openCardapio(page);
+
+    const destaque = page.locator('#carousel-destaques [data-product-control="Carne"]');
+    const produto = page.locator('#lista-tradicionais [data-product-control="Carne"]');
+    await destaque.getByRole('button', { name: 'Adicionar Carne', exact: true }).click();
+    await expect(destaque.locator('span')).toHaveText('1');
+    await expect(produto.locator('span')).toHaveText('1');
+
+    await destaque.getByRole('button', { name: 'Aumentar Carne', exact: true }).click();
+    await expect(destaque.locator('span')).toHaveText('2');
+    await expect(produto.locator('span')).toHaveText('2');
+    await expect(page.locator('#qtd-badge')).toHaveText('2');
+
+    await page.getByRole('button', { name: 'Abrir sacola' }).click();
+    await page.locator('#modal-revisao').getByRole('button', { name: 'Diminuir Carne', exact: true }).click();
+    await page.getByRole('button', { name: 'Fechar sacola' }).click();
+    await expect(destaque.locator('span')).toHaveText('1');
+    await expect(produto.locator('span')).toHaveText('1');
+
+    await destaque.getByRole('button', { name: 'Diminuir Carne', exact: true }).click();
+    await expect(destaque.getByRole('button', { name: 'Adicionar Carne', exact: true })).toBeVisible();
+    await expect(produto.getByRole('button', { name: 'Adicionar Carne', exact: true })).toBeVisible();
+    await expect(page.locator('#qtd-badge')).toBeHidden();
+  });
+
+  test('organiza itens da sacola sem sobreposicao em telas pequenas', async ({ page }) => {
+    await openCardapio(page);
+    await addProduct(page, 'Carne');
+    await addProduct(page, 'Queijo com Presunto');
+    await page.getByRole('button', { name: 'Abrir sacola' }).click();
+
+    for (const width of [320, 375, 640]) {
+      await page.setViewportSize({ width, height: 800 });
+      const rows = page.locator('.cart-line-item');
+      await expect(rows).toHaveCount(2);
+      for (const row of await rows.all()) {
+        const layout = await row.evaluate((element) => {
+          const info = element.querySelector('.cart-item-name').parentElement;
+          const actions = element.querySelector('.cart-item-actions');
+          const title = element.querySelector('.cart-item-name');
+          const infoRect = info.getBoundingClientRect();
+          const actionsRect = actions.getBoundingClientRect();
+          const rowRect = element.getBoundingClientRect();
+          return {
+            actionsBelowInfo: actionsRect.top >= infoRect.bottom,
+            fitsRow: element.scrollWidth <= element.clientWidth,
+            fitsViewport: rowRect.left >= 0 && rowRect.right <= window.innerWidth,
+            titleFits: title.scrollWidth <= title.clientWidth,
+            titleOverflow: getComputedStyle(title).textOverflow,
+            actionsDirection: getComputedStyle(actions).flexDirection
+          };
+        });
+        expect(layout).toEqual({ actionsBelowInfo: true, fitsRow: true, fitsViewport: true, titleFits: true, titleOverflow: 'clip', actionsDirection: 'row' });
+      }
+      await expect(page.locator('.cart-item-badge')).toBeVisible();
+    }
+    await page.setViewportSize({ width: 320, height: 800 });
+    await page.screenshot({ path: test.info().outputPath('sacola-mobile.png') });
   });
 
   test('consulta taxa de entrega no WhatsApp', async ({ page }) => {
