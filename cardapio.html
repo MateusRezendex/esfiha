@@ -562,7 +562,7 @@
 
         .cart-line-item {
             display: grid;
-            grid-template-columns: 5.6rem minmax(0, 1fr) auto;
+            grid-template-columns: 5.6rem minmax(0, 1fr);
             gap: 0.85rem;
             align-items: center;
             padding: 0.78rem 0;
@@ -587,56 +587,45 @@
             background: rgba(255, 255, 255, 0.035);
         }
 
-        .delivery-discount-card {
-            position: relative;
-            overflow: hidden;
-            min-height: 4.1rem;
-            border: 1px solid rgba(250, 204, 21, 0.82);
-            border-radius: 1rem;
-            background:
-                linear-gradient(90deg, rgba(44, 0, 0, 0.98) 0%, rgba(52, 3, 2, 0.96) 58%, rgba(83, 10, 4, 0.82) 100%);
+        .cart-item-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            align-self: stretch;
         }
 
-        .delivery-discount-card::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 82% 30%, rgba(250, 204, 21, 0.18), transparent 28%);
-            pointer-events: none;
+        .cart-item-name {
+            overflow-wrap: anywhere;
         }
 
-        .delivery-discount-image {
-            position: absolute;
-            right: -0.65rem;
-            top: 50%;
-            width: 5.7rem;
-            height: 5.7rem;
-            transform: translateY(-50%);
-            object-fit: cover;
-            border-radius: 999px;
-            filter: saturate(1.12) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
-        }
+        @media (max-width: 640px) {
+            #modal-revisao {
+                padding: 12px;
+            }
 
-        .discount-progress-dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.46);
-            background: transparent;
-        }
+            #modal-scroll {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
 
-        .discount-progress-dot.is-filled {
-            border-color: #facc15;
-            background: #facc15;
-        }
-
-        @media (max-width: 420px) {
             .cart-line-item {
-                grid-template-columns: 4.8rem minmax(0, 1fr) auto;
+                grid-template-columns: 4.8rem minmax(0, 1fr);
                 gap: 0.65rem;
             }
 
+            .cart-item-actions {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 0.5rem;
+            }
+
             .cart-item-photo {
+                align-self: start;
                 width: 4.8rem;
                 height: 3.8rem;
             }
@@ -1061,49 +1050,6 @@
                 </div>
 
                 <div id="lista-revisao" class="overflow-y-auto mb-4 pr-1 custom-scrollbar text-[0.75rem]">
-                </div>
-
-                <div class="delivery-discount-card mb-4 px-4 py-3">
-                    <img src="./img/esfihas/carne.png" alt="" class="delivery-discount-image" width="900" height="900"
-                        loading="lazy" decoding="async">
-
-                    <div class="relative z-10 grid grid-cols-[auto_1fr] items-center gap-3 pr-16">
-                        <div class="text-[#facc15]">
-                            <i data-lucide="truck" class="w-8 h-8"></i>
-                        </div>
-
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-3">
-                                <div class="min-w-0">
-                                    <p class="text-white text-[0.68rem] font-black leading-none">
-                                        Peça 6 ou mais e ganhe
-                                    </p>
-                                    <p class="mt-0.5 text-[#facc15] text-2xl font-black leading-none">
-                                        30% OFF
-                                    </p>
-                                    <p class="mt-0.5 text-white text-[0.72rem] font-bold leading-none">
-                                        na taxa de entrega!
-                                    </p>
-                                </div>
-
-                                <div class="hidden min-[390px]:block h-9 w-px bg-[#facc15]/35"></div>
-
-                                <div class="hidden min-[390px]:block">
-                                    <p id="discount-progress-label" class="text-white text-[0.66rem] font-black leading-none">
-                                        Faltam 6 esfihas
-                                    </p>
-                                    <div id="discount-progress-dots" class="mt-2 flex items-center gap-1.5" aria-hidden="true">
-                                        <span class="discount-progress-dot"></span>
-                                        <span class="discount-progress-dot"></span>
-                                        <span class="discount-progress-dot"></span>
-                                        <span class="discount-progress-dot"></span>
-                                        <span class="discount-progress-dot"></span>
-                                        <span class="discount-progress-dot"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -1862,7 +1808,7 @@
             { n: "Carne", d: "Carne moída premium temperada com tomate, cebola e limão.", a: 7.99, i: "carne", m: true },
             { n: "Queijo", d: "Mix de mussarela, queijo minas, creme de leite e oregano.", a: 7.99, i: "queijo", m: true },
             { n: "Queijo com Presunto", d: "Mussarela selecionada, presunto picado e oregano.", a: 7.99, i: "presunto" },
-            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa" },
+            { n: "Calabresa com Cebola", d: "Calabresa fatiada, cebola e um toque de mussarela.", a: 7.99, i: "calabresa", m: true },
             { n: "Bacon", d: "Bacon crocante em fatias com generosa camada de mussarela.", a: 7.99, i: "bacon" },
             { n: "Frango com Bacon", d: "Combinação perfeita de frango desfiado, bacon e mussarela.", a: 7.99, i: "frango_bacon" }
         ];
@@ -1879,8 +1825,8 @@
             { n: "Frango, Cheddar e Bacon", d: "Frango desfiado com cheddar cremoso, bacon crocante", a: 9.99, i: "frango_cheddar_bacon", img: "./img/esfihas/frango_cheddar_bacon.jpeg", nov: true },
             { n: "Lombinho Canadense", d: "Lombo canadense fatiado com mussarela.", a: 8.99, i: "lombo" },
             { n: "Lombo com Cheddar", d: "Lombo canadense fatiado com cheddar cremoso.", a: 9.99, i: "lombo_cheddar", nov: true },
-            { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso e tomate cereja.", a: 9.99, i: "lombo_creamcheese" },
-            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca", m: true }
+            { n: "Lombo com Cream Cheese", d: "Lombo canadense fatiado com cream cheese cremoso e tomate cereja.", a: 9.99, i: "lombo_creamcheese", m: true },
+            { n: "Carne Seca", d: "Carne seca desfiada artesanalmente com catupiry.", a: 10.50, i: "carne_seca" }
         ];
 
         const doces = [
@@ -1888,7 +1834,7 @@
             { n: "Laka", d: "Chocolate branco Laka cremoso.", a: 8.99, i: "laka" },
             { n: "Laka com Morango", d: "Chocolate branco Laka cremoso com morangos frescos picados.", a: 10.98, i: "laka_morango" },
             { n: "Chocolate com confetes", d: "Chocolate cremoso coberto com confetes coloridos.", a: 9.99, i: "MM" },
-            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", a: 8.99, i: "banana_nevada", m: true },
+            { n: "Banana Nevada", d: "Banana fatiada, chocolate branco gratinado, açúcar e canela.", a: 8.99, i: "banana_nevada" },
             { n: "Abacaxi Nevado", d: "Abacaxi em calda artesanal com chocolate branco gratinado.", a: 8.99, i: "abacaxi_nevado" },
             { n: "Churros", d: "Doce de leite cremoso com toque de canela e açúcar.", a: 8.99, i: "churros" },
             // Temporariamente indisponiveis:
@@ -1933,27 +1879,16 @@
         }
 
         const nomesDestaquesPreferidos = [
-            "Carne",
-            "Queijo",
-            "Carne Seca",
+            "Calabresa com Cebola",
             "Carne e Queijo",
-            "Banana Nevada"
+            "Carne",
+            "Lombo com Cream Cheese",
+            "Queijo"
         ];
 
-        const destaques = (() => {
-            const picks = nomesDestaquesPreferidos
-                .map((n) => produtosPorNome.get(n))
-                .filter((item) => item && !item.indisponivel);
-
-            produtos.forEach((it) => {
-                if (it.indisponivel) return;
-                if (!it.nov) return;
-                if (picks.some((p) => p.n === it.n)) return;
-                picks.push(it);
-            });
-
-            return picks.sort((a, b) => a.a - b.a);
-        })();
+        const destaques = nomesDestaquesPreferidos
+            .map((nome) => produtosPorNome.get(nome))
+            .filter((item) => item && !item.indisponivel);
 
         function getDestaques() {
             return destaques;
@@ -1963,11 +1898,10 @@
             const container = document.getElementById('carousel-destaques');
             if (!container) return;
 
-            const destaques = getDestaques().slice(0, 3);
+            const destaques = getDestaques();
 
             container.innerHTML = destaques.map((item, idx) => {
                 const disabled = !!item.indisponivel;
-                const safeName = String(item.n).replaceAll('\\', '\\\\').replaceAll("'", "\\'");
                 const imgSrc = item.img || `./img/esfihas/${item.i}.png`;
                 const [imgWidth, imgHeight] = imageDimensions[item.i] || [900, 900];
 
@@ -1993,13 +1927,8 @@
 
                             <div class="mt-3 flex items-center justify-between gap-2">
                                 <span class="text-base md:text-lg font-black text-[#facc15]">${brl.format(item.a)}</span>
-                                <button type="button"
-                                    ${disabled ? 'disabled aria-disabled="true"' : ''}
-                                    onclick="${disabled ? '' : `add('${safeName}', ${item.a})`}"
-                                    class="${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:brightness-110 active:scale-95'} h-8 min-w-[6rem] inline-flex items-center justify-center gap-1.5 bg-[#facc15] text-black px-3 rounded-full text-[0.68rem] font-black shadow-lg transition">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                                    Adicionar
-                                </button>
+                                <div data-product-control="${item.n}"
+                                    class="flex items-center justify-end flex-shrink-0">${renderControleProduto(item)}</div>
                             </div>
                         </div>
                     </article>
@@ -2123,9 +2052,7 @@
             totalRevisao: document.getElementById('total-revisao'),
             subtotalRevisao: document.getElementById('subtotal-revisao'),
             qtdRevisao: document.getElementById('qtd-revisao'),
-            qtdResumo: document.getElementById('qtd-resumo'),
-            discountLabel: document.getElementById('discount-progress-label'),
-            discountDots: document.getElementById('discount-progress-dots')
+            qtdResumo: document.getElementById('qtd-resumo')
         };
 
         atualizarTotal();
@@ -2247,22 +2174,6 @@
 
             if (totalElements.qtdResumo) {
                 totalElements.qtdResumo.innerText = String(totalQtd);
-            }
-
-            const discountGoal = 6;
-            const discountProgress = Math.min(totalQtd, discountGoal);
-            const missingForDiscount = Math.max(0, discountGoal - totalQtd);
-
-            if (totalElements.discountLabel) {
-                totalElements.discountLabel.innerText = missingForDiscount === 0
-                    ? 'Desconto liberado!'
-                    : `Faltam ${missingForDiscount} esfiha${missingForDiscount === 1 ? '' : 's'}`;
-            }
-
-            if (totalElements.discountDots) {
-                Array.from(totalElements.discountDots.children).forEach((dot, index) => {
-                    dot.classList.toggle('is-filled', index < discountProgress);
-                });
             }
         }
 
@@ -2474,25 +2385,26 @@
                             class="cart-item-photo" loading="lazy" decoding="async">
 
                         <div class="min-w-0 self-start pt-1">
-                            <p class="font-black leading-tight truncate text-sm md:text-base">${item}</p>
+                            <p class="cart-item-name font-black leading-tight text-sm md:text-base">${item}</p>
 
                             <p class="mt-1 text-white/68 text-[0.68rem] md:text-xs leading-snug line-clamp-2">
                                 ${descricao}
                             </p>
 
-                            ${isMaisPedida ? `
-                                <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-[#facc15] px-2 py-1 text-[0.55rem] font-black uppercase text-black">
-                                    <i data-lucide="crown" class="w-3 h-3 fill-black"></i>
-                                    Mais pedida
+                            <div class="mt-2 flex items-center justify-between gap-2 pr-2">
+                                ${isMaisPedida ? `
+                                    <span class="cart-item-badge inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-[#facc15] px-2 py-1 text-[0.55rem] font-black uppercase text-black">
+                                        <i data-lucide="crown" class="w-3 h-3 fill-black"></i>
+                                        Mais pedida
+                                    </span>
+                                ` : ''}
+                                <span class="cart-item-price ml-auto font-black text-[#facc15] whitespace-nowrap text-sm md:text-base text-right">
+                                    ${brl.format(carrinho[item].qtd * carrinho[item].preco)}
                                 </span>
-                            ` : ''}
+                            </div>
                         </div>
 
-                        <div class="flex flex-col items-end justify-end gap-3 self-stretch">
-                            <span class="font-black text-[#facc15] whitespace-nowrap text-sm md:text-base text-right">
-                                ${brl.format(carrinho[item].qtd * carrinho[item].preco)}
-                            </span>
-
+                        <div class="cart-item-actions">
                             <div class="inline-flex items-center gap-2">
                                 <div class="inline-flex items-center gap-2 bg-black/20 rounded-full px-1.5 py-1 border border-white/10">
                                     <button type="button"
